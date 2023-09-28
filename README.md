@@ -54,7 +54,8 @@ Entrepreneurs looking for specialized skills to support their ventures can look 
 4. MongoDB - database 
 
 ### Architecture Diagram
-![Architecture Diagram](.docs/Architecture.pdf)
+![Architecture Diagram](.docs/Architecture.png)
+
 
 
 
