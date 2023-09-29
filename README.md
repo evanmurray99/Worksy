@@ -14,7 +14,7 @@ A marketplace tailored for students, where they can offer and seek freelance ser
 
 ## Documentation
 
-[Meeting Minute](https://github.com/evanmurray99/avocado/wiki)
+[Meeting Minute](https://github.com/evanmurray99/Worksy/wiki/Minutes)
 
 [Project Proposal](https://github.com/evanmurray99/Worksy/wiki/Project-Proposal)
 
@@ -54,7 +54,7 @@ Entrepreneurs looking for specialized skills to support their ventures can look 
 4. MongoDB - database 
 
 ### Architecture Diagram
-![Architecture Diagram](.docs/Architecture.png)
+![Architecture Diagram](./docs/Architecture-Diagram.png)
 
 
 
