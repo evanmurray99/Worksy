@@ -39,7 +39,7 @@ describe('User API TEST', () => {
 
   it('should fetch a list of users', (done) => {
     request(app)
-      .get('/api/users')
+      .get('/api/user')
       .set('Accept', 'application/json')
       .end((err, response) => {
         if (err) {
