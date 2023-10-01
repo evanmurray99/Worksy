@@ -7,16 +7,12 @@ const db = config.mongoURI;
 
 // Database connection function
 const connectDB = async (env) => {
-    const db_map = {
-        'test': 'worksy_test',
-        'dev': 'worksy_dev',
-        'prod': 'worksy'
-    }
+   
   try {
     await mongoose.connect(db ,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        dbName: env = db_map[env]
+        dbName: env = process.env.MONGODB_DB
     });
     console.log('Connected to the database');
   } catch (err) {

@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
-
+import { useState , useEffect} from 'react'
+import './App.css'
 
 function App() {
   const [data, setData] = useState([]);
@@ -24,20 +23,17 @@ function App() {
   
     fetchData();
   }, []);
+
   return (
     <div>
       <h1>Data from MongoDB</h1>
       <ul>
         {data.map((item) => (
-          <li key={item._id}>
-            {item.name}
-            {item.email}
-            </li>
+          <li key={item._id}>{item.name}</li>
         ))}
       </ul>
     </div>
   );
 }
 
-export default App;
-
+export default App

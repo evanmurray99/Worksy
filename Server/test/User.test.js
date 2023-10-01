@@ -7,7 +7,7 @@ const app = require('../app'); // Replace with the path to your Express app
 describe('User API TEST', () => {
   before(async () => {
     
-    await connectDB('test');
+    await connectDB();
   })
 
 

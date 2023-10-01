@@ -7,7 +7,7 @@ const connectDB = require('./Config/db'); // Import the connectDB function
 // ...
 
 // Connect to the database
-connectDB('dev')
+connectDB()
   .then(() => {
     // Start your Express server here or define your routes
     app.listen(3001, () => {
