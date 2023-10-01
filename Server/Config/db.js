@@ -6,13 +6,14 @@ const db = config.mongoURI;
 
 
 // Database connection function
+//this should allow everyone access 
 const connectDB = async (env) => {
    
   try {
     await mongoose.connect(db ,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        dbName: env = process.env.MONGODB_DB
+        dbName:process.env.MONGODB_DB
     });
     console.log('Connected to the database');
   } catch (err) {
