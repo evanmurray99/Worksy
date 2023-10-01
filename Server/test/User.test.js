@@ -5,34 +5,52 @@ const connectDB = require('../Config/db')
 const app = require('../app'); // Replace with the path to your Express app
 
 describe('User API TEST', () => {
-  before(async () => {
-    
-    await connectDB();
-  })
+  before((done) => {
+    connectDB()
+      .then(() => {
+        done(); // Signal that before hook is complete
+      })
+      .catch((error) => {
+        done(error); // Signal that before hook failed with an error
+      });
+  });
 
-
-  it('Create a user', async () => {
+  it('Create a user', (done) => {
     const newUser = {
       name: 'testuser',
-      email : 'test@email.com',
+      email: 'test@email.com',
       password: 'testpassword',
     };
 
-    const response = await request(app)
+    request(app)
       .post('/api/users')
       .send(newUser)
-      .set('Accept', 'application/json');
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
 
-    expect(response.status).to.equal(201);
-    expect(response.body).to.have.property('name', 'testuser');
+        expect(response.status).to.equal(201);
+        expect(response.body).to.have.property('name', 'testuser');
+        done(); // Signal that the test case is complete
+      });
   });
 
-  it('should fetch a list of users', async () => {
-    const response = await request(app).get('/api/users').set('Accept', 'application/json');
+  it('should fetch a list of users', (done) => {
+    request(app)
+      .get('/api/users')
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
 
-    expect(response.status).to.equal(200);
-    console.log(response.body)
-    expect(response.body).to.be.an('array');
-    // Add more assertions based on your API response structure
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an('array');
+        // Add more assertions based on your API response structure
+
+        done(); // Signal that the test case is complete
+      });
   });
 });
