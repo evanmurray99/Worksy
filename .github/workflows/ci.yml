@@ -23,5 +23,5 @@ jobs:
         working-directory: Server
 
       - name: Run Mocha tests
-        run: npx mocha 
+        run: npx mocha --exit
         working-directory: Server
