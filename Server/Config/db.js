@@ -7,7 +7,7 @@ const db = config.mongoURI;
 
 // Database connection function
 //this should allow everyone access 
-const connectDB = async (env) => {
+const connectDB = async () => {
    
   try {
     await mongoose.connect(db ,{
