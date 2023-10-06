@@ -1,14 +1,15 @@
 
 const mongoose = require('mongoose');
 const config = require('./keys');
-const db = config.mongoURI;
-
+const db = config.MONGO_URI;
+const dotenv = require('dotenv');
+ 
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 
 // Database connection function
 //this should allow everyone access 
 const connectDB = async () => {
-   
   try {
     await mongoose.connect(db ,{
         useNewUrlParser: true,
