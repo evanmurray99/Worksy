@@ -1,4 +1,6 @@
 module.exports = {
-    mongoURI:
-    "mongodb+srv://omeizan:rcgaUOpdFdEJbrkv@cluster0.tsfqwyk.mongodb.net/?retryWrites=true&w=majority",
+    MONGO_URI:"mongodb+srv://worksy:WORKSY4350@cluster0.3gnygys.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp",
+    PORT:3001
 }
+
+MONGO_URI="mongodb+srv://worksy:WORKSY4350@cluster0.3gnygys.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp"

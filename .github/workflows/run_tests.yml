@@ -23,7 +23,7 @@ jobs:
         working-directory: Server
 
       - name: Run Mocha tests
-        run: npx mocha --exit
+        run: NODE_ENV=test npx mocha --exit
         working-directory: Server
 
   
