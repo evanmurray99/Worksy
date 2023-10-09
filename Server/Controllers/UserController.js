@@ -1,5 +1,7 @@
 const User = require('../Models/User');
 const mongoose = require("mongoose") // 
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 const getUser = async (req, res) => {
   try {
@@ -17,38 +19,45 @@ const getUser = async (req, res) => {
   }
 };
 const createUser = async (req, res) => {
-    try {
-      const { firstName , lastName, email , password , isStudent } = req.body; 
-      const bio = ''
-      const notifications = []
-      const bookmarks = []
-      const orders = []
-      const services = []
-      const chats = []
-      
-      // Create a new user document
-      const newUser = new User(
-        { firstName ,
-         lastName, 
-         email, 
-         password,
-         bio,
-         isStudent,
-         notifications,
-         services,
-         chats,
-         bookmarks,
-         orders,
-        });
-      
-      // Save the user to the database
-      await newUser.save();
-      
-      res.status(201).json(newUser); 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
-    }
+  try {
+    const { firstName , lastName, email , password , isStudent } = req.body; 
+    const bio = ''
+    const notifications = []
+    const bookmarks = []
+    const orders = []
+    const services = []
+    const chats = []
+    
+    // Create a new user document and hash the password
+    // To check password use: await bcrypt.compare(password, hashedPassword)
+    
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+
+
+    const newUser = new User(
+      { firstName ,
+        lastName, 
+        email, 
+        hashedPassword,
+        bio,
+        isStudent,
+        notifications,
+        services,
+        chats,
+        bookmarks,
+        orders,
+      });
+    
+    // Save the user to the database
+    await newUser.save();
+    
+    res.status(201).json(newUser); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 const deleteUserById = async (req, res) => {
