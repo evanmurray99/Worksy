@@ -1,11 +1,9 @@
 
 const mongoose = require('mongoose');
-const config = require('./keys');
-const db = config.MONGO_URI;
 const dotenv = require('dotenv');
  
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-
+const db = process.env.MONGO_URI;
 
 // Database connection function
 //this should allow everyone access 
