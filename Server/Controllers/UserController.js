@@ -1,6 +1,6 @@
 const User = require('../Models/User');
 const mongoose = require("mongoose") // 
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const getUser = async (req, res) => {
