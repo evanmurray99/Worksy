@@ -21,4 +21,10 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+const closeDB = async () => {
+  await mongoose.connection.close();
+  console.log('Closed database connection');
+}
+
+module.exports.connectDB = connectDB;
+module.exports.closeDB = closeDB;
