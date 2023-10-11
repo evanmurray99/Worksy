@@ -7,7 +7,6 @@ const db = process.env.MONGO_URI;
 
 // Database connection function
 //this should allow everyone access 
-module.exports = connectDB
 const connectDB = async () => {
   try {
     await mongoose.connect(db ,{
