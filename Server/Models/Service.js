@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const serviceSchema = new mongoose.Schema({
     seller :  {
         type: mongoose.Schema.Types.ObjectId, ref: 'Users',
@@ -18,8 +19,11 @@ const serviceSchema = new mongoose.Schema({
         type: Date,
         default: Date.now, 
       },
+    categories : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categories' }], 
     rating : Number,
     reviews : [reviewSchema],
+
+
 });
 
 const Service =  mongoose.model('Service', serviceSchema, 'Services');
