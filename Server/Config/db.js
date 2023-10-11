@@ -7,6 +7,7 @@ const db = process.env.MONGO_URI;
 
 // Database connection function
 //this should allow everyone access 
+module.exports = connectDB
 const connectDB = async () => {
   try {
     await mongoose.connect(db ,{
@@ -26,5 +27,5 @@ const closeDB = async () => {
   console.log('Closed database connection');
 }
 
-module.exports.connectDB = connectDB;
-module.exports.closeDB = closeDB;
+module.exports = connectDB;
+module.exports = closeDB;
