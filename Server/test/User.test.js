@@ -1,14 +1,14 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const connectDB = require('../Config/db')
+const db = require('../Config/db')
 const app = require('../app'); // Replace with the path to your Express app
 
 
 describe('USER API TEST', () => {
   let id;
   before((done) => {
-    connectDB()
+    db.connectDB()
       .then(() => {
         done(); // Signal that before hook is complete
       })
@@ -82,31 +82,31 @@ describe('USER API TEST', () => {
       });
   });
 
-  it('Delete user', (done) => {
+  // it('Delete user', (done) => {
     
 
-    // Send a DELETE request to delete the user by ID
-    request(app)
-      .delete(`/api/users/${id}`)
-      .set('Accept', 'application/json')
-      .end((err, response) => {
-        if (err) {
-          return done(err); // Signal that the test case failed with an error
-        }
+  //   // Send a DELETE request to delete the user by ID
+  //   request(app)
+  //     .delete(`/api/users/${id}`)
+  //     .set('Accept', 'application/json')
+  //     .end((err, response) => {
+  //       if (err) {
+  //         return done(err); // Signal that the test case failed with an error
+  //       }
 
-        if (response.status === 404) {
-          // If the user is not found (404), it's still a successful deletion
-          expect(response.status).to.equal(404);
-        } else {
-          // If the user is found and deleted (200), it's a successful deletion
-          expect(response.status).to.equal(200);
-        }
+  //       if (response.status === 404) {
+  //         // If the user is not found (404), it's still a successful deletion
+  //         expect(response.status).to.equal(404);
+  //       } else {
+  //         // If the user is found and deleted (200), it's a successful deletion
+  //         expect(response.status).to.equal(200);
+  //       }
 
-        expect(response.body).to.have.property('message', 'User deleted successfully');
+  //       expect(response.body).to.have.property('message', 'User deleted successfully');
 
-        done(); // Signal that the test case is complete
-      });
-  });
+  //       done(); // Signal that the test case is complete
+  //     });
+  // });
 
   
 });

@@ -26,5 +26,7 @@ const closeDB = async () => {
   console.log('Closed database connection');
 }
 
-module.exports = connectDB;
-module.exports = closeDB;
+module.exports = {
+  connectDB : connectDB, 
+  closeDB : closeDB,
+} 
