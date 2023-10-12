@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
  
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 const db = process.env.MONGO_URI;
+console.log(db)
 
 // Database connection function
 //this should allow everyone access 
@@ -12,7 +13,7 @@ const connectDB = async () => {
     await mongoose.connect(db ,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        dbName:process.env.MONGODB_DB
+        dbName: process.env.MONGODB_DB
     });
     console.log('Connected to the database');
   } catch (err) {
