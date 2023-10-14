@@ -4,8 +4,6 @@ const reviewSchema = new mongoose.Schema({
     rating : Number, 
      body: {
         type : String,
-        required : true, 
-        match : '^.+$',
       },
 });
 

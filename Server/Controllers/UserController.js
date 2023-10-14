@@ -1,7 +1,18 @@
 const User = require('../Models/User');
 const mongoose = require("mongoose") // 
+const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
+ 
 const saltRounds = 10;
+const secretKey = "GBL9Df0RWIYcA4ZbYiBGjNESysa0AesF";
+
+const generateToken = (user) => {
+  const payload = {
+    user : user
+  };
+  return jwt.sign(payload, secretKey, { expiresIn: '1h' }); 
+};
+
 
 const getUser = async (req, res) => {
   try {
@@ -18,6 +29,30 @@ const getUser = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+const addService = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const serviceId = req.params.service;
+
+    
+
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.services.push(serviceId);
+    await user.save();
+
+    res.status(200).json({ message: 'Service appended to user' });
+  } catch (error) {
+    console.error('Error appending service to user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 const createUser = async (req, res) => {
   try {
     const { firstName , lastName, email , password , isStudent } = req.body; 
@@ -32,15 +67,13 @@ const createUser = async (req, res) => {
     // To check password use: await bcrypt.compare(password, hashedPassword)
     
     const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-
+    const hashedpassword = await bcrypt.hash(password, salt);
 
     const newUser = new User(
       { firstName ,
         lastName, 
         email, 
-        hashedPassword,
+        hashedpassword,
         bio,
         isStudent,
         notifications,
@@ -55,8 +88,8 @@ const createUser = async (req, res) => {
     
     res.status(201).json(newUser); 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+
+    res.status(500).json({ message: errorMap[error.code] });
   }
 };
 
@@ -113,12 +146,84 @@ const updateUserBio = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+      
+    }
+
+    
+    const passwordMatch = await bcrypt.compare(password, user.hashedpassword);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    
+    const token = generateToken(user);
+    return res.status(200).json({ token : token});
+
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return res.status(500).json({ message: 'Internal server error' , error : error });
+  }
+};
+
+const getUserByToken = async (req, res) => {
+  
+  const token  = req.params.token;
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      error: 'Token is missing',
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    const user = await User.findById(decoded.user._id);
+
+    if (!user) {
+      
+      return res.status(404).json({
+        success: false,
+        error: 'Unauthorized User',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      error: 'Could not get User',
+    });
+  }
+};
+
+
+
+const errorMap = {
+  '11000' : 'User with this email already exists'
+}
+
 const controller  = {
      getUser,
+     getUserByToken,
      createUser,
      deleteUserById,
      updateUserBio,
-     
+     login,
+     addService : addService
 }
 
 module.exports = controller;
