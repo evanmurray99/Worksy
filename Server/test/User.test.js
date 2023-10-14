@@ -1,14 +1,14 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const connectDB = require('../Config/db')
+const db = require('../Config/db')
 const app = require('../app'); // Replace with the path to your Express app
 
 
 describe('USER API TEST', () => {
   let id;
   before((done) => {
-    connectDB()
+    db.connectDB()
       .then(() => {
         done(); // Signal that before hook is complete
       })
