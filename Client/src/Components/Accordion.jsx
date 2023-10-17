@@ -10,7 +10,7 @@ function checkIsOpen(state)
         currSymbol = "- "
     }
 
-    return (<p className="right">{currSymbol}</p>)
+    return (<p className="removePadding floatRight resize">{currSymbol}</p>)
 }
 
 function showContent(state, accordContent, hasBackdrop)
@@ -27,9 +27,7 @@ function showContent(state, accordContent, hasBackdrop)
     {
         content = (
         <div className={formatting}>
-            <p className="content">
-                {accordContent}
-            </p>
+            {accordContent}
         </div>)
     }
 
@@ -43,7 +41,7 @@ export const Accordion = (props) =>
     return (
         <div className="contentContainer">
             <div className="titleBar" onClick={() => setIsOpen(!isOpen)}>
-                <h2 className="left">{props.title}</h2>
+                <h2 className="removePadding floatLeft">{props.title}</h2>
                 {checkIsOpen(isOpen)}
             </div>
             {showContent(isOpen, props.content, props.hasBackdrop)}

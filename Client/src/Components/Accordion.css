@@ -1,17 +1,23 @@
-.left
+.removePadding
 {
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.floatLeft
+{
     float: left;
 }
 
-.right
+.floatRight
 {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    float: right;
+}
+
+.resize
+{
     font-weight: bolder;
     font-size: 25px;
-    float: right;
 }
 
 .titleBar
