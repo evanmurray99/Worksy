@@ -19,36 +19,11 @@ export default function Login() {
 						navigate('/'); // !change later
 					}, 1000);
 				}
-				// window.location.reload();
-				console.log('here');
-				console.log(response);
+				window.location.reload();
 			})
 			.catch((e) => {
 				console.log(e.message);
 			});
-		// fetch(url, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify({ email: email, password: password }),
-		// })
-		// 	.then((response) => {
-		// 		if (response.ok) {
-		// 			setTimeout(() => {
-		// 				navigate('/'); // !change later
-		// 			}, 1000);
-		// 		}
-		// 		console.log('here');
-		// 		console.log(response);
-		// 		return response.json();
-		// 	})
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 	})
-		// 	.catch((e) => {
-		// 		console.log(e.message);
-		// 	});
 	};
 	return (
 		<>
