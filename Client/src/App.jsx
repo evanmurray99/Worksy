@@ -28,12 +28,6 @@ function App() {
   return (
     <div>
       <Router />
-      {/* <h1>Data from MongoDB</h1>
-      <ul>
-        {data.map((item) => (
-          <li key={item._id}>{item.name}</li>
-        ))}
-      </ul> */}
     </div>
   );
 }
