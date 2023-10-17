@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState , useEffect} from 'react'
 import {Router} from './Router'
 import './App.css'
@@ -26,9 +27,9 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <React.Fragment>
       <Router />
-    </div>
+    </React.Fragment>
   );
 }
 

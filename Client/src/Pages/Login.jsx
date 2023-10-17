@@ -2,9 +2,9 @@ import React from 'react'
 
 export const Login = () => {
     return (
-        <div>
+        <React.Fragment>
             <h1>Login</h1>
             <p>This will be implemented by Tung.</p>
-        </div>
+        </React.Fragment>
     )
   }

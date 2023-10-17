@@ -5,10 +5,10 @@ export const HomePage = () => {
     let links = [{name: "My Content", link: "MyContent"}]
 
     return (
-        <div>
+        <React.Fragment>
             <NavBar leftButtons={links}/>
             <h1>HomePage</h1>
             <p>Diljot will implement this page.</p>
-        </div>
+        </React.Fragment>
     )
 }
