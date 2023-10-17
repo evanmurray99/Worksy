@@ -1,9 +1,9 @@
 {
     "scripts": {
         "dev": "NODE_ENV=dev nodemon Server.js",
-        "test": "NODE_ENV=test nodemon Server.js",
-        "prod": "NODE_ENV=prod nodemon Server.js",
-        "start": "node Server.js"
+        "test": "NODE_ENV=test mocha --exit",
+        "prod": "NODE_ENV=prod nodemon Server.js"
+
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
