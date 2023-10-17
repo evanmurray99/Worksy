@@ -1,4 +1,5 @@
 import { useState , useEffect} from 'react'
+import {Router} from './Router'
 import './App.css'
 
 function App() {
@@ -26,12 +27,13 @@ function App() {
 
   return (
     <div>
-      <h1>Data from MongoDB</h1>
+      <Router />
+      {/* <h1>Data from MongoDB</h1>
       <ul>
         {data.map((item) => (
           <li key={item._id}>{item.name}</li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }
