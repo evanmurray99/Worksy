@@ -16,7 +16,7 @@ export default function Login() {
 			.then((response) => {
 				if (response.status === 200) {
 					setTimeout(() => {
-						navigate('/'); // !change later
+						navigate('/');
 					}, 1000);
 				}
 				window.location.reload();
@@ -27,19 +27,19 @@ export default function Login() {
 	};
 	return (
 		<>
-			<div className="bg-gray-100 h-screen w-full">
+			<div className="rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px] ">
 				<form
-					className="max-w-[400px] w-full mx-auto bg-white p-4"
+					className=" bg-white p-4 my-10 max-w-[400px] w-full mx-auto"
 					onSubmit={logIn}
 				>
-					<div className="text-center py-6">
-						<h1 className="text-2xl font-bold text-center">LOGIN</h1>
+					<div className="text-center py-6 text-gray-700">
+						<h1 className="text-2xl font-bold mb-4">LOGIN</h1>
 						<p>Welcome back. Sign into your account</p>
 					</div>
 					<div className="flex flex-col py-2">
 						<label htmlFor="email">Email</label>
 						<input
-							className="border p-2"
+							className="border p-2 focus:outline-gray-400 "
 							type="email"
 							id="email"
 							value={email}
@@ -52,7 +52,7 @@ export default function Login() {
 					<div className="flex flex-col py-2">
 						<label htmlFor="password">Password</label>
 						<input
-							className="border p-2"
+							className="border p-2 focus:outline-gray-400 "
 							type="password"
 							id="password"
 							value={password}
@@ -61,10 +61,10 @@ export default function Login() {
 							}}
 						/>
 					</div>
-					<button className="border w-full my-5 py-2 bg-black hover:bg-gray-800 text-white">
+					<button className="border w-full my-5 py-2 bg-gray-700 hover:bg-gray-500  text-white">
 						Sign in
 					</button>
-					<Link className="flex justify-center" to="signup">
+					<Link className="flex justify-center hover:text-gray-500" to="signup">
 						Create an account
 					</Link>
 				</form>
