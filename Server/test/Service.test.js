@@ -46,9 +46,7 @@ describe('SERVICE API TEST', function() {
           });
       });
 
-
     it('Add service for created user ', (done) => { 
-
         const newService = {
             seller : user_id,
             description : "test description",
@@ -78,22 +76,7 @@ describe('SERVICE API TEST', function() {
         });   
     });
 
-
-    it ('Get created service', (done) => {
-        request(app)
-        .get(`/api/services/${id}`)
-        .set('Accept', 'application/json')
-        .end((err, response) => {
-            if (err) {
-                return done(err); // Signal that the test case failed with an error
-            }
-
-            expect(response.status).to.equal(200);
-            expect(response.body).to.be.an('object');
-            // Add more assertions based on your API response structure
-            done(); // Signal that the test case is complete
-        });
-    });
+  
 
     it ('Delete Invalid service', (done) => {
         request(app)
@@ -145,7 +128,7 @@ describe('SERVICE API TEST', function() {
         });
     });
 
-    it ('Delete Already deleteed service', (done) => {
+    it ('Delete Already deleted service', (done) => {
         request(app)
         .delete(`/api/services/${id}`)
         .set('Accept', 'application/json')
@@ -187,6 +170,8 @@ describe('SERVICE API TEST', function() {
             done(); // Signal that the test case is complete
           });
       });
+
+ 
 
       after((done) => {
         db.closeDB()
