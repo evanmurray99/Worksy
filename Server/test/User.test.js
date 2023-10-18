@@ -2,11 +2,14 @@ const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
 const db = require('../Config/db')
-const app = require('../app'); // Replace with the path to your Express app
+const app = require('../app'); 
+const User = require('../Models/User')
 
 
 describe('USER API TEST', () => {
   let id;
+  let token;
+  let service_id
   before((done) => {
     db.connectDB()
       .then(() => {
@@ -82,6 +85,168 @@ describe('USER API TEST', () => {
       });
   });
 
+  it("Testing login", (done) => {
+    const user = {
+      email: 'testuser@myumanitoba.ca',
+      password: 'testpassword',
+    };
+
+    request(app)
+      .post('/api/users/login')
+      .send(user)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(200);
+        expect(response.body).to.have.property('token');
+
+        token = response.body.token;
+
+        done(); // Signal that the test case is complete
+      });
+  });
+
+  it("Testing login for non-existent user", (done) => {
+    const user = {
+      email: 'fakeuser@myumanitoba.ca',
+      password: 'testpassword',
+    };
+
+    request(app)
+      .post('/api/users/login')
+      .send(user)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(404);
+        expect(response.body).to.have.property('message', 'User not found');
+        done(); // Signal that the test case is complete
+      });
+  });
+
+  it("Testing login with invalid password", (done) => {
+    const user = {
+      email: 'testuser@myumanitoba.ca',
+      password: 'wrongpassword',
+    };
+
+    request(app)
+      .post('/api/users/login')
+      .send(user)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(401);
+        expect(response.body.message).to.equal('Invalid password');
+        done(); // Signal that the test case is complete
+      });
+  });
+  
+
+  it ("Testing get user with invalid token", (done) => {
+
+    request(app)
+      .get(`/api/users/${token + 'x'}/auth`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        
+        expect(response.status).to.equal(500);
+        expect(response.body).to.have.property('success', false);
+        done(); // Signal that the test case is complete
+      });
+  });
+
+  it ("Testing get user by token", (done) => {
+    request(app)
+      .get(`/api/users/${token}/auth`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(200);
+        expect(response.body).to.have.property('user');
+        expect(response.body).to.have.property('success', true);
+        expect(response.body.user).to.have.property('_id', id);
+
+        done(); // Signal that the test case is complete
+      });
+  });
+
+  it('Create a service for user ', (done) => { 
+    const newService = {
+        seller : id,
+        description : "test description",
+        title : "test title",
+        price: 100,
+        categories : ["test category"]
+    };
+
+    request(app)
+    .post('/api/services')
+    .send(newService)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        if (err) {
+            return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(201);
+        expect(response.body).to.have.property('title', 'test title');
+        expect(response.body).to.have.property('description', 'test description');
+        expect(response.body).to.have.property('price', 100);
+        expect(response.body).to.have.property('seller', id); 
+
+        service_id = response.body._id;
+
+        done(); // Signal that the test case is complete
+    });   
+});
+
+
+
+it ('Add Service to User', (done) => {
+    request(app)
+
+    .put(`/api/users/${id}/add-service/${service_id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        if (err) {
+            return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an('object');
+        
+        done(); // Signal that the test case is complete
+    });
+});
+
+it ('Delete created service', (done) => {
+    request(app)
+    .delete(`/api/services/${service_id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        if (err) {
+            return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an('object');
+        // Add more assertions based on your API response structure
+        done(); // Signal that the test case is complete
+    });
+});
+
   it('Delete user', (done) => {
     
 
@@ -108,5 +273,14 @@ describe('USER API TEST', () => {
       });
   });
 
-  
+  after((done) => {
+    db.closeDB()
+      .then(() => {
+        done(); // Signal that after hook is complete
+      })
+      .catch((error) => {
+        done(error); // Signal that after hook failed with an error
+      });
+  });
+
 });
