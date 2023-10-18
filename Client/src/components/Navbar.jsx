@@ -28,6 +28,14 @@ export default function Navbar() {
 								Collections
 							</Link>
 						</li>
+						<li>
+							<Link
+								to={'/services'}
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+							>
+								Your posts
+							</Link>
+						</li>
 
 						<li>
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
@@ -52,6 +60,7 @@ export default function Navbar() {
 								<ul className="mt-2 space-y-1 px-4">
 									<li>
 										<Link
+											// to={`/`+ {id}}
 											to={`/account`}
 											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
@@ -73,10 +82,7 @@ export default function Navbar() {
 				</div>
 
 				<div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-					<a
-						href=""
-						className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
-					>
+					<div className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
 						<img
 							src="https://images.unsplash.com/photo-1696339596874-effbe56ae8b0?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2574"
 							className="h-10 w-10 roudned-full object-cover"
@@ -87,7 +93,7 @@ export default function Navbar() {
 								<span> john@myumanitoba.ca</span>
 							</p>
 						</div>
-					</a>
+					</div>
 				</div>
 			</div>
 		</>
