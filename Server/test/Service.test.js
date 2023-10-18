@@ -76,6 +76,54 @@ describe('SERVICE API TEST', function() {
         });   
     });
 
+
+    it('Edit service', (done) => {
+      const editService = {
+          description : "changed description",
+          title : "changed title",
+          price: 100,
+          categories : ["changed category"]
+      };
+
+      request(app)
+      .put(`/api/services/${id}`)
+      .send(editService)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(200);
+          expect(response.body).to.have.property('message', 'Service updated successfully');
+
+          done(); // Signal that the test case is complete
+      });
+    });
+
+    it('Edit invalid service', (done) => {
+      const editService = {
+          description : "changed description",
+          title : "changed title",
+          price: 100,
+          categories : ["changed category"]
+      };
+
+      request(app)
+      .put(`/api/services/${'1'}`)
+      .send(editService)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message', 'Invalid service ID');
+
+          done(); // Signal that the test case is complete
+      });
+    });
   
 
     it ('Delete Invalid service', (done) => {
@@ -170,8 +218,6 @@ describe('SERVICE API TEST', function() {
             done(); // Signal that the test case is complete
           });
       });
-
- 
 
       after((done) => {
         db.closeDB()
