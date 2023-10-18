@@ -14,7 +14,7 @@ const addCategory = async (req, res) => {
   
       res.status(201).json({ message: 'Category created' });
     } catch (error) {
-      console.error('Error creating category:', error);
+      
       res.status(500).json({ message: 'Internal server error' });
     }
   };
@@ -110,11 +110,32 @@ const getServices = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  const deleteCategories = async (req, res) => {
+    try {
+      const { name } = req.body;
+  
+      // Use Mongoose to delete all categories with the given name
+      const result = await Category.deleteMany({ name });
+  
+      if (result.deletedCount > 0) {
+        res.status(200).json({ message: 'Categories deleted' });
+      } else {
+        res.status(404).json({ message: 'No categories found with the given name' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+
+
   
   module.exports = {
     addCategory : addCategory,
     addService : addService,
     deleteService : removeService,
+    deleteCategory : deleteCategories,
     getCategories : getCategories,
     getServices : getServices,
   };

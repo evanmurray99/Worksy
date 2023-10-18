@@ -1,9 +1,8 @@
 {
     "scripts": {
         "dev": "NODE_ENV=dev nodemon Server.js",
-        "test": "NODE_ENV=test mocha --timeout 10000 --exit",
+        "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
         "prod": "NODE_ENV=prod nodemon Server.js"
-
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
@@ -17,6 +16,7 @@
     "devDependencies": {
         "chai": "^4.3.4",
         "mocha": "^9.1.1",
+        "nyc": "^15.1.0",
         "supertest": "^6.1.6"
     }
 }

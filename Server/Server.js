@@ -5,9 +5,6 @@ const db = require('./Config/db'); // Import the connectDB function
 const dotenv = require('dotenv');
  
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-
-
-
 // Connect to the database
 db.connectDB()
   .then(() => {

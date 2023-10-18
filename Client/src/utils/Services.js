@@ -1,6 +1,7 @@
-const axios = require('axios');
+/* eslint-disable no-unused-vars */
+import axios from "axios";
 
-const addService = (seller, description, title, price, categories) => {
+export function addService(seller, description, title, price, categories){
     const apiUrl = `http://127.0.0.1:3001/api/services/`;
 
     var requestBody = {
@@ -83,7 +84,7 @@ const addService = (seller, description, title, price, categories) => {
                 }`,
             };
         });
-};
+}
 
 const rollback = (serviceId, categories) => {
     const categoryRemoveRequests = categories.map((categoryName) => {
@@ -107,6 +108,4 @@ const rollback = (serviceId, categories) => {
         });
 };
 
-module.exports = {
-    addService: addService,
-};
+
