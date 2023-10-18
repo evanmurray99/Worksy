@@ -89,7 +89,7 @@ describe('USER API TEST', () => {
     
     request(app)
       .put(`/api/users/${id}/update-user`)
-      .send({ firstName : 'newTest', lastName : 'newUser' , email :  "testuser@myumanitoba.ca"})
+      .send({ firstName : 'newTest', lastName : 'newUser' , email :  "testuser@myumanitoba.ca", password : "testpassword"})
       .set('Accept', 'application/json')
       .end((err, response) => {
         if (err) {
