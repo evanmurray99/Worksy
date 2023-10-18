@@ -5,9 +5,11 @@ const controller = require('../Controllers/UserController') //
 
 router.get('/:token/auth', controller.getUserByToken);
 router.get('/:id', controller.getUser);
+router.get('/services/:id', controller.getServices);
 router.post('/', controller.createUser);
 router.post('/login', controller.login)
 router.put('/:id/update-bio', controller.updateUserBio);
+router.put('/:id/update-user', controller.editUser);
 router.put('/:id/add-service/:service', controller.addService)
 router.delete('/:id', controller.deleteUserById)
 
