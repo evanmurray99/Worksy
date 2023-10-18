@@ -85,13 +85,13 @@ export default function Signup() {
 						/>
 					</div>
 					<button className="border w-full my-5 py-2 bg-gray-700 hover:bg-gray-500  text-white">
-						Sign in
+						Create account
 					</button>
 					<Link
 						className="flex justify-center hover:text-gray-500"
-						to="/signup"
+						to="/login"
 					>
-						Create an account
+						Already have account? Sign in
 					</Link>
 				</form>
 			</div>
