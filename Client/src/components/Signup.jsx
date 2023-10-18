@@ -95,6 +95,12 @@ export default function Signup() {
 					</Link>
 				</form>
 			</div>
+            {/* Credit */}
+            <a href="http://www.freepik.com" className="hidden">Designed by pch.vector / Freepik</a>
+
+
 		</>
 	);
 }
+
+
