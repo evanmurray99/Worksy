@@ -1,0 +1,54 @@
+img
+{
+    width: 40%;
+    max-width: 400px;
+}
+
+.postBackground
+{
+    background-color: white;
+    border-radius: 15px;
+    margin: 10px;
+    overflow: auto;
+    display:flex;
+}
+
+.postBackground button
+{
+    padding: 0;
+    width:10%;
+}
+
+.mainPostContent
+{
+    display:flex;
+    width:80%
+}
+
+h3
+{
+    margin: 10px;
+}
+
+#edit
+{
+    border-radius: 15px 0px 0px 15px;
+    background-color: #55BDCB;
+}
+
+.delete
+{
+    border-radius: 0px 15px 15px 0px;
+    background-color: #DC6060;
+}
+
+#description
+{
+    margin: 5px;
+    width: 100%;
+}
+
+.postBackground i
+{
+    font-size: 30px;
+}

@@ -49,6 +49,13 @@
 
 .layout
 {
+    padding-bottom: 1px;
+    padding-top: 1px;
     margin: 10px;
     border-radius: 15px;
+}
+
+h2
+{
+    color: black;
 }
