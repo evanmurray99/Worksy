@@ -1,6 +1,7 @@
-const axios = require('axios');
+/* eslint-disable no-unused-vars */
+import axios from "axios";
 
-const getCategories = () => {
+export function  getCategories(){
     const apiUrl = 'http://127.0.0.1:3001/api/categories';
 
     return axios.get(apiUrl)
@@ -8,7 +9,7 @@ const getCategories = () => {
             if (response.status === 200) {
                 // Assuming the response contains an array of category names
                 const categoryNames = response.data;
-                return { success: true, categories: categoryNames };
+                return { success: true, Categories: categoryNames };
             } else {
                 return { success: false, error: `Failed to fetch categories. Error: ${response.status}` };
             }
@@ -16,9 +17,9 @@ const getCategories = () => {
         .catch((error) => {
             return { success: false, error: `Failed to fetch categories: ${error.response ? error.response.data.message : error.message}` };
         });
-};
+}
 
-const servicesByCategory = (name) => {
+export function servicesByCategory(name){
     const apiUrl = `http://127.0.0.1:3001/api/categories/${name}`;
 
     return axios.get(apiUrl)
@@ -34,9 +35,5 @@ const servicesByCategory = (name) => {
         .catch((error) => {
             return { success: false, error: `Failed to fetch categories: ${error.response ? error.response.data.message : error.message}` };
         });
-};
+}
 
-module.exports = {
-    getCategories: getCategories,
-    servicesByCategory : servicesByCategory,
-};
