@@ -7,7 +7,7 @@ export default function Navbar() {
 		<>
 			<div className="flex flex-col justify-between h-screen">
 				<div className="px-4 py-6">
-					<span className="grid h-10 w-32 place-content-center rounded-lg bg-white-100 text-s text-gray-600">
+					<span className="grid h-10 w-32 font-bold place-content-center rounded-lg bg-white-100 text-2xl text-gray-600">
 						Worksy
 					</span>
 
@@ -15,7 +15,7 @@ export default function Navbar() {
 						<li>
 							<Link
 								to="/"
-								className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 							>
 								Home
 							</Link>
@@ -23,7 +23,7 @@ export default function Navbar() {
 						<li>
 							<Link
 								to="/collections"
-								className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 							>
 								Collections
 							</Link>
@@ -32,7 +32,7 @@ export default function Navbar() {
 						<li>
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-									<span className="text-sm font-medium">Account</span>
+									<span className="text-lg font-medium">Account</span>
 
 									<span className="shrink-0 transition duration-300 group-open:-rotate-180">
 										<svg
@@ -52,8 +52,8 @@ export default function Navbar() {
 								<ul className="mt-2 space-y-1 px-4">
 									<li>
 										<Link
-											to={`/${id}`}
-											className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+											to={`/account`}
+											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
 											Details
 										</Link>
@@ -61,7 +61,7 @@ export default function Navbar() {
 									<li>
 										<Link
 											to="/logout"
-											className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
 											Logout
 										</Link>
