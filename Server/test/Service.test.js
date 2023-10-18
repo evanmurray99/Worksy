@@ -19,7 +19,7 @@ describe('testing the service api', function() {
     });
 
 
-    it('Create a user', (done) => { 
+    it('Create a service', (done) => { 
         const newService = {
             seller : "62510bf3b9ee04bdd8e072aa",
             description : "test description",

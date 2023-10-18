@@ -7,6 +7,7 @@ const app = require('../app'); // Replace with the path to your Express app
 
 describe('USER API TEST', () => {
   let id;
+  let token;
   before((done) => {
     db.connectDB()
       .then(() => {
@@ -76,15 +77,78 @@ describe('USER API TEST', () => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an('object');
         expect(response.body).to.have.property('bio', 'User Bio updated');
+  
         // Add more assertions based on your API response structure
 
         done(); // Signal that the test case is complete
       });
   });
 
+  it('Add service to user', (done) => {
+    request(app)
+      .put(`/api/users/${id}/add-service/62510bf3b9ee04bdd8e072aa`)
+      .send({ services: '62510bf3b9ee04bdd8e072aa' })
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an('object');
+        expect(response.body.services).to.be.contains('62510bf3b9ee04bdd8e072aa');
+        done(); // Signal that the test case is complete
+      });
+
+
+
+  });
+   
+
+
+
+  it("Testing login", (done) => {
+    const user = {
+      email: 'testuser@myumanitoba.ca',
+      password: 'testpassword',
+    };
+
+    request(app)
+      .post('/api/users/login')
+      .send(user)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(200);
+        expect(response.body).to.have.property('token');
+
+        token = response.body.token;
+
+        done(); // Signal that the test case is complete
+      });
+  });
+
+  it ("Testing get user by token", (done) => {
+    request(app)
+      .get(`/api/users/${token}/auth`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+        expect(response.status).to.equal(200);
+        expect(response.body).to.have.property('user');
+        expect(response.body).to.have.property('success', true);
+        expect(response.body.user).to.have.property('_id', id);
+
+        done(); // Signal that the test case is complete
+      });
+  });
+
+
   it('Delete user', (done) => {
     
-
     // Send a DELETE request to delete the user by ID
     request(app)
       .delete(`/api/users/${id}`)
