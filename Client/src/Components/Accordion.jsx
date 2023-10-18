@@ -34,16 +34,16 @@ function showContent(state, accordContent, hasBackdrop)
     return content
 }
 
-export const Accordion = (props) =>
+export const Accordion = ({title, content, hasBackdrop}) =>
 {    
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="contentContainer">
             <div className="titleBar" onClick={() => setIsOpen(!isOpen)}>
-                <h2 className="removePadding floatLeft">{props.title}</h2>
+                <h2 className="removePadding floatLeft">{title}</h2>
                 {checkIsOpen(isOpen)}
             </div>
-            {showContent(isOpen, props.content, props.hasBackdrop)}
+            {showContent(isOpen, content, hasBackdrop)}
         </div>)
 }

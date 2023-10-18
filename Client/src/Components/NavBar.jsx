@@ -1,21 +1,19 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {PopUpModal} from './PopUpModal'
+import {CreatePostForm} from './CreatePostForm'
 import './NavBar.css'
 
-export const NavBar = (props) => {
-    var leftButtons = props.leftButtons
-
-    const dynamicButtons = leftButtons.map((buttons) =>
-        <button key={buttons.name} className="leftAlign">
-            <Link className="navLinks" to={"/"+buttons.link}>{buttons.name}</Link>
-        </button>
-    );
-
+export const NavBar = ({leftButtons, modalIsOpen, updateModalIsOpen}) => {
     return (
-        <nav>
-            <Link id="worksy" className="navLinks leftAlign" to="/HomePage">Worksy</Link>
-            {dynamicButtons}
-            <button className="rightAlign"><Link className="navLinks" to="/">Logout</Link></button>
-        </nav>
+        <React.Fragment>
+            <nav>
+                <Link id="worksy" className="navLinks leftAlign" to="/HomePage">Worksy</Link>
+                {leftButtons}
+                <button className="rightAlign"><Link className="navLinks" to="/">Logout</Link></button>
+            </nav>
+            
+            <PopUpModal title="Create new post" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} content={<CreatePostForm/>}/>
+        </React.Fragment>
     )
   }

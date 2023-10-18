@@ -1,8 +1,13 @@
 import React from 'react'
 import {NavBar} from '../Components/NavBar'
+import {Link} from 'react-router-dom'
 
 export const HomePage = () => {
-    let links = [{name: "My Content", link: "MyContent"}]
+    let links = (
+        <button className="leftAlign">
+            <Link className="navLinks" to="/MyContent">My Content</Link>
+        </button>
+    )
 
     return (
         <React.Fragment>

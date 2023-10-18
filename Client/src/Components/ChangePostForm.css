@@ -1,0 +1,14 @@
+.changeRight, .changeLeft
+{
+    width:45%;
+}
+
+textarea
+{
+    width: 99%;
+}
+
+select
+{
+    width: 100%;
+}

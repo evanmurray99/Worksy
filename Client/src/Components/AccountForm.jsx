@@ -1,12 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './AccountForm.css'
 
-export const AccountForm = (props) =>
+export const AccountForm = ({user}) =>
 {    
-    //I have assumed that props.user is an object.
-    let user = props.user
-    console.log(user)
-
+    //I have assumed that user is an object.
     return (
         <div className="background">
             <div className="floatLeft leftWidth">
