@@ -7,7 +7,7 @@ export default function Navbar() {
 		<>
 			<div className="flex flex-col justify-between h-screen">
 				<div className="px-4 py-6">
-					<span className="grid h-10 w-32 place-content-center rounded-lg bg-white-100 text-s text-gray-600">
+					<span className="grid h-10 w-32 font-bold place-content-center rounded-lg bg-white-100 text-2xl text-gray-600">
 						Worksy
 					</span>
 
@@ -15,7 +15,7 @@ export default function Navbar() {
 						<li>
 							<Link
 								to="/"
-								className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 							>
 								Home
 							</Link>
@@ -23,16 +23,24 @@ export default function Navbar() {
 						<li>
 							<Link
 								to="/collections"
-								className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 							>
 								Collections
+							</Link>
+						</li>
+						<li>
+							<Link
+								to={'/services'}
+								className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+							>
+								Your posts
 							</Link>
 						</li>
 
 						<li>
 							<details className="group [&_summary::-webkit-details-marker]:hidden">
 								<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-									<span className="text-sm font-medium">Account</span>
+									<span className="text-lg font-medium">Account</span>
 
 									<span className="shrink-0 transition duration-300 group-open:-rotate-180">
 										<svg
@@ -52,8 +60,9 @@ export default function Navbar() {
 								<ul className="mt-2 space-y-1 px-4">
 									<li>
 										<Link
-											to={`/${id}`}
-											className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+											// to={`/`+ {id}}
+											to={`/account`}
+											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
 											Details
 										</Link>
@@ -61,7 +70,7 @@ export default function Navbar() {
 									<li>
 										<Link
 											to="/logout"
-											className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
 											Logout
 										</Link>
@@ -73,10 +82,7 @@ export default function Navbar() {
 				</div>
 
 				<div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-					<a
-						href=""
-						className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
-					>
+					<div className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
 						<img
 							src="https://images.unsplash.com/photo-1696339596874-effbe56ae8b0?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=2574"
 							className="h-10 w-10 roudned-full object-cover"
@@ -87,7 +93,7 @@ export default function Navbar() {
 								<span> john@myumanitoba.ca</span>
 							</p>
 						</div>
-					</a>
+					</div>
 				</div>
 			</div>
 		</>
