@@ -108,29 +108,41 @@ Testing will be complete when:
 
 ## 3.1	Testing Tools
 
-Make a list of Tools like
-•	Requirements Tracking Tool
-•	Bug Tracking Tool
-•	Automation Tools
-•	…
+### General Tools/Methods:
+- Github Actions for automated testing
+- Github Issues and Projects for bug tracking
+- IDE debugger such as VSCode Debugger
 
+### Front-end:
+- Libraries:
+  - React Testing Library
+  - React Test Renderer
+  - Jest
+
+### Back-end:
+- Libraries:
+  - Chai
+  - Mocha
+  - Nyc
+  - Supertest
  
 ## 3.2	Test Environment
-It mentions the minimum hardware requirements that will be used to test the Application.  
-
-Example, following software’s are required in addition to client-specific software. 
-
-•	Windows 8 and above
-•	Travis-CI
-•	Jenkins
-•	Jmeter
-•	…
+### The minimum hardware requirements that will be used to test the Application:
+- Machine running operating system
+  - Windows 10 or above
+  - MacOS
+  
+### The following software’s are required in addition to client-specific software:
+- Node JS v18.12.1
+- 
 
 
 # 4	Terms/Acronyms 
-Make a mention of any terms or acronyms used in the project
 
-TERM/ACRONYM	DEFINITION
-API	Application Program Interface
-AUT	Application Under Test
+| TERM/ACRONYM | DEFINITION                    |
+|--------------|-------------------------------|
+| API          | Application Program Interface |
+| AUT          | Application Under Test        |
+| QA           | Quality Assurance             |
+| UI           | User Interface                |
 
