@@ -110,9 +110,7 @@ const rollback = (serviceId, categories) => {
 
 const deleteService = (id) =>{
     const apiUrl = `http://127.0.0.1:3001/api/services/${id}`
-    const request = {
-        method: 'DELETE', // Use the DELETE method to remove service from category
-    };
+    
 
     return axios.delete(apiUrl)
         .then((response) => {
@@ -127,6 +125,29 @@ const deleteService = (id) =>{
         });
 }
 
+
+const editService = (id, requestBody) => {
+    const apiUrl = `http://127.0.0.1:3001/api/services/${id}`;
+  
+    return axios
+      .put(apiUrl, requestBody)
+      .then((response) => {
+        if (response.status === 200) {
+          return { success: true, error: null };
+        } else {
+          return { success: false, error: `Failed to edit Service. Error: ${response.status}` };
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          error: `Failed to edit Service: ${
+            error.response ? error.response.data.message : error.message
+          }`,
+        };
+      });
+  };
+  
 
 
 
