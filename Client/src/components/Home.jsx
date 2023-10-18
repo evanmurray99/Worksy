@@ -1,7 +1,12 @@
+import Navbar from './Navbar';
+import Container from './Container';
 export default function Home() {
 	return (
 		<>
-			<p> Home page</p>
+			<div className="flex flex-row ">
+				<Navbar></Navbar>
+				<Container></Container>
+			</div>
 		</>
 	);
 }

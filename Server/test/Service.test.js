@@ -46,7 +46,9 @@ describe('SERVICE API TEST', function() {
           });
       });
 
+
     it('Add service for created user ', (done) => { 
+
         const newService = {
             seller : user_id,
             description : "test description",
