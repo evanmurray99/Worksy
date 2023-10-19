@@ -50,6 +50,50 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Unit Tests:
 
+1. **Create a user**:
+   - This test creates a new user by sending a POST request to the "/api/users" endpoint.
+   - It expects a response with an HTTP status code of 201 (indicating a successful creation).
+   - Validates the response body for specific properties, such as the user's first name and last name.
+   - Stores the user's ID from the response for later tests.
+
+2. **Add service for created user**:
+   - This test adds a service for the user created in the previous test by sending a POST request to the "/api/services" endpoint.
+   - It expects a response with an HTTP status code of 201 (indicating a successful creation).
+   - Validates the response body for specific properties of the created service.
+   - Stores the service ID from the response for later tests.
+
+3. **Edit service**:
+   - This test updates the service information by sending a PUT request to the "/api/services/:id" endpoint.
+   - It expects a response with an HTTP status code of 200 (indicating success).
+   - Validates the response message, which should indicate that the service was updated successfully.
+
+4. **Edit invalid service**:
+   - This test attempts to edit a service with an invalid service ID.
+   - Sends a PUT request to the "/api/services/:id" endpoint with an ID that doesn't exist.
+   - Expects a response with an HTTP status code of 400 (Bad Request) and a specific error message.
+
+5. **Delete Invalid service**:
+   - Attempts to delete a service with an invalid service ID by sending a DELETE request to the "/api/services/:id" endpoint.
+   - Expects a response with an HTTP status code of 400 (Bad Request) and a specific error message indicating an invalid service ID.
+
+6. **Delete created service**:
+   - Deletes a service that was created earlier by sending a DELETE request to the "/api/services/:id" endpoint.
+   - Expects a response with an HTTP status code of 200 (indicating success).
+
+7. **Get invalid service**:
+   - Tries to retrieve a service with an invalid service ID by sending a GET request to the "/api/services/:id" endpoint.
+   - Expects a response with an HTTP status code of 404 (Not Found) and a specific error message indicating that the service was not found.
+
+8. **Delete Already deleted service**:
+   - Attempts to delete a service that has already been deleted.
+   - Sends a DELETE request to the "/api/services/:id" endpoint with the ID of the previously deleted service.
+   - Expects a response with an HTTP status code of 404 (Not Found) and a specific error message indicating that the service was not found.
+
+9. **Delete user**:
+   - Deletes the user created earlier by sending a DELETE request to the "/api/users/:id" endpoint.
+   - Expects an HTTP status code of either 200 (if the user is found and deleted) or 404 (if the user is not found).
+   - Validates the response message, which should indicate a successful user deletion.
+
 #### Integration Tests:
 
 #### Acceptance Tests:
@@ -57,6 +101,73 @@ In addition, you will see the comments and ratings of all reviews connected to t
 ### Feature 2: Account 
 
 #### Unit Tests:
+1. **Create a user**:
+   - Sends a POST request to create a new user with specified user data.
+   - Expects a response with an HTTP status code 201 (Created) and validates the response body.
+   - Stores the user's ID for later tests.
+
+2. **Get created user**:
+   - Sends a GET request to retrieve the user created in the previous test using the stored user ID.
+   - Expects a response with an HTTP status code 200 (OK) and validates the response body.
+
+3. **Update user Bio**:
+   - Sends a PUT request to update the bio of the previously created user using the stored user ID.
+   - Expects a response with an HTTP status code 200 (OK) and validates the response body.
+
+4. **Update user**:
+   - Sends a PUT request to update user information (first name, last name, email, and password) using the stored user ID.
+   - Expects a response with an HTTP status code 200 (OK) and validates the response message.
+
+5. **Testing login**:
+   - Sends a POST request to perform a user login using the user's email and password.
+   - Expects a response with an HTTP status code 200 (OK) and retrieves a user authentication token from the response.
+
+6. **Testing login for non-existent user**:
+   - Similar to the previous test but uses invalid credentials for a user that does not exist.
+   - Expects a response with an HTTP status code 404 (Not Found).
+
+7. **Testing login with invalid password**:
+   - Similar to the login test but uses an incorrect password for an existing user.
+   - Expects a response with an HTTP status code 401 (Unauthorized).
+
+8. **Testing get user with invalid token**:
+   - Sends a GET request to retrieve user data using an invalid token.
+   - Expects a response with an HTTP status code 500 (Internal Server Error).
+
+9. **Testing get user by token**:
+   - Sends a GET request to retrieve user data using a valid authentication token.
+   - Expects a response with an HTTP status code 200 (OK) and validates the user's data.
+
+10. **Create a service for user**:
+    - Sends a POST request to create a service associated with a user.
+    - Expects a response with an HTTP status code 201 (Created) and validates the response body.
+    - Stores the service ID for later tests.
+
+11. **Add Service to User**:
+    - Sends a PUT request to associate the previously created service with the user.
+    - Expects a response with an HTTP status code 200 (OK).
+
+12. **Get services by user**:
+    - Sends a GET request to retrieve services associated with the user.
+    - Expects a response with an HTTP status code 200 (OK) and validates the response data.
+
+13. **Delete created service**:
+    - Sends a DELETE request to delete the service created earlier using the stored service ID.
+    - Expects a response with an HTTP status code 200 (OK).
+
+14. **Delete user**:
+    - Sends a DELETE request to delete the user by ID, which may include cleaning up associated services.
+    - Expects either an HTTP status code 200 (OK) or 404 (Not Found) based on whether the user exists.
+    - Validates the response message.
+
+15. **Update user**:
+    - Repeats the user update test but using the user ID that should not exist after deletion.
+    - Expects a response with an HTTP status code 404 (Not Found).
+
+16. **Get services for deleted user**:
+    - Repeats the "Get services by user" test but using the user ID that should not exist after deletion.
+    - Expects a response with an HTTP status code 404 (Not Found).
+
 
 #### Integration Tests:
 
@@ -65,6 +176,79 @@ In addition, you will see the comments and ratings of all reviews connected to t
 ### Feature 3: Search  
 
 #### Unit Tests:
+
+1. **Create a user:**
+   - A new user is created with the first name, last name, email, password, and a student status.
+   - The test sends a POST request to "/api/users" with the user data.
+   - The test expects a successful response (status 201) and verifies that the user data matches the expected values.
+
+2. **Add Category:**
+   - A new category with a name is created.
+   - The test sends a POST request to "/api/categories" with the category data.
+   - The test expects a successful response (status 201) and checks the response message.
+
+3. **Add Duplicate Category:**
+   - An attempt is made to add a category with the same name as an existing category.
+   - The test expects a response with a conflict status (status 500).
+
+4. **Get Categories:**
+   - The test retrieves a list of categories by sending a GET request to "/api/categories."
+   - It expects a successful response (status 200) and verifies that the response contains an array with at least one category.
+
+5. **Create Service for Category:**
+   - A new service is created and associated with a specific category.
+   - The test sends a POST request to "/api/services" with the service data and the specified category.
+   - It expects a successful response (status 201) and verifies the service details.
+
+6. **Add Service to Category:**
+   - The service is added to a category.
+   - The test sends a PUT request to associate the service with the category.
+   - It expects a successful response (status 200) and checks the response message.
+
+7. **Add Service to non-existent Category:**
+   - An attempt is made to add a service to a category that does not exist.
+   - The test sends a PUT request and expects a response with a status of 404 and an appropriate error message.
+
+8. **Get Services for Category:**
+   - The test retrieves a list of services associated with a specific category.
+   - It sends a GET request to "/api/categories/{categoryName}" and expects a successful response (status 200) with an array of services.
+
+9. **Get Services for non-existent Category:**
+   - An attempt is made to retrieve services for a category that does not exist.
+   - The test sends a GET request and expects a response with a status of 404 and an appropriate error message.
+
+10. **Remove Service from Category:**
+    - The test attempts to remove a service from a category.
+    - It sends a DELETE request to disassociate the service from the category.
+    - Expects a successful response (status 200) and checks the response message.
+
+11. **Remove non-existent Service from Category:**
+    - An attempt is made to remove a service that does not exist from a category.
+    - The test sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+
+12. **Remove Service from non-existent Category:**
+    - The test tries to remove a service from a category that does not exist.
+    - It sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+
+13. **Delete Created Category:**
+    - A category with a specific name is deleted.
+    - The test sends a DELETE request to "/api/categories" with the category name.
+    - Expects a successful response (status 200) and checks the response message.
+
+14. **Delete non-existent Category:**
+    - An attempt is made to delete a category that does not exist.
+    - The test sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+
+15. **Delete created service:**
+    - The test attempts to delete a service that was previously created.
+    - It sends a DELETE request to "/api/services/{id}" and expects a successful response (status 200).
+
+16. **Delete user:**
+    - The test deletes the user account that was created in the initial test.
+    - It sends a DELETE request to "/api/users/{userId}" and expects a successful response (status 200 or 404).
+
+17. **After Hook:**
+    - The database connection is closed in the after hook, signaling the completion of the tests.
 
 #### Integration Tests:
 
