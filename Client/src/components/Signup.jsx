@@ -1,7 +1,19 @@
-import { useState } from 'react';
-import { Link, Route, redirectDocument } from 'react-router-dom';
+import { useState} from 'react';
+import { Link, Route, redirectDocument, useNavigate} from 'react-router-dom';
 import studentImg from '../assets/students.jpg';
 import hireImg from '../assets/hirers.jpg';
+
+const isValidEmail = (email, isStudent) => {
+    
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    
+    if (isStudent) {
+      return email.endsWith('@myumanitoba.ca') && emailRegex.test(email);
+    } else {
+
+      return emailRegex.test(email);
+    }
+};
 
 export default function Signup() {
 	const [firstName, setFirstName] = useState('');
@@ -11,12 +23,20 @@ export default function Signup() {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState(null);
+	const navigate = useNavigate();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		if (password !== confirmPassword) {
+		//check if passwords match before sending to backend
+		if (password !== confirmPassword ) {
 			setError('Passwords do not match');
+			return;
+		}
+
+		//check if email is valid before sending to backend
+		if (!isValidEmail(email, isStudent)) {
+			setError('Must use a student email!');
 			return;
 		}
 
@@ -41,6 +61,9 @@ export default function Signup() {
 			if (data.message) {
 				setError(data.message);
 			} 
+			else {
+				navigate('/login');
+			}
 		
 		} catch (error) {
 			setError('An error occurred while registering');
@@ -78,6 +101,7 @@ export default function Signup() {
 								className="border p-2 focus:outline-gray-400 "
 								type="text"
 								id="firstname"
+								required={true}
 								value={firstName}
 								onChange={(event) => setFirstName(event.target.value)}
 							/>
@@ -88,6 +112,7 @@ export default function Signup() {
 								className="border p-2 focus:outline-gray-400 "
 								type="text"
 								id="lastname"
+								required={true}
 								value={lastName}
 								onChange={(event) => setLastName(event.target.value)}
 							/>
@@ -99,6 +124,7 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="email"
 							id="email"
+							required={true}
 							value={email}
 							onChange={(event) => setEmail(event.target.value)}
 						/>
@@ -129,6 +155,7 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="password"
 							id="password"
+							required={true}
 							value={password}
 							onChange={(event) => setPassword(event.target.value)}
 						/>
@@ -139,6 +166,7 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="password"
 							id="password"
+							required={true}
 							value={confirmPassword}
 							onChange={(event) => setConfirmPassword(event.target.value)}
 						/>
