@@ -1,4 +1,5 @@
 const User = require('../Models/User');
+const Service = require('../Models/Service');
 const mongoose = require("mongoose") // 
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
@@ -92,6 +93,45 @@ const createUser = async (req, res) => {
     res.status(500).json({ message: errorMap[error.code] });
   }
 };
+
+const editUser = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // If a new password is provided, hash it
+    let hashedPassword;
+    if (password) {
+      const saltRounds = 10; // Adjust the salt rounds as needed
+      const salt = await bcrypt.genSalt(saltRounds);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
+
+    
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+
+    
+    if (hashedPassword) {
+      user.password = hashedPassword;
+    }
+
+    
+    await user.save();
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    console.error('Error editing user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 const deleteUserById = async (req, res) => {
   try {
@@ -202,11 +242,32 @@ const getUserByToken = async (req, res) => {
       user: user,
     });
   } catch (error) {
-    console.log(error)
+
     return res.status(500).json({
       success: false,
       error: 'Could not get User',
     });
+  }
+};
+
+const getServices = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    
+    const serviceIds = user.services;
+
+    const serviceObjects = await Service.find({ _id: { $in: serviceIds } });
+
+    res.status(200).json(serviceObjects);
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -223,7 +284,9 @@ const controller  = {
      deleteUserById,
      updateUserBio,
      login,
-     addService : addService
+     addService : addService,
+     getServices : getServices,
+     editUser : editUser
 }
 
 module.exports = controller;

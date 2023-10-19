@@ -21,21 +21,7 @@ const getService = async (req, res) => {
     }
 };
 
-const getServiceByCategory = async (req, res) => {
-    var category = req.params.category
-    try {
-        const serviceId = req.params.id;
-        const service = await Service.findById(serviceId);
 
-        if (!service) {
-            return res.status(404).json({ message: 'Service not found' });
-        }
-        res.status(200).json(service);
-    } catch (err) {
-        console.error('Error fetching service by ID:', err);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-};
    
 
 // POST /services - create a new service
@@ -91,12 +77,44 @@ const deleteService = async (req, res ) => {
     }
 };
 
-
+const editService = async (req, res) => {
+    try {
+      const serviceId = req.params.id;
+      const { description, title, price, categories } = req.body;
+  
+      if (!serviceId || !mongoose.isValidObjectId(serviceId)) {
+        return res.status(400).json({ message: 'Invalid service ID' });
+      }
+  
+      // Find the service by its ID
+      const service = await Service.findById(serviceId);
+  
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+  
+      // Update the service properties with the new values
+      service.description = description;
+      service.title = title;
+      service.price = price;
+      service.categories = categories;
+  
+      // Save the updated service
+      await service.save();
+  
+      res.status(200).json({ message: 'Service updated successfully' });
+    } catch (error) {
+      console.error('Error editing service by ID:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
 
 const controller = {
     getService,
     createService,
-    deleteService
+    deleteService,
+    editService,
 }
 
 module.exports = controller;

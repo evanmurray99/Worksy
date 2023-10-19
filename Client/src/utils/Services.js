@@ -1,6 +1,7 @@
-const axios = require('axios');
+/* eslint-disable no-unused-vars */
+import axios from "axios";
 
-const addService = (seller, description, title, price, categories) => {
+export function addService(seller, description, title, price, categories){
     const apiUrl = `http://127.0.0.1:3001/api/services/`;
 
     var requestBody = {
@@ -83,7 +84,7 @@ const addService = (seller, description, title, price, categories) => {
                 }`,
             };
         });
-};
+}
 
 const rollback = (serviceId, categories) => {
     const categoryRemoveRequests = categories.map((categoryName) => {
@@ -107,6 +108,46 @@ const rollback = (serviceId, categories) => {
         });
 };
 
-module.exports = {
-    addService: addService,
-};
+const deleteService = (id) =>{
+    const apiUrl = `http://127.0.0.1:3001/api/services/${id}`
+    
+
+    return axios.delete(apiUrl)
+        .then((response) => {
+            if (response.status === 200) {
+                return { success: true, error : null };
+            } else {
+                return { success: false, error: `Failed to delete Service. Error: ${response.status}` };
+            }
+        })
+        .catch((error) => {
+            return { success: false, error: `Failed to delete Service: ${error.response ? error.response.data.message : error.message}` };
+        });
+}
+
+
+const editService = (id, requestBody) => {
+    const apiUrl = `http://127.0.0.1:3001/api/services/${id}`;
+  
+    return axios
+      .put(apiUrl, requestBody)
+      .then((response) => {
+        if (response.status === 200) {
+          return { success: true, error: null };
+        } else {
+          return { success: false, error: `Failed to edit Service. Error: ${response.status}` };
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          error: `Failed to edit Service: ${
+            error.response ? error.response.data.message : error.message
+          }`,
+        };
+      });
+  };
+  
+
+
+
