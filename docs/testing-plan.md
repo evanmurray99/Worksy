@@ -247,36 +247,104 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - The test deletes the user account that was created in the initial test.
     - It sends a DELETE request to "/api/users/{userId}" and expects a successful response (status 200 or 404).
 
-17. **After Hook:**
-    - The database connection is closed in the after hook, signaling the completion of the tests.
-
-#### Integration Tests:
-
 #### Acceptance Tests:
 
 ### Feature 4: Chat
 
 #### Unit Tests:
 
+1. **Test User Authentication**:
+   - Test that only authenticated users can access the chat feature.
+   - Mock the authentication process and verify that unauthenticated users are denied access.
+
+2. **Test Message Sending**:
+   - Test the function responsible for sending messages.
+   - Provide mock data for the sender, receiver, and message content.
+   - Verify that the function sends the message and updates the chat history appropriately.
+
+3. **Test Message Receiving**:
+   - Test the function responsible for receiving messages.
+   - Provide mock data for incoming messages.
+   - Verify that the function processes and displays incoming messages correctly.
+
+4. **Test Message Validation**:
+   - Test the message validation function.
+   - Provide various types of messages, including valid and invalid ones.
+   - Ensure that the function correctly identifies valid and invalid messages.
+
+5. **Test Message Formatting**:
+   - Test the function that formats messages for display.
+   - Provide messages with different formatting requirements (e.g., emojis, links, special characters).
+   - Verify that the function formats messages as expected.
+
+6. **Test Message Storage**:
+   - Test the storage mechanism for chat messages.
+   - Use mock data for messages and users.
+   - Verify that messages are correctly stored, indexed, and retrieved.
+
+7. **Test User Online/Offline Status**:
+   - Test the function for tracking user online/offline status.
+   - Simulate user login and logout.
+   - Verify that the function updates and reports user status accurately.
+
+8. **Test Message Deletion**:
+    - Test the function for deleting messages.
+    - Mock the deletion process and verify that messages are removed from the chat history.
+
+9. **Test Error Handling**:
+    - Test how the chat feature handles errors, such as network issues or server errors.
+    - Simulate error conditions and verify that the feature responds appropriately.
+
 #### Integration Tests:
-
-#### Acceptance Tests:
-
-### Feature 5: Load balancing 
-
-#### Unit Tests:
-
-#### Integration Tests:
-
-#### Acceptance Tests:
 
 ### Feature 6: Review 
 
 #### Unit Tests:
 
+1. **Test Review Creation:**
+   - Test that a user can create a review for a product or service.
+   - Ensure the review includes a title, text, a rating, and a reference to the item being reviewed.
+   - Verify that the review is associated with the user who created it.
+
+2. **Test Review Rating Validation:**
+   - Test that the review rating is within a valid range (e.g., between 1 and 5 for a 5-star rating system).
+   - Ensure that an error is thrown or an appropriate response is returned if the rating is out of bounds.
+
+3. **Test Review Title and Text Length:**
+   - Test that the review title and text have a minimum and maximum character length.
+   - Verify that the system enforces these length constraints and provides meaningful error messages for violations.
+
+4. **Test Review Deletion:**
+   - Test that a user can delete their own review.
+   - Ensure that users cannot delete reviews created by others.
+   - Verify that the review is removed from the system upon deletion.
+
+5. **Test Review Editing:**
+   - Test that a user can edit their own review.
+   - Ensure that users cannot edit reviews created by others.
+   - Verify that the updated review data is saved correctly.
+
+6. **Test Review Retrieval:**
+   - Test that reviews can be retrieved for a specific product or service.
+   - Ensure that the reviews are sorted by date or rating as required.
+   - Verify that the response includes the review title, text, rating, and user information.
+
+7. **Test Review Validation:**
+   - Test the validation logic for creating or updating reviews.
+   - Verify that the system prevents duplicate reviews by the same user for the same item.
+   - Test that the system prevents users from reviewing their own products or services.
+
+8. **Test Review Ownership:**
+   - Test that a user can check if they own a review.
+   - Verify that the system correctly identifies the owner of a review.
+
+9. **Test User Review History:**
+    - Test that users can retrieve their own review history, including products or services they have reviewed.
+    - Ensure that the retrieved list of reviews is accurate.
+
+
 #### Integration Tests:
 
-#### Acceptance Tests:
 
 ## 2.2	Test Completeness
 
