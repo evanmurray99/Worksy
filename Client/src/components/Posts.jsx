@@ -3,6 +3,12 @@ import Post from './Post';
 import Navbar from './Navbar';
 
 export default function Posts() {
+
+    // only render if user is student
+
+
+    
+
 	return (
 		<>
 			<div className="flex flex-row">

@@ -1,6 +1,18 @@
-export default function EditProfile() {
+import { useState } from 'react';
+
+export default function EditProfile(props) {
+	const [firstname, setFirstname] = useState(props.firstname);
+	const [lastname, setLastname] = useState(props.lastname);
+	const [email, setEmail] = useState(props.email);
+	const [bio, setBio] = useState(props.bio);
+
+	const print = () => {
+		console.log(firstname, lastname);
+	};
+
 	return (
 		<>
+			{print()}
 			<section>
 				<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
@@ -20,6 +32,11 @@ export default function EditProfile() {
 											type="text"
 											id="firstname"
 											placeholder="John"
+											value={firstname}
+											required
+											onChange={(e) => {
+												setFirstname(e.target.value);
+											}}
 										/>
 									</div>
 									<div>
@@ -31,6 +48,10 @@ export default function EditProfile() {
 											type="text"
 											id="lastname"
 											placeholder="Jerry"
+											value={lastname}
+											onChange={(e) => {
+												setLastname(e.target.value);
+											}}
 										/>
 									</div>
 								</div>
@@ -41,8 +62,12 @@ export default function EditProfile() {
 									<input
 										type="email"
 										className="w-full rounded-lg border-gray-200 focus:outline-gray-200 p-3 text-sm"
-                                        id="email"
-                                        placeholder="john@myumanitoba.ca"
+										id="email"
+										placeholder="john@myumanitoba.ca"
+										value={email}
+										onChange={(e) => {
+											setEmail(e.target.value);
+										}}
 									/>
 								</div>
 								<div>
@@ -54,6 +79,9 @@ export default function EditProfile() {
 										placeholder="your bio"
 										rows="8"
 										id="bio"
+										onChange={(e) => {
+											setBio(e.target.value);
+										}}
 									></textarea>
 								</div>
 								{/* Is student toggle? */}

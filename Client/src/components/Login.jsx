@@ -1,28 +1,39 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 export default function Login() {
 	const [email, setEmail] = useState();
 	const [password, setPassword] = useState();
+	const [error, setError] = useState('');
 	const navigate = useNavigate();
 
-	const logIn = (e) => {
-		e.preventDefault();
 
+	const logIn = async (e) => {
+		e.preventDefault();
+		setError('');
 		const url = 'http://localhost:3001/api/users/login';
-		axios
-			.post(url, { email: email, password: password })
+		await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({
+				email: email,
+				password: password,
+			}),
+			headers: {
+				'Content-type': 'application/json',
+			},
+	})
 			.then((response) => {
-				if (response.status === 200) {
-					setTimeout(() => {
-						navigate('/');
-					}, 1000);
-				}
-				window.location.reload();
+				return response.json();
 			})
-			.catch((e) => {
-				console.log(e.message);
+			.then((data) => {
+				if (data.token) {
+					document.cookie = 'token=' + data.token
+					navigate('/');
+				} else {
+					console.log(data.message);
+					setError(data.message);
+				}
 			});
 	};
 	return (
@@ -45,6 +56,7 @@ export default function Login() {
 							value={email}
 							onChange={(e) => {
 								setEmail(e.target.value);
+								setError('');
 							}}
 						/>
 					</div>
@@ -58,15 +70,20 @@ export default function Login() {
 							value={password}
 							onChange={(e) => {
 								setPassword(e.target.value);
+								setError('');
 							}}
 						/>
 					</div>
 					<button className="border w-full my-5 py-2 bg-gray-700 hover:bg-gray-500  text-white">
 						Sign in
 					</button>
-					<Link className="flex justify-center hover:text-gray-500" to="/signup">
+					<Link
+						className="flex justify-center hover:text-gray-500"
+						to="/signup"
+					>
 						Create an account
 					</Link>
+					{error !== '' ? <div className="text-red-400">{error}</div> : <></>}
 				</form>
 			</div>
 		</>

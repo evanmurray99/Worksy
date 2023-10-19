@@ -1,7 +1,6 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 export default function Navbar() {
-	const { id } = useParams();
 
 	return (
 		<>
@@ -60,7 +59,6 @@ export default function Navbar() {
 								<ul className="mt-2 space-y-1 px-4">
 									<li>
 										<Link
-											// to={`/`+ {id}}
 											to={`/account`}
 											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
