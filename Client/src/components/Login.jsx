@@ -8,7 +8,6 @@ export default function Login() {
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
 
-
 	const logIn = async (e) => {
 		e.preventDefault();
 		setError('');
@@ -22,16 +21,16 @@ export default function Login() {
 			headers: {
 				'Content-type': 'application/json',
 			},
-	})
+		})
 			.then((response) => {
 				return response.json();
 			})
 			.then((data) => {
 				if (data.token) {
-					document.cookie = 'token=' + data.token
+					document.cookie = 'token=' + data.token;
 					navigate('/');
 				} else {
-					console.log(data.message);
+					// console.log(data.message);
 					setError(data.message);
 				}
 			});
@@ -83,7 +82,7 @@ export default function Login() {
 					>
 						Create an account
 					</Link>
-					{error !== '' ? <div className="text-red-400">{error}</div> : <></>}
+					{error !== '' ? <div className="text-red-400">{error}</div> : null}
 				</form>
 			</div>
 		</>

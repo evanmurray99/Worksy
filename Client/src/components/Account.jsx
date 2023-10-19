@@ -26,13 +26,31 @@ export default function Account() {
 					setUser(data.user);
 					console.log('account', data);
 				} else {
-					navigate('/signup');
+					navigate('/login');
 				}
 			})
 			.catch((e) => {
 				console.log(e.message);
 			});
 	}, []);
+
+	const updateProfile = (firstname, lastname, email, bio) => {
+		const url = 'http://localhost:3001/api/users/' + user.id + '/update-bio';
+		fetch(url, {
+			method: 'PUT',
+			body: JSON.stringify({
+				bio: bio,
+			}),
+			header: {
+				'Content-type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('data', data);
+			})
+			.catch((e) => console.log(e.message));
+	};
 
 	return (
 		<>
@@ -46,6 +64,7 @@ export default function Account() {
 							lastname={user.lastName}
 							email={user.email}
 							bio={user.bio}
+							updateProfile={updateProfile}
 						></EditProfile>
 					</div>
 				) : null}

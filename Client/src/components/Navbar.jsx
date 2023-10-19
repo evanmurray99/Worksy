@@ -67,7 +67,7 @@ export default function Navbar() {
 									</li>
 									<li>
 										<Link
-											to="/logout"
+											to="/login"
 											className="block rounded-lg px-4 py-2 text-lg font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 										>
 											Logout
@@ -86,10 +86,10 @@ export default function Navbar() {
 							className="h-10 w-10 roudned-full object-cover"
 						></img>
 						<div>
-							<p className="text-xs">
+							<div className="text-xs pr-7">
 								<strong className="block font-medium">John Jerry</strong>
-								<span> john@myumanitoba.ca</span>
-							</p>
+								<p> john@myumanitoba.ca</p>
+							</div>
 						</div>
 					</div>
 				</div>
