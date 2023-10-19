@@ -1,22 +1,36 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Account from './components/Account';
-import Posts from './components/Posts';
-import Home from './components/Home';
-import Signup from './components/Signup';
+import React from 'react'
+import { useState , useEffect} from 'react'
+import {Router} from './Router'
+import './App.css'
 
 function App() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/signup" element={<Signup />} />
-				<Route path="/account" element={<Account />} />
-				<Route path="/services" element={<Posts />} />
-			</Routes>
-		</BrowserRouter>
-	);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:3001/api/users');
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Router />
+    </React.Fragment>
+  );
 }
 
 export default App;

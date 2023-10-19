@@ -1,4 +1,8 @@
-
+import React from 'react'
+import {Link} from 'react-router-dom'
+import {PopUpModal} from './PopUpModal'
+import {CreatePostForm} from './CreatePostForm'
+import './NavBar.css'
 
 export const NavBar = ({leftButtons, modalIsOpen, updateModalIsOpen}) => {
     return (
@@ -13,4 +17,3 @@ export const NavBar = ({leftButtons, modalIsOpen, updateModalIsOpen}) => {
         </React.Fragment>
     )
   }
-
