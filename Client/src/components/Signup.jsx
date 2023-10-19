@@ -1,8 +1,52 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Route, redirectDocument } from 'react-router-dom';
 import studentImg from '../assets/students.jpg';
 import hireImg from '../assets/hirers.jpg';
 
 export default function Signup() {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [isStudent, setIsStudent] = useState(false);
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+	const [error, setError] = useState(null);
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		if (password !== confirmPassword) {
+			setError('Passwords do not match');
+			return;
+		}
+
+		try {
+			const response = await fetch('http://localhost:3001/api/users/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					firstName,
+					lastName,
+					email,
+					isStudent,
+					password,
+				}),
+			});
+
+			const data = await response.json();
+			console.log(data);
+
+			if (data.message) {
+				setError(data.message);
+			} 
+		
+		} catch (error) {
+			setError('An error occurred while registering');
+		}
+	};
+
 	return (
 		<>
 			<div className="flex flex-col items-center rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px]">
@@ -19,7 +63,10 @@ export default function Signup() {
 						<img src={hireImg} className="object-contain h-48 w-48" />
 					</div>
 				</div>
-				<form className="bg-white p-4 my-10 max-w-[500px] w-full mx-auto">
+				<form
+					className="bg-white p-4 my-10 max-w-[500px] w-full mx-auto"
+					onSubmit={handleSubmit}
+				>
 					<div className="text-center py-6 text-gray-700">
 						<h1 className="text-2xl font-bold mb-4 uppercase">Sign up</h1>
 						<p>Welcome to Worksy</p>
@@ -31,6 +78,8 @@ export default function Signup() {
 								className="border p-2 focus:outline-gray-400 "
 								type="text"
 								id="firstname"
+								value={firstName}
+								onChange={(event) => setFirstName(event.target.value)}
 							/>
 						</div>
 						<div className="flex flex-col py-2">
@@ -39,6 +88,8 @@ export default function Signup() {
 								className="border p-2 focus:outline-gray-400 "
 								type="text"
 								id="lastname"
+								value={lastName}
+								onChange={(event) => setLastName(event.target.value)}
 							/>
 						</div>
 					</div>
@@ -48,6 +99,8 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="email"
 							id="email"
+							value={email}
+							onChange={(event) => setEmail(event.target.value)}
 						/>
 					</div>
 					<div className="flex flex-row gap-10 items-center py-2">
@@ -60,6 +113,8 @@ export default function Signup() {
 								type="checkbox"
 								id="AcceptConditions"
 								className="peer sr-only"
+								checked={isStudent}
+								onChange={(event) => setIsStudent(event.target.checked)}
 							/>
 
 							<span className="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-gray-500"></span>
@@ -74,6 +129,8 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="password"
 							id="password"
+							value={password}
+							onChange={(event) => setPassword(event.target.value)}
 						/>
 					</div>
 					<div className="flex flex-col py-2">
@@ -82,8 +139,11 @@ export default function Signup() {
 							className="border p-2 focus:outline-gray-400 "
 							type="password"
 							id="password"
+							value={confirmPassword}
+							onChange={(event) => setConfirmPassword(event.target.value)}
 						/>
 					</div>
+					{error && <div className="text-red-500">{error}</div>}
 					<button className="border w-full my-5 py-2 bg-gray-700 hover:bg-gray-500  text-white">
 						Create account
 					</button>
@@ -95,12 +155,6 @@ export default function Signup() {
 					</Link>
 				</form>
 			</div>
-            {/* Credit */}
-            <a href="http://www.freepik.com" className="hidden">Designed by pch.vector / Freepik</a>
-
-
 		</>
 	);
 }
-
-
