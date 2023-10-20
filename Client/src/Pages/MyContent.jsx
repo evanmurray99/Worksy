@@ -9,13 +9,12 @@ import { NavBar } from '../Components/NavBar';
 import { Link } from 'react-router-dom';
 
 function postToElement(posts) {
-	let numPosts = posts.length; // don't have length
+	let numPosts = posts.length;
 	let postList = [];
 
 	for (var i = 0; i < numPosts; i++) {
 		postList.push(<PostListView post={posts[i]} key={'yourPosts' + i} />);
 	}
-
 	return postList;
 }
 
@@ -34,18 +33,11 @@ export const MyContent = () => {
 			.then((response) => response.json())
 			.then((data) => {
 				setUser(data.user);
+				getServices(data.user);
 				console.log('done');
-			})
-			.then(() => {
-				getServices(user);
 			})
 			.catch((e) => console.log(e.message));
 	}, []);
-
-	// const setUserAndServices = (data) =>{
-	// 	setUser(data.user)
-
-	// }
 
 	const updateUser = (firstName, lastName, email, password) => {
 		console.log(firstName, lastName, email, password);
