@@ -1,33 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../Models/User'); // 
+const User = require('../Models/User');
+const controller = require('../Controllers/UserController') // 
 
-router.get('/', async (req, res) => {
-  try {
-    const data = await User.find(); // 
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-
-  router.post('/', async (req, res) => {
-    try {
-      const { name, email , password } = req.body; // Assuming username and password in the request body
-      
-      // Create a new user document
-      const newUser = new User({ name, email,  password });
-      
-      // Save the user to the database
-      await newUser.save();
-      
-      res.status(201).json(newUser); 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
-    }
-  });
+router.get('/:token/auth', controller.getUserByToken);
+router.get('/:id', controller.getUser);
+router.get('/services/:id', controller.getServices);
+router.post('/', controller.createUser);
+router.post('/login', controller.login)
+router.put('/:id/update-bio', controller.updateUserBio);
+router.put('/:id/update-user', controller.editUser);
+router.put('/:id/add-service/:service', controller.addService)
+router.delete('/:id', controller.deleteUserById)
 
 module.exports = router;

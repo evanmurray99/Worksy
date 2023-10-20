@@ -1,9 +1,15 @@
 name: Test Backend
 
 on:
+ 
   pull_request:
     branches:
       - main 
+      - develop
+  push: 
+    branches:
+      - main 
+      - develop
 
 jobs:
   Test:
@@ -23,7 +29,7 @@ jobs:
         working-directory: Server
 
       - name: Run Mocha tests
-        run: npx mocha --exit
+        run: npm run test
         working-directory: Server
 
   
