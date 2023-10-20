@@ -1,8 +1,9 @@
-import React from 'react'
+
 import {ChangePostForm} from './ChangePostForm'
 import './EditPostForm.css'
 
 export const EditPostForm = ({post}) => {
+
     return (
         <div id="updateForm">
             <ChangePostForm post={post}/>
