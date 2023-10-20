@@ -4,11 +4,12 @@ import Cookies from 'js-cookie';
 import { PostListView } from '../Components/PostListView';
 import { AccountForm } from '../Components/AccountForm';
 import { Accordion } from '../Components/Accordion';
+
 import { NavBar } from '../Components/NavBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteService } from '../utils/Services';
 
-function postToElement(posts) {
+function postToElement(posts, user) {
 	let numPosts = posts.length;
 	let postList = [];
 
@@ -108,7 +109,7 @@ export const MyContent = () => {
 	const dynamicButtons = (
 		<React.Fragment>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/HomePage">
+				<Link className="navLinks" to="/home">
 					Home
 				</Link>
 			</button>
@@ -126,6 +127,7 @@ export const MyContent = () => {
 						leftButtons={dynamicButtons}
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
+						user={user}
 					/>
 					<Accordion
 						title="Account Information"
@@ -140,7 +142,7 @@ export const MyContent = () => {
 						}
 						hasBackdrop={false}
 					/>
-					<Accordion title="Your Posts" content={postList} hasBackdrop={true} />
+					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
 				</>
 			) : null}
 		</React.Fragment>

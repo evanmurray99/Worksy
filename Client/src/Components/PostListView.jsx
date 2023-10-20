@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { PopUpModal } from './PopUpModal';
-import { ViewPostContent } from './ViewPostContent';
+import React, {useState} from 'react'
+import {PopUpModal} from '../components/PopUpModal'
+import {ViewPostContent} from './ViewPostContent'
+import {ChangePostForm} from '../components/ChangePostForm'
 import { EditPostForm } from './EditPostForm';
-import './PostListView.css';
+import './PostListView.css'
 
-export const PostListView = ({ post, deleteService }) => {
-	let title = post.title;
+export const PostListView = ({post, user, deleteService}) => {
+    let title = post.title
+    const editSubmitButton = <input type="submit" id="createButton" value="Update"/>
 
 	const [updateModalIsOpen, setEditModalIsOpen] = useState(false);
 	const [viewModalIsOpen, setViewModalIsOpen] = useState(false);

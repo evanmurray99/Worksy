@@ -1,3 +1,4 @@
+
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './Pages/HomePage';
 import Login from './Pages/Login';
@@ -14,3 +15,4 @@ export const Router = () => {
 		</Routes>
 	);
 };
+
