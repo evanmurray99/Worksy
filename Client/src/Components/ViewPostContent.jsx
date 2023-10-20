@@ -8,7 +8,7 @@ export const ViewPostContent = ({post}) => {
 
     for(var i = 0; i < categoryLen; i++)
     {
-        categories.push(<div class="categoryContainer"><span>{categoryArr[i]}</span></div>)
+        categories.push(<div className="categoryContainer"><span>{categoryArr[i]}</span></div>)
     }
 
     return (
