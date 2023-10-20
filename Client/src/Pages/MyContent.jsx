@@ -25,19 +25,49 @@ export const MyContent = () => {
 	const [user, setUser] = useState();
 
 	useEffect(() => {
+		console.log('update content');
 		const token = Cookies.get('token');
-		console.log(token);
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
-		console.log(url);
 		fetch(url, {
 			method: 'GET',
 		})
 			.then((response) => response.json())
 			.then((data) => {
 				setUser(data.user);
-				// console.log('user', user);
 			});
 	}, []);
+
+	const updateUser = (firstName, lastName, email, password) => {
+		console.log(firstName, lastName, email, password);
+		const url = 'http://localhost:3001/api/users/' + user._id + '/update-user';
+		fetch(url, {
+			method: 'PUT',
+			body: JSON.stringify({
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				password: password,
+			}),
+			headers: {
+				'Content-type': 'application/json',
+			},
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					setUser({
+						...user,
+						firstName: firstName,
+						lastName: lastName,
+						email: email,
+						password: password,
+					});
+				} else {
+					throw new Error('Something wrong');
+				}
+				return response.json();
+			})
+			.catch((e) => console.log(e.message));
+	};
 
 	const dynamicButtons = (
 		<React.Fragment>
@@ -92,7 +122,15 @@ export const MyContent = () => {
 					/>
 					<Accordion
 						title="Account Information"
-						content={<AccountForm user={user} />}
+						content={
+							<AccountForm
+								firstName={user.firstName}
+								lastName={user.lastName}
+								email={user.email}
+								password={user.password}
+								updateUser={updateUser}
+							/>
+						}
 						hasBackdrop={false}
 					/>
 					<Accordion title="Your Posts" content={postList} hasBackdrop={true} />
