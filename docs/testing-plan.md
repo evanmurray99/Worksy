@@ -96,7 +96,20 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Integration Tests:
 
+1. **Test Service Creation**: Verify that a service can be successfully created by sending a POST request to the "/api/services" endpoint. Check that the service is stored in the database.
+
+2. **Test Service Update**: Create a service and then send a PUT request to update its details. Confirm that the updated information is reflected in the service's data.
+
+3. **Test Service Deletion**: Create a service and then send a DELETE request to remove it. Ensure that the service is no longer retrievable from the database.
+
+4. **Test Adding Service to User**: Create a user and a service. Send a PUT request to associate the service with the user. Verify that the user's list of services is updated.
+
+5. **Test Invalid Service Update**: Attempt to update a service with an invalid service ID. Confirm that the API responds with an error message and the service remains unchanged.
+
 #### Acceptance Tests:
+1. 
+
+
 
 ### Feature 2: Account 
 
@@ -171,7 +184,39 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Integration Tests:
 
+1. **User Registration and Authentication Flow:**
+   - Test the entire user registration process, including creating a new user account.
+   - Simulate user input, registration form submission, and validation checks.
+   - Verify that the user's information is correctly stored in the database.
+   - Test the user login process and ensure authenticated access to protected resources.
+
+2. **User Profile Update:**
+   - Simulate a user updating their profile information, such as name, email, or profile picture.
+   - Test that changes are correctly saved in the user document.
+   - Verify that the updated data is accurately reflected when retrieving the user's profile.
+
+3. **User Permissions and Access Control:**
+   - Test role-based access control for users with different roles (e.g., admin, regular user).
+   - Ensure that users with appropriate roles can access certain features or data while others cannot.
+   - Verify that unauthorized users are restricted from accessing protected resources.
+
+4. **User Document Relationships:**
+   - If the user document is related to other documents (e.g., posts, comments), test those relationships.
+   - Create users, have them post content, and verify that the content is correctly associated with the user's document.
+
+5. **User-to-User Interactions:**
+   - If your system supports user-to-user interactions (e.g., messaging), test these interactions.
+   - Create interactions between users and verify that the user documents are updated accordingly.
+
+6. **User Search and Listing:**
+    - If your system has user search or listing functionality, test the retrieval of user data.
+    - Ensure that users can search for and view other users' profiles.
+
+
 #### Acceptance Tests:
+
+1. As a user, I want to be able to create an account so I can use the app
+  - Navigate from home page to click "signup" button that leads me to 
 
 ### Feature 3: Search  
 
@@ -295,7 +340,7 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - Test how the chat feature handles errors, such as network issues or server errors.
     - Simulate error conditions and verify that the feature responds appropriately.
 
-#### Integration Tests:
+#### Acceptance Tests:
 
 ### Feature 6: Review 
 
@@ -342,8 +387,11 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - Test that users can retrieve their own review history, including products or services they have reviewed.
     - Ensure that the retrieved list of reviews is accurate.
 
+#### Acceptance Tests:
 
-#### Integration Tests:
+#### Regression tests:
+- All unit tests and integration tests are executed for each commit pushed to the develop
+and main branch.
 
 
 ## 2.2	Test Completeness
