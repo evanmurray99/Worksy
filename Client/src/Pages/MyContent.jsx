@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { editService } from '../utils/Services';
 
 import { PostListView } from '../Components/PostListView';
 import { AccountForm } from '../Components/AccountForm';
 import { Accordion } from '../Components/Accordion';
 import { NavBar } from '../Components/NavBar';
 import { Link } from 'react-router-dom';
+import { deleteService } from '../utils/Services';
 
 function postToElement(posts) {
 	let numPosts = posts.length;
 	let postList = [];
 
 	for (var i = 0; i < numPosts; i++) {
-		postList.push(<PostListView post={posts[i]} key={'yourPosts' + i} />);
+		postList.push(
+			<PostListView
+				post={posts[i]}
+				key={posts[i]._id}
+				deleteService={deleteService}
+			/>
+		); // pass key to children
 	}
 	return postList;
 }
