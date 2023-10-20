@@ -12,3 +12,15 @@ select
 {
     width: 100%;
 }
+
+#createForm
+{
+    margin: 0px 10px 10px 10px;
+}
+
+#createButton
+{
+    width: 100%;
+    background-color: #6EFFF6;
+    margin-top: 5px;
+}

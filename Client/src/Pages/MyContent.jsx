@@ -9,12 +9,12 @@ import { Accordion } from '../Components/Accordion';
 import { NavBar } from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
-function postToElement(posts) {
+function postToElement(posts, user) {
 	let numPosts = posts.length;
 	let postList = [];
 
 	for (var i = 0; i < numPosts; i++) {
-		postList.push(<PostListView post={posts[i]} key={'yourPosts' + i} />);
+		postList.push(<PostListView post={posts[i]} key={'yourPosts' + i} user={user}/>);
 	}
 
 	return postList;
@@ -76,7 +76,7 @@ export const MyContent = () => {
 		},
 	];
 
-	let postList = postToElement(accordContent);
+	let postList = postToElement(accordContent, user);
 
 	//this needs to be replaced by a getUser request. The current assumption is that getUser returns an object.
 	//There may need to be some parsing if the return value is not an object.
@@ -89,13 +89,14 @@ export const MyContent = () => {
 						leftButtons={dynamicButtons}
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
+						user={user}
 					/>
 					<Accordion
 						title="Account Information"
 						content={<AccountForm user={user} />}
 						hasBackdrop={false}
 					/>
-					<Accordion title="Your Posts" content={postList} hasBackdrop={true} />
+					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
 				</>
 			) : null}
 		</React.Fragment>
