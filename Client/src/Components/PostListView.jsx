@@ -29,6 +29,7 @@ export const PostListView = ({ post, deleteService }) => {
 					className="floatRight"
 					onClick={(e) => {
 						e.preventDefault();
+                        console.log('HERRR', post._id)
 						deleteService(post._id);
 					}}
 				>

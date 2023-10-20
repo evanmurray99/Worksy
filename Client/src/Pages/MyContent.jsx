@@ -5,7 +5,7 @@ import { PostListView } from '../Components/PostListView';
 import { AccountForm } from '../Components/AccountForm';
 import { Accordion } from '../Components/Accordion';
 import { NavBar } from '../Components/NavBar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { deleteService } from '../utils/Services';
 
 function postToElement(posts) {
@@ -28,15 +28,22 @@ export const MyContent = () => {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
 	const [services, setServices] = useState();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		console.log('update content');
 		const token = Cookies.get('token');
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
+		// do a check token before request
 		fetch(url, {
 			method: 'GET',
 		})
-			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 200) return response.json();
+				else {
+					navigate('/login');
+				}
+			})
 			.then((data) => {
 				setUser(data.user);
 				getServices(data.user);
