@@ -1,3 +1,7 @@
+# TEST PLAN FOR WORKSY
+
+
+
 # 1.	Introduction
 
 ## 1.1	 Scope
@@ -46,7 +50,7 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 ## 2.1	Test Levels
 
-### Feature 1: Post
+### Feature 1: Post/Service
 
 #### Unit Tests:
 
@@ -107,13 +111,11 @@ In addition, you will see the comments and ratings of all reviews connected to t
 5. **Test Invalid Service Update**: Attempt to update a service with an invalid service ID. Confirm that the API responds with an error message and the service remains unchanged.
 
 #### Acceptance Tests:
-1. 
-
-
 
 ### Feature 2: Account 
 
 #### Unit Tests:
+
 1. **Create a user**:
    - Sends a POST request to create a new user with specified user data.
    - Expects a response with an HTTP status code 201 (Created) and validates the response body.
@@ -216,8 +218,12 @@ In addition, you will see the comments and ratings of all reviews connected to t
 #### Acceptance Tests:
 
 1. As a user, I want to be able to create an account so I can use the app
-  - Navigate from home page to click "signup" button that leads me to 
-
+    - Navigate from home page to click "signup" button that leads me to the signup page
+    - Fill out name, lastname, email, and both password fields
+    - Select if you are a student or not.
+    - Submit the document by clicking the "create account" button
+    - Return to homepage 
+    
 ### Feature 3: Search  
 
 #### Unit Tests:
