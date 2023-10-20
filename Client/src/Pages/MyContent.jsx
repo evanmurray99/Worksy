@@ -6,7 +6,7 @@ import img2 from '../Images/StubImg2.jpg';
 import { PostListView } from '../Components/PostListView';
 import { AccountForm } from '../Components/AccountForm';
 import { Accordion } from '../Components/Accordion';
-import { NavBar } from '../Components/NavBar';
+import { NavBar } from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 function postToElement(posts) {
@@ -42,7 +42,7 @@ export const MyContent = () => {
 	const dynamicButtons = (
 		<React.Fragment>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/HomePage">
+				<Link className="navLinks" to="/home">
 					Home
 				</Link>
 			</button>
