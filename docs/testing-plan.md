@@ -1,6 +1,13 @@
 # TEST PLAN FOR WORKSY
 
+ChangeLog 
 
+| Version | Change Date  | By   | Description          |
+|---------|--------------|------|----------------------|
+| 1.0.0   | Oct, 19 2023 | Evan | Initial Testing Plan |
+|         |              |      |                      |
+|         |              |      |                      |
+|         |              |      |                      |
 
 # 1.	Introduction
 
