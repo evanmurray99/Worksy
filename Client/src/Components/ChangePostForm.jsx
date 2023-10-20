@@ -2,6 +2,7 @@ import React from 'react'
 import './ChangePostForm.css'
 
 export const ChangePostForm = ({post}) => {
+    
     return (
         <React.Fragment>
             <div className="floatLeft changeLeft">

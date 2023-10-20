@@ -4,6 +4,10 @@ import './AccountForm.css'
 export const AccountForm = ({user}) =>
 {    
     //I have assumed that user is an object.
+
+    
+
+
     return (
         <div className="background">
             <div className="floatLeft leftWidth">
@@ -26,7 +30,7 @@ export const AccountForm = ({user}) =>
                     <input type="text" name="newLastName" defaultValue={user.lastName}/>
                 </div>
             </div>
-            <div className="floatRight rightWidth">
+            {/* <div className="floatRight rightWidth">
                 <div>
                     <label htmlFor="newPassword">
                         Password:
@@ -41,7 +45,7 @@ export const AccountForm = ({user}) =>
                     <input type="text" name="confirmNewPassword">
                     </input>
                 </div>
-            </div>
+            </div> */}
 
             {/*in button we need to add a put request to update the user info through onClick=updateUserInfo()*/}
             <button className="updateButton belowFloats">

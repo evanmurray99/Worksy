@@ -28,7 +28,7 @@ export default function Login() {
 			.then((data) => {
 				if (data.token) {
 					document.cookie = 'token=' + data.token;
-					navigate('/');
+					navigate('/mycontent');
 				} else {
 					// console.log(data.message);
 					setError(data.message);
