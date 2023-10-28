@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PopUpModal } from './PopUpModal';
 import ChangePostForm  from './ChangePostForm';
-import './NavBar.css';
+import '../Styles/NavBar.css';
 
 export default function NavBar({
 	leftButtons,

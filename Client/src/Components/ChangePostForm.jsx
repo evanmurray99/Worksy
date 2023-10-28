@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ChangePostForm.css';
+import '../Styles/ChangePostForm.css';
 
 export default function ChangePostForm({ post, button, updateIsOpen, user }) {
 	const [title, setTitle] = useState('');

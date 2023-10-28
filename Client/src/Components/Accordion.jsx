@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Accordion.css';
+import '../Styles/Accordion.css';
 
 function checkIsOpen(state) {
 	var currSymbol = '+';

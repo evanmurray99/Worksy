@@ -1,5 +1,5 @@
 import React from 'react'
-import './PopUpModal.css'
+import '../Styles/PopUpModal.css'
 
 export const PopUpModal = ({title, isOpen, updateIsOpen, content}) => {
     var result = null

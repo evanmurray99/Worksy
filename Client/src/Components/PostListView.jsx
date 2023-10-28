@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PopUpModal } from '../components/PopUpModal';
 import { ViewPostContent } from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
-import './PostListView.css';
+import '../Styles/PostListView.css';
 
 export default function PostListView({ post, user, deleteService }) {
 	let title = post.title;

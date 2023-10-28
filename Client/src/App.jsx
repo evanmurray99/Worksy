@@ -3,6 +3,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import MyContent from './Pages/MyContent';
+import './App.css'
 
 function App() {
 	return (

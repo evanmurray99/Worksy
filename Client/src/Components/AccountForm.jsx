@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './AccountForm.css';
+import '../Styles/AccountForm.css';
 
 export function validateForm(firstName, lastName, email, password) {
 	if (firstName === '' || lastName === '' || email === '' || password === '')
