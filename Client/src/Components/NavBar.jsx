@@ -1,11 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { PopUpModal } from './PopUpModal';
-import { CreatePostForm } from './CreatePostForm';
+import ChangePostForm  from './ChangePostForm';
 import './NavBar.css';
 
-export const NavBar = ({ leftButtons, modalIsOpen, updateModalIsOpen }) => {
+export default function NavBar({
+	leftButtons,
+	modalIsOpen,
+	updateModalIsOpen,
+}) {
 	return (
 		<React.Fragment>
 			<nav>
@@ -26,7 +29,19 @@ export const NavBar = ({ leftButtons, modalIsOpen, updateModalIsOpen }) => {
 				</button>
 			</nav>
 
-			<PopUpModal title="Create new post" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} content={<ChangePostForm updateIsOpen={updateModalIsOpen} post={post} button={createSubmitButton} user={user}/>}/>
+			<PopUpModal
+				title="Create new post"
+				isOpen={modalIsOpen}
+				updateIsOpen={updateModalIsOpen}
+				content={
+					<ChangePostForm
+						updateIsOpen={updateModalIsOpen}
+						post={post}
+						button={createSubmitButton}
+						user={user}
+					/>
+				}
+			/>
 		</React.Fragment>
 	);
-};
+}

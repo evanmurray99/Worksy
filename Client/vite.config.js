@@ -10,6 +10,9 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		css: true,
-		setupFiles: './src/test/setup.js',
+		setupFiles: './src/__test__/setup.js',
+		coverage: {
+			reporter: ['text', 'html'],
+		},
 	},
 });
