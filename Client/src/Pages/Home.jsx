@@ -1,5 +1,5 @@
 import React from 'react'
-import {NavBar} from '../components/Navbar';
+import NavBar from '../components/Navbar';
 import {Link} from 'react-router-dom'
 import Container from '../components/Container';
 

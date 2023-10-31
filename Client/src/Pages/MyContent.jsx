@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-import { PostListView } from '../Components/PostListView';
-import { AccountForm } from '../Components/AccountForm';
-import { Accordion } from '../Components/Accordion';
+import PostListView from '../Components/PostListView';
+import AccountForm from '../Components/AccountForm';
+import Accordion from '../Components/Accordion';
 
-import { NavBar } from '../Components/NavBar';
+import NavBar from '../Components/NavBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteService } from '../utils/Services';
 
@@ -25,7 +25,7 @@ function postToElement(posts, user) {
 	return postList;
 }
 
-export const MyContent = () => {
+export default function MyContent() {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
 	const [services, setServices] = useState();
@@ -142,9 +142,9 @@ export const MyContent = () => {
 						}
 						hasBackdrop={false}
 					/>
-					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
+					<Accordion title="Your Posts" content={postList} hasBackdrop={true} />
 				</>
 			) : null}
 		</React.Fragment>
 	);
-};
+}

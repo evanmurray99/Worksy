@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './AccountForm.css';
+import '../Styles/AccountForm.css';
 
 export function validateForm(firstName, lastName, email, password) {
 	if (firstName === '' || lastName === '' || email === '' || password === '')
@@ -9,7 +9,7 @@ export function validateForm(firstName, lastName, email, password) {
 	}
 }
 
-export const AccountForm = (props) => {
+export default function AccountForm(props) {
 	const [firstName, setFirstName] = useState(props.firstName);
 	const [lastName, setLastName] = useState(props.lastName);
 	const [email, setEmail] = useState(props.email);
@@ -82,4 +82,4 @@ export const AccountForm = (props) => {
 			</form>
 		</div>
 	);
-};
+}

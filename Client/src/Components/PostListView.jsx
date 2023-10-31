@@ -1,13 +1,14 @@
-import React, {useState} from 'react'
-import {PopUpModal} from '../components/PopUpModal'
-import {ViewPostContent} from './ViewPostContent'
-import {ChangePostForm} from '../components/ChangePostForm'
-import { EditPostForm } from './EditPostForm';
-import './PostListView.css'
+import React, { useState } from 'react';
+import { PopUpModal } from '../components/PopUpModal';
+import { ViewPostContent } from './ViewPostContent';
+import ChangePostForm from './ChangePostForm';
+import '../Styles/PostListView.css';
 
-export const PostListView = ({post, user, deleteService}) => {
-    let title = post.title
-    const editSubmitButton = <input type="submit" id="createButton" value="Update"/>
+export default function PostListView({ post, user, deleteService }) {
+	let title = post.title;
+	const editSubmitButton = (
+		<input type="submit" id="createButton" value="Update" />
+	);
 
 	const [updateModalIsOpen, setEditModalIsOpen] = useState(false);
 	const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
@@ -31,7 +32,7 @@ export const PostListView = ({post, user, deleteService}) => {
 					className="floatRight"
 					onClick={(e) => {
 						e.preventDefault();
-                        console.log('HERRR', post._id)
+						console.log('HERRR', post._id);
 						deleteService(post._id);
 					}}
 				>
@@ -76,7 +77,7 @@ export const PostListView = ({post, user, deleteService}) => {
 				title="Edit post"
 				isOpen={updateModalIsOpen}
 				updateIsOpen={setEditModalIsOpen}
-				content={<EditPostForm post={post} />}
+				content={<ChangePostForm post={post} />}
 			/>
 			<PopUpModal
 				title={title}
@@ -92,4 +93,4 @@ export const PostListView = ({post, user, deleteService}) => {
 			/>
 		</React.Fragment>
 	);
-};
+}

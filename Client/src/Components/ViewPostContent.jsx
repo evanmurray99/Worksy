@@ -1,5 +1,5 @@
 import React from 'react'
-import './ViewPostContent.css'
+import '../Styles/ViewPostContent.css'
 
 export const ViewPostContent = ({post}) => {
     var categories = []

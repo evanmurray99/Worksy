@@ -1,6 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
+
+export const logIn = async (email, password) => {
+	try {
+		const url = 'http://localhost:3001/api/users/login';
+		const body = {
+			email: email,
+			password: password,
+		};
+		return await axios
+			.post(url, body)
+			.then((response) => response.data)
+			.catch((e) => e.response.data);
+	} catch (e) {
+		console.log('Error occured', e.message);
+	}
+};
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -8,39 +24,25 @@ export default function Login() {
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
 
-	const logIn = async (e) => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
 		setError('');
-		const url = 'http://localhost:3001/api/users/login';
-		await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify({
-				email: email,
-				password: password,
-			}),
-			headers: {
-				'Content-type': 'application/json',
-			},
-		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				if (data.token) {
-					document.cookie = 'token=' + data.token;
-					navigate('/content');
-				} else {
-					console.log(data.message);
-					setError(data.message);
-				}
-			});
+		const data = await logIn(email, password);
+		try {
+			if (data.token) {
+				document.cookie = 'token=' + data.token;
+				navigate('/content');
+			} else if (data.message) setError(data.message);
+		} catch (e) {
+			setError('Server error');
+		}
 	};
 	return (
 		<>
 			<div className="rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px] ">
 				<form
 					className=" bg-white p-4 my-10 max-w-[400px] w-full mx-auto"
-					onSubmit={logIn}
+					onSubmit={handleLogin}
 				>
 					<div className="text-center py-6 text-gray-700">
 						<h1 className="text-2xl font-bold mb-4">LOGIN</h1>
@@ -53,6 +55,7 @@ export default function Login() {
 							type="email"
 							id="email"
 							value={email}
+							placeholder="Email"
 							onChange={(e) => {
 								setEmail(e.target.value);
 								setError('');
@@ -67,6 +70,7 @@ export default function Login() {
 							type="password"
 							id="password"
 							value={password}
+							placeholder="Password"
 							onChange={(e) => {
 								setPassword(e.target.value);
 								setError('');
