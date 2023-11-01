@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Styles/ViewPostContent.css'
 
-export const ViewPostContent = ({post}) => {
+export default function ViewPostContent ({post}) {
     var categories = []
     var categoryArr = post.categories
     var categoryLen = categoryArr.length

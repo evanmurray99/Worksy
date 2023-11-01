@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { PopUpModal } from '../components/PopUpModal';
-import { ViewPostContent } from './ViewPostContent';
+import PopUpModal from './PopUpModal';
+import ViewPostContent from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
 import '../Styles/PostListView.css';
 

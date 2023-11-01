@@ -1,7 +1,6 @@
 import React from 'react'
-import NavBar from '../components/Navbar';
+import NavBar from '../Components/Navbar';
 import {Link} from 'react-router-dom'
-import Container from '../components/Container';
 
 export default function Home() {
     let links = (
@@ -13,7 +12,6 @@ export default function Home() {
 	return (
 		<React.Fragment>
 			<NavBar leftButtons={links}/>
-			<Container></Container>
 		</React.Fragment>
 	);
 }
