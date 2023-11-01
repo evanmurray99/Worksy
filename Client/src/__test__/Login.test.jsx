@@ -96,8 +96,7 @@ describe('Login page test', () => {
 			data = await logIn('john', 'admin');
 			console.log('data', data);
 		});
-
-
+		
 		const error = screen.getByText(/Server error/i);
 		expect(error).toBeInTheDocument();
 	});
