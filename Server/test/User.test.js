@@ -50,20 +50,23 @@ describe('USER API TEST', () => {
   it('Get created user', (done) => {
   
     request(app)
-      .get(`/api/users/${id}`)
-      .set('Accept', 'application/json')
-      .end((err, response) => {
-        if (err) {
-          return done(err); // Signal that the test case failed with an error
-        }
+    .get(`/api/users/${id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+      if (err) {
+        return done(err); // Signal that the test case failed with an error
+      }
 
-        expect(response.status).to.equal(200);
-        expect(response.body).to.be.an('object');
-        // Add more assertions based on your API response structure
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('object');
+      // Add more assertions based on your API response structure
 
-        done(); // Signal that the test case is complete
-      });
+      done(); // Signal that the test case is complete
+    });
   });
+
+
+
 
   it('Update user Bio', (done) => {
     
@@ -310,7 +313,7 @@ it ('Delete created service', (done) => {
       });
   });
 
-  it('Update user', (done) => {
+  it('Update user after it has been deleted', (done) => {
     
     request(app)
       .put(`/api/users/${id}/update-user`)
@@ -345,6 +348,120 @@ it ('Delete created service', (done) => {
         done(); // Signal that the test case is complete
     });
 });
+
+  it('Get already deleted user', (done) => {
+    request(app)
+    .get(`/api/users/${id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+      if (err) {
+        return done(err); // Signal that the test case failed with an error
+      }
+
+      expect(response.status).to.equal(404);
+      expect(response.body.message).to.equal('User not found');
+
+      done(); // Signal that the test case is complete
+    });
+  });
+
+  it('Add service to deleted user', (done) => {
+    request(app)
+
+    .put(`/api/users/${id}/add-service/${service_id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        if (err) {
+            return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(404);
+        expect(response.body.message).to.equal('User not found');
+        
+        done(); // Signal that the test case is complete
+    });
+  });
+
+  it('Try to get user after db has been closed - should throw and catch 500 error ', (done) => {
+    db.closeDB()
+    request(app)
+    .get(`/api/users/${id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+      if (err) {
+        return done(err); // Signal that the test case failed with an error
+      }
+
+      expect(response.status).to.equal(500);
+      expect(response.body.message).to.equal('Internal server error');
+
+      done(); // Signal that the test case is complete
+    });
+  });
+
+  it('Try to add service after db has been closed - should throw and catch 500 error ', (done) => {
+    db.closeDB()
+    request(app)
+
+    .put(`/api/users/${id}/add-service/${service_id}`)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        if (err) {
+            return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(500);
+        expect(response.body.message).to.equal('Internal server error');
+        
+        done(); // Signal that the test case is complete
+    });
+  });
+
+
+
+  it('Try to create user after db has been closed - should throw and catch 500 error ', (done) => {
+    db.closeDB()
+      const newUser = {
+        firstName: 'Test',
+        lastName : 'User',
+        email: 'testuser@myumanitoba.ca',
+        password: 'testpassword',
+        isStudent : 'true'
+      };
+
+
+      request(app)
+      .post('/api/users')
+      .send(newUser)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+        if (err) {
+          return done(err); // Signal that the test case failed with an error
+        }
+
+        expect(response.status).to.equal(500);
+          
+        done(); // Signal that the test case is complete
+      });
+  });
+
+
+  it('Try to edit user after db has been closed - should throw and catch 500 error ', (done) => {
+    db.closeDB()
+    request(app)
+    .put(`/api/users/${id}/update-user`)
+    .send({ firstName : 'newTest', lastName : 'newUser' , email :  "testuser@myumanitoba.ca", password : "testpassword"})
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+      if (err) {
+        return done(err); // Signal that the test case failed with an error
+      }
+
+      expect(response.status).to.equal(500);
+
+      done(); // Signal that the test case is complete
+    });
+  });
 
   after((done) => {
     db.closeDB()
