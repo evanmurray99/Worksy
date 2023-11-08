@@ -105,23 +105,15 @@ const editUser = async (req, res) => {
     }
 
     // If a new password is provided, hash it
-    let hashedPassword;
-    if (password) {
+    if (!(await bcrypt.compare(password, user.hashedpassword))) {
       const saltRounds = 10; // Adjust the salt rounds as needed
       const salt = await bcrypt.genSalt(saltRounds);
-      hashedPassword = await bcrypt.hash(password, salt);
+      user.hashedpassword = await bcrypt.hash(password, salt);
     }
-
     
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
-
-    
-    if (hashedPassword) {
-      user.password = hashedPassword;
-    }
-
     
     await user.save();
 
@@ -218,12 +210,6 @@ const login = async (req, res) => {
 const getUserByToken = async (req, res) => {
   
   const token  = req.params.token;
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      error: 'Token is missing',
-    });
-  }
 
   try {
     const decoded = jwt.verify(token, secretKey);
@@ -242,7 +228,7 @@ const getUserByToken = async (req, res) => {
       user: user,
     });
   } catch (error) {
-
+    console.error('Error fetching user by token:', error);
     return res.status(500).json({
       success: false,
       error: 'Could not get User',
