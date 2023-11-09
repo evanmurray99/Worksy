@@ -9,6 +9,8 @@ app.use(express.json({ extended: false }));
 app.use('/api/users' , require ("./Routes/UserApi"))
 app.use('/api/services' , require ("./Routes/ServiceApi"))
 app.use('/api/categories' , require ("./Routes/CategoryApi"))
+app.use('/api/reviews' , require ("./Routes/ReviewApi"))
+
 app.get("/", (req, res) => {
     res.send("App up");
 });
