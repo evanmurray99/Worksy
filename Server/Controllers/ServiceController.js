@@ -49,8 +49,8 @@ const createService = async (req, res) => {
 
         res.status(201).json(newService);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error creating service:', err);
+        res.status(500).json({ message: 'Internal server error '});
         
     }
 };
