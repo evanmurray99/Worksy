@@ -6,9 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-# rebuild bcrypt from source
-RUN npm rebuild bcrypt --build-from-source
-
 COPY . . 
 
 EXPOSE 3001

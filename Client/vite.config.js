@@ -15,4 +15,13 @@ export default defineConfig({
 			reporter: ['text', 'html'],
 		},
 	},
+	// expose to all network interfaces
+	preview: {
+		host: true,
+		port: 3030,
+	},
+	server: {
+		host: true,
+		port: 3030,
+	},
 });
