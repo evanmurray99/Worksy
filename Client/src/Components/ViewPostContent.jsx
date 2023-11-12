@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Styles/ViewPostContent.css'
 
-export default function ViewPostContent ({post}) {
+export default function ViewPostContent ({post, user}) {
     var categories = []
     var categoryArr = post.categories
     var categoryLen = categoryArr.length
@@ -15,7 +15,7 @@ export default function ViewPostContent ({post}) {
         <div id="popUpSize">
             <img id="resizeImg" src={post.pinImg}/>
             <div className="viewTextSize">
-                <span className="floatLeft">Created by {post.user}</span>
+                <span className="floatLeft">Created by {user.firstName} {user.lastName}</span>
                 <span className="floatRight">Cost: CA {post.price}</span>
                 <span className="inlineContent flexContainer">
                     <span id="centerVertically">Categories: </span>

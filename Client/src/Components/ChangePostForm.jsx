@@ -1,46 +1,131 @@
 import React, { useState } from 'react';
 import '../Styles/ChangePostForm.css';
 
-export default function ChangePostForm({ post, button, updateIsOpen, user }) {
-	const [title, setTitle] = useState('');
-	const [cost, setCost] = useState('');
-	const [categories, setCategories] = useState([]);
-	const [descript, setDescript] = useState('');
+function createCategories(categoryList)
+{
+	var result =[];
+
+	for(var i = 0; i < categoryList.length; i++)
+	{
+		result.push(<option key={categoryList[i]} value={categoryList[i]} >{categoryList[i]}</option>)
+	}
+
+	return result;
+}
+
+async function createService(user, descript, title, cost, categories, updateServices, updateIsOpen, setError, error)
+{
+	var currDate = new Date();
+
+	try {
+		const response = await fetch('http://localhost:3001/api/services', {
+		method: 'POST',
+	 	headers: {
+	 		'Content-type': 'application/json',
+		},
+		 	body: JSON.stringify({
+				seller: user._id,
+				description: descript,
+				title: title,
+				price: cost*1,
+				created: currDate,
+				updated: currDate,
+				categories: categories,
+			   rating: 0,
+			   reviews: []
+			}),
+		});
+
+		const data = await response.json();
+		updateServices(services => [...services, data]);
+
+		if (data.message) {
+			setError(data.message);
+		} else {
+			updateIsOpen(false);
+		}
+
+		const serviceUser = await fetch('http://localhost:3001/api/users/'+user._id+"/add-service/"+data._id, {
+			method: 'PUT',
+		});
+			
+		const data2 = await serviceUser.json();
+		console.log(data2.message);
+	} catch (error) {
+		setError('An error occurred while creating a server.');
+	}
+}
+
+async function editServices(descript, title, cost, categories, updateServices, updateIsOpen, post, setError, error, services)
+{
+	try {
+		const response = await fetch('http://localhost:3001/api/services/'+post._id, {
+		method: 'PUT',
+	 	headers: {
+	 		'Content-type': 'application/json',
+		},
+		 	body: JSON.stringify({
+				description: descript,
+				title: title,
+				price: cost*1,
+				categories: categories,
+			}),
+		});
+		const data = await response.json();
+		updateIsOpen(false);
+
+		var nextServ = [...services];
+		for(var i = 0; i < services.length; i++)
+		{
+			if(post._id === services[i]._id)
+			{
+				nextServ[i].title = title
+				nextServ[i].description = descript
+				nextServ[i].categories = categories
+				nextServ[i].price = cost
+			}
+		}
+
+		updateServices(nextServ)
+	} catch (error) {
+		setError('An error occurred while creating a server.');
+	}
+}
+
+export default function ChangePostForm({post, updateIsOpen, user, updateServices, categoryList, services}) {
+	var buttonLabel = "";
+	var isUpdate = false;
+
+	if(post === null)
+	{
+		post = {id:"1", title: "", price: "", description: "", categories: []}
+		buttonLabel = "Create New"
+		isUpdate = false;
+	}
+	else
+	{
+		buttonLabel = "Update"
+		isUpdate = true;
+	}
+
+	const [title, setTitle] = useState(post.title);
+	const [cost, setCost] = useState(post.price);
+	const [categories, setCategories] = useState(post.categories);
+	const [descript, setDescript] = useState(post.description);
 	const [error, setError] = useState(null);
+
+	const CategoryOptions = createCategories(categoryList);
 
 	async function createSubmitHandler(event) {
 		event.preventDefault();
-		var currDate = new Date();
 
-		try {
-			console.log('start');
-			const response = await fetch('http://localhost:3001/api/services/', {
-				method: 'POST',
-				headers: {
-					'Content-type': 'application/json',
-				},
-				body: JSON.stringify({
-					seller: user._id,
-					description: descript,
-					title: title,
-					price: cost,
-					created: currDate,
-					updated: currDate,
-					categories: categories,
-				}),
-			});
-			console.log('end');
-
-			const data = await response.json();
-			console.log(data);
-
-			if (data.message) {
-				setError(data.message);
-			} else {
-				updateIsOpen(false);
-			}
-		} catch (error) {
-			setError('An error occurred while registering');
+		if(isUpdate === false)
+		{
+			createService(user, descript, title, cost, categories, updateServices, updateIsOpen, setError, error);
+		}
+		else
+		{
+			editServices(descript, title, cost, categories, updateServices, updateIsOpen, post, setError, error, services);
 		}
 	}
 
@@ -53,6 +138,7 @@ export default function ChangePostForm({ post, button, updateIsOpen, user }) {
 						type="text"
 						name="title"
 						required={true}
+						maxLength="25"
 						defaultValue={post.title}
 						onChange={(event) => setTitle(event.target.value)}
 					/>
@@ -60,7 +146,8 @@ export default function ChangePostForm({ post, button, updateIsOpen, user }) {
 				<div>
 					<label htmlFor="cost">Cost:</label>
 					<input
-						type="text"
+						type="number"
+						maxLength="10"
 						name="cost"
 						required={true}
 						defaultValue={post.price}
@@ -89,13 +176,7 @@ export default function ChangePostForm({ post, button, updateIsOpen, user }) {
 							setCategories(categoryList);
 						}}
 					>
-						<option value="Webdesign">Webdesign</option>
-						<option value="Videographer">Videographer</option>
-						<option value="Painting">Painting</option>
-						<option value="Woodwork">Woodwork</option>
-						<option value="Graphic_Design">Graphic Design</option>
-						<option value="Tutoring">Tutoring</option>
-						<option value="diffTag">diffTag</option>
+						{CategoryOptions}
 					</select>
 				</div>
 			</div>
@@ -107,11 +188,12 @@ export default function ChangePostForm({ post, button, updateIsOpen, user }) {
 						rows="5"
 						required={true}
 						defaultValue={post.description}
+						maxLength="1000"
 						onChange={(event) => setDescript(event.target.value)}
 					/>
 				</div>
 			</div>
-			{button}
+			<button id="createButton">{buttonLabel}</button>
 		</form>
 	);
 }

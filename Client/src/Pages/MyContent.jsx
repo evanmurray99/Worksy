@@ -9,7 +9,7 @@ import NavBar from '../Components/NavBar';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteService } from '../utils/Services';
 
-function postToElement(posts, user) {
+function postToElement(posts, user, updateServices, categoryList, services) {
 	let numPosts = posts.length;
 	let postList = [];
 
@@ -18,7 +18,11 @@ function postToElement(posts, user) {
 			<PostListView
 				post={posts[i]}
 				key={posts[i]._id}
+				user={user}
 				deleteService={deleteService}
+				updateServices={updateServices}
+				categoryList={categoryList}
+				services={services}
 			/>
 		); // pass key to children
 	}
@@ -29,6 +33,7 @@ export default function MyContent() {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
 	const [services, setServices] = useState();
+	const [categoryList, setCategories] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -48,7 +53,17 @@ export default function MyContent() {
 			.then((data) => {
 				setUser(data.user);
 				getServices(data.user);
-				console.log('done');
+			})
+			.catch((e) => console.log(e.message));
+
+		fetch('http://localhost:3001/api/categories', {
+			method: 'GET',
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				setCategories(data);
 			})
 			.catch((e) => console.log(e.message));
 	}, []);
@@ -104,7 +119,7 @@ export default function MyContent() {
 			.catch((e) => console.log(e.message));
 	};
 
-	let postList = services ? postToElement(services) : null;
+	let postList = services ? postToElement(services, user, setServices, categoryList, services) : null;
 
 	const dynamicButtons = (
 		<React.Fragment>
@@ -128,6 +143,8 @@ export default function MyContent() {
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
 						user={user}
+						updateServices={setServices}
+						categoryList={categoryList}
 					/>
 					<Accordion
 						title="Account Information"
@@ -142,7 +159,7 @@ export default function MyContent() {
 						}
 						hasBackdrop={false}
 					/>
-					<Accordion title="Your Posts" content={postList} hasBackdrop={true} />
+					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
 				</>
 			) : null}
 		</React.Fragment>

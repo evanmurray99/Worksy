@@ -4,7 +4,7 @@ import ViewPostContent from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
 import '../Styles/PostListView.css';
 
-export default function PostListView({ post, user, deleteService }) {
+export default function PostListView({ post, user, deleteService, updateServices, categoryList, services}) {
 	let title = post.title;
 	const editSubmitButton = (
 		<input type="submit" id="createButton" value="Update" />
@@ -13,6 +13,11 @@ export default function PostListView({ post, user, deleteService }) {
 	const [updateModalIsOpen, setEditModalIsOpen] = useState(false);
 	const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
 	const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
+	function checkServiceId(services)
+	{
+		return services._id != post._id;
+	}
 
 	const deleteContent = (
 		<React.Fragment>
@@ -32,8 +37,9 @@ export default function PostListView({ post, user, deleteService }) {
 					className="floatRight"
 					onClick={(e) => {
 						e.preventDefault();
-						console.log('HERRR', post._id);
 						deleteService(post._id);
+						updateServices(services => services.filter(checkServiceId));
+						setDeleteModalIsOpen(false);
 					}}
 				>
 					Delete
@@ -77,13 +83,13 @@ export default function PostListView({ post, user, deleteService }) {
 				title="Edit post"
 				isOpen={updateModalIsOpen}
 				updateIsOpen={setEditModalIsOpen}
-				content={<ChangePostForm post={post} />}
+				content={<ChangePostForm post={post} categoryList={categoryList} services={services} updateIsOpen={setEditModalIsOpen}/>}
 			/>
 			<PopUpModal
 				title={title}
 				isOpen={viewModalIsOpen}
 				updateIsOpen={setViewModalIsOpen}
-				content={<ViewPostContent post={post} />}
+				content={<ViewPostContent post={post} user={user}/>}
 			/>
 			<PopUpModal
 				title={'Are you sure you want to delete ' + title + '?'}
