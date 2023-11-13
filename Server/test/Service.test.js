@@ -76,6 +76,23 @@ describe('SERVICE API TEST', function() {
         });   
     });
 
+    it('Search for service', (done) => {
+      request(app)
+      .get(`/api/services/search/test`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {  
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('array')
+          expect(response.body[0].score).to.be.equal(3)
+  
+
+          done(); // Signal that the test case is complete
+      });
+  });
 
     it('Get service', (done) => {
         request(app)
@@ -323,6 +340,23 @@ describe('SERVICE API TEST', function() {
             done(); // Signal that the test case is complete
         });
       });
+
+      it('Try to Search for service when db is closed - should catch and throw 500 error ', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/services/search/test`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {  
+                return done(err); // Signal that the test case failed with an error
+            }
+  
+            expect(response.status).to.equal(500);
+    
+  
+            done(); // Signal that the test case is complete
+        });
+    });
 
       it ('Try to edit created service when db is closed - should catch and throw 500 error ', (done) => {
         const editService = {
