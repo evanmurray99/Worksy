@@ -1,7 +1,7 @@
 {
     "scripts": {
         "dev": "NODE_ENV=dev nodemon Server.js",
-        "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
+        "test": "NODE_ENV=test nyc --reporter=text mocha --errors-only --exit",
         "prod": "NODE_ENV=prod nodemon Server.js"
     },
     "dependencies": {

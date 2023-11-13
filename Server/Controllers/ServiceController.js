@@ -107,6 +107,61 @@ const editService = async (req, res) => {
       console.error('Error editing service by ID:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
+
+  };
+
+  const searchServices = async (req, res) => {
+    const query = req.params.query;
+    const queryList = query.trim().split(' ').map(keyword => keyword.toLowerCase());
+
+    try {
+      
+        const result = await Service.find({
+            $or: [
+              { description: { $regex: queryList.map(word => `.*${word}.*`).join('|'), $options: 'i' } },
+              { title: { $regex: queryList.map(word => `.*${word}.*`).join('|'), $options: 'i' } },
+              { categories: { $elemMatch: { $regex: queryList.map(word => `.*${word}.*`).join('|'), $options: 'i' } } },
+            ],
+          });
+          
+  
+    
+      const scoredResults = result.map(service => {
+        let score = 0;
+  
+        
+        queryList.forEach(keyword => {
+          if (service.description.toLowerCase().includes(keyword)) {
+            score += 1;
+          }
+        });
+  
+        
+        queryList.forEach(keyword => {
+          if (service.title.toLowerCase().includes(keyword)) {
+            score += 1;
+          }
+        });
+  
+        
+        queryList.forEach(keyword => {
+          if (service.categories.join().toLowerCase().includes(keyword)) {
+            score += 1;
+          }
+        });
+  
+        return { service, score };
+      });
+  
+      scoredResults.sort((a,b)=> {return b.score - a.score});
+      const filteredResults = scoredResults.filter(item => item.score > 0);
+  
+      
+      res.json(filteredResults);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   };
   
 
@@ -115,6 +170,7 @@ const controller = {
     createService,
     deleteService,
     editService,
+    searchServices,
 }
 
 module.exports = controller;
