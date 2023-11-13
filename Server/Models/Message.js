@@ -9,7 +9,6 @@ const messageSchema = new mongoose.Schema({
   body: {
     type : String,
     required : true, 
-    match : '^.+$',
   },
   created: {
     type: Date,
