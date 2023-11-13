@@ -1,0 +1,13 @@
+const express = require('express');
+const router = express.Router();
+const Chat = require('../Models/Chat');
+const controller = require('../Controllers/ChatController');
+
+router.post('/', controller.createChat);
+router.get('/:id', controller.getChat);
+router.get('/seller/:id', controller.getChatsBySeller);
+router.get('/buyer/:id', controller.getChatsByBuyer);
+router.delete('/:id', controller.deleteChat);
+router.put('/:id', controller.addMessage);
+
+module.exports = router;
