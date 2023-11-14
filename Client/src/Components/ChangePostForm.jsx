@@ -49,8 +49,19 @@ async function createService(user, descript, title, cost, categories, updateServ
 			method: 'PUT',
 		});
 			
-		const data2 = await serviceUser.json();
-		console.log(data2.message);
+		const userData = await serviceUser.json();
+		console.log(userData.message);
+
+		for(var i = 0; i < categories.length; i++)
+		{
+			console.log(categories[i])
+			const serviceCategory = await fetch('http://localhost:3001/api/categories/'+categories[i]+"/add-service/"+data._id, {
+				method: 'PUT',
+			});
+				
+			const categoryData = await serviceCategory.json();
+			console.log(categoryData.message);
+		}
 	} catch (error) {
 		setError('An error occurred while creating a server.');
 	}
@@ -183,7 +194,7 @@ export default function ChangePostForm({post, updateIsOpen, user, updateServices
 			<div className="belowFloats">
 				<div>
 					<label htmlFor="description">Description:</label>
-					<textarea
+					<textarea className="fixAlign"
 						name="description"
 						rows="5"
 						required={true}

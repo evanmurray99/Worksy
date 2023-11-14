@@ -16,7 +16,7 @@ export default function ViewPostContent ({post, user}) {
             <img id="resizeImg" src={post.pinImg}/>
             <div className="viewTextSize">
                 <span className="floatLeft">Created by {user.firstName} {user.lastName}</span>
-                <span className="floatRight">Cost: CA {post.price}</span>
+                <span className="floatRight">Cost: CA ${post.price}</span>
                 <span className="inlineContent flexContainer">
                     <span id="centerVertically">Categories: </span>
                     <div className="flexContainer">{categories}</div>
