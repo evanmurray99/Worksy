@@ -9,12 +9,17 @@ const messageSchema = new mongoose.Schema({
   body: {
     type : String,
     required : true, 
-    match : '^.+$',
   },
   created: {
     type: Date,
     default: Date.now, 
   },
+
+  read : {
+    type : Boolean,
+    default : false,
+  }
+
 });
 
 const Message = mongoose.model('Message', messageSchema, 'Messages');

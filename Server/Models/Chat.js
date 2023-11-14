@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 
-const messageSchema = require('./Message');
-
 const chatSchema = new mongoose.Schema({
-  participant_1 :  {
+  seller :  {
     type: mongoose.Schema.Types.ObjectId, ref: 'Users',
     required : true, 
   },
-  participant_2 :  {
+  buyer :  {
     type: mongoose.Schema.Types.ObjectId, ref: 'Users',
     required : true, 
   }, 
@@ -15,7 +13,7 @@ const chatSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'Services',
     required : true, 
   },
-  messages: [messageSchema],
+  messages: [{type : mongoose.Schema.Types.ObjectId, ref: 'Messages'}],
 });
 
 const Chat = mongoose.model('Chat', chatSchema, 'Chats');
