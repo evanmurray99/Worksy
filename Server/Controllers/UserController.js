@@ -105,12 +105,15 @@ const editUser = async (req, res) => {
     }
 
     // If a new password is provided, hash it
-    if (!(await bcrypt.compare(password, user.hashedpassword))) {
-      const saltRounds = 10; // Adjust the salt rounds as needed
-      const salt = await bcrypt.genSalt(saltRounds);
-      user.hashedpassword = await bcrypt.hash(password, salt);
+    if(password !== '')
+    {
+      if (!(await bcrypt.compare(password, user.hashedpassword))) {
+        const saltRounds = 10; // Adjust the salt rounds as needed
+        const salt = await bcrypt.genSalt(saltRounds);
+        user.hashedpassword = await bcrypt.hash(password, salt);
+      }
     }
-    
+
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
