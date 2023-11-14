@@ -1,4 +1,4 @@
-name: Worksy CD pipeline
+name: Continuous Deployment pipeline
 
 on:
   push:
