@@ -12,7 +12,7 @@ import { deleteService } from '../utils/Services';
 function postToElement(posts, user, updateServices, categoryList, services) {
 	let numPosts = posts.length;
 	let postList = [];
-
+	
 	for (var i = 0; i < numPosts; i++) {
 		postList.push(
 			<PostListView
