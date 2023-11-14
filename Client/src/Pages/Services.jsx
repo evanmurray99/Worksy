@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
+import Cookies from 'js-cookie';
 import NewChatModal from '../Components/NewChatModal';
 import SearchResult from '../Components/SearchResult.jsx';
 import '../Styles/Search.css'
@@ -21,6 +22,7 @@ export default function Home() {
   const [filteredCategories , setFilteredCategories ] = useState({})
   const [filteredResult, setFilteredResults] = useState([]) 
   const [filterMax, setFilterMax] = useState(0)
+  const [loggedInUser,setLoggedInUser] = useState()
   const [maxPrice, setMaxPrice] = useState(0)
   const [order, setOrder] = useState('1');
   const [maxPage, setMaxPage] = useState(0)
@@ -29,6 +31,25 @@ export default function Home() {
   const [chatData, setChatData] = useState(null)
 
   const perPage = 3;
+
+  useEffect(() => {
+    console.log('update content');
+    const token = Cookies.get('token');
+    const url = 'http://localhost:3001/api/users/' + token + '/auth';
+    // do a check token before request
+    fetch(url, {
+        method: 'GET',
+    })
+        .then((response) => {
+            if (response.status === 200) return response.json();
+            
+        })
+        .then((data) => {
+            setLoggedInUser(data.user);
+        })
+        .catch((e) => console.log(e.message));
+
+}, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -259,7 +280,7 @@ export default function Home() {
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.service.id} className = 'resultItemContainer'>
-                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData}/>
+                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} loggedInUser={loggedInUser}/>
                     </div>
                    
                 )):
@@ -298,7 +319,7 @@ export default function Home() {
       :
       <></>
       }
-      <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} data={chatData} />
+      <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} PageData={chatData} />
     </React.Fragment>
 
   );

@@ -3,18 +3,108 @@ import '../Styles/PopUpModal.css';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom'
 
-export default function NewChatModal({title, isOpen, updateIsOpen, data}) {
+export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 	var result = null;
-    const [loggedInUser, setLoggedInUser] = useState(null)
-    const template = data ? `Hi! I would like to learn more about your service ${data.title}. Thank you!` : ''
+    const [loggedInUser, setLoggedInUser] = useState()
+    const template = PageData ? `Hi! I would like to learn more about your service ${PageData.title}. Thank you!` : ''
     const [newMessage, setNewMessage] = useState(template)
     const navigate = useNavigate();
 
+    const checkDuplicate = (dataA, buyer, seller, service) => {
+        
+        for (let i = 0; i < dataA.length; i++) {
+            
+            if (dataA[i].buyer === buyer && dataA[i].seller === seller && dataA[i].service === service) {
+                return dataA[i]._id; // Duplicate found
+            }
+        }
+        
+        return null; // No duplicate found
+    };
+
+    const initializeChat = (buyer, seller, service) =>{
+        console.log(buyer, seller, service)
+        const url = `http://localhost:3001/api/chats`;
+        fetch(url, {
+			method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+           },
+            body: JSON.stringify({
+                buyer: buyer,
+                seller: seller,
+                service: service
+            })
+		})
+			.then((response) => {
+				if (response.status === 200 || response.data === 201) return response.json()
+				else {
+					return
+				}
+			})
+			.then((data) => {
+                console.log(data)
+                sendMessage(data._id)
+			})
+			.catch((e) => console.log(e.message))
+
+    }
+
+    const sendMessage = (id)=>{
+        const url = `http://localhost:3001/api/chats/${id}`;
+        fetch(url, {
+			method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+           },
+            body :JSON.stringify({ sender : loggedInUser._id , body : newMessage})
+		})
+			.then((response) => {
+				if (response.status === 200 || response.data === 201) return response.json()
+				else {
+					return
+				}
+			})
+			.then((data) => {
+				//
+			})
+			.catch((e) => console.log(e.message))
+    }
     const beginNewChat = () => {
-        updateIsOpen(true)
+        if (newMessage.trim() !== ''){
+
+        
+        const url = `http://localhost:3001/api/chats/buyer/${loggedInUser._id}`;
+        fetch(url, {
+			method: 'GET',
+		})
+			.then((response) => {
+				if (response.status === 200) return response.json()
+                else if (response.status == 404){
+                    initializeChat(loggedInUser._id , PageData.seller, PageData._id)
+                    return
+                } 
+				else {
+					return 
+				}
+			})
+			.then((data) => {
+
+                 //Check if there is a duplicate
+                 if(checkDuplicate (data, loggedInUser._id ,  PageData.seller, PageData._id))
+                 {
+                     sendMessage(checkDuplicate (data, loggedInUser._id , PageData.seller, PageData._id))
+                 }else{
+                     initializeChat(loggedInUser._id , PageData.seller, PageData._id)
+                 }    
+             
+			})
+			.catch((e) => console.log(e.message))
+        updateIsOpen(false)
+        }
     }
     useEffect(() => {
-		const template = data ? `Hi! I would like to learn more about your service ${data.title}. Thank you!` : ''
+		const template = PageData ? `Hi! I would like to learn more about your service ${PageData.title}. Thank you!` : ''
         setNewMessage(template)
 		const token = Cookies.get('token');
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
@@ -33,7 +123,7 @@ export default function NewChatModal({title, isOpen, updateIsOpen, data}) {
 			})
 			.catch((e) => console.log(e.message));
 
-	}, [data]);
+	}, [PageData]);
 
     const goToLogin=()=> {
         navigate('/login')

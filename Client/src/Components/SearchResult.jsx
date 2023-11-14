@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
-export default function SearchResult({data, displayChatModal, setChatData}){
+export default function SearchResult({data, displayChatModal, setChatData,loggedInUser}){
     
     const [user, setUser] = useState(null);
     const getRating = (rating) => {
@@ -70,7 +70,16 @@ export default function SearchResult({data, displayChatModal, setChatData}){
                     {user && user._id ? `${user.firstName} ${user.lastName[0]}` :
                     ``
                     }
-                    <button className = 'chat' onClick={startChat}></button>
+                    { loggedInUser ?
+                        (user && ( user._id !== loggedInUser._id )?
+                            <button className = 'chat' onClick={startChat}></button>
+                            :
+                            <></>
+                        ):(<button className = 'chat' onClick={startChat}></button>)
+                        
+                        
+                    }
+                    
                 </div>
 
                 <div className = 'rating'>
