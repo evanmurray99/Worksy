@@ -7,9 +7,9 @@ on:
       - develop
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./Client
