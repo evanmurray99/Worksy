@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'React'
+import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import '../Styles/NavBar.css'
 export default function SearchBar({}){
