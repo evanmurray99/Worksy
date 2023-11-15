@@ -68,16 +68,23 @@ export default function MyContent() {
 			.catch((e) => console.log(e.message));
 	}, []);
 
-	const updateUser = (firstName, lastName, email, password) => {
-		console.log(firstName, lastName, email, password);
+	const updateUser = (firstName, lastName, email, password, bio) => {
+		console.log(firstName, lastName, email, bio);
 		const url = 'http://localhost:3001/api/users/' + user._id + '/update-user';
+
+		var realPass = ''
+		if(password !== undefined)
+		{
+			realPass = password
+		}
+
 		fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify({
 				firstName: firstName,
 				lastName: lastName,
 				email: email,
-				password: password,
+				password: realPass,
 			}),
 			headers: {
 				'Content-type': 'application/json',
@@ -90,7 +97,31 @@ export default function MyContent() {
 						firstName: firstName,
 						lastName: lastName,
 						email: email,
-						password: password,
+						password: realPass,
+					});
+				} else {
+					throw new Error('Something wrong');
+				}
+				return response.json();
+			})
+			.catch((e) => console.log(e.message));
+
+		const updateBio = 'http://localhost:3001/api/users/' + user._id + '/update-bio';
+
+		fetch(updateBio, {
+			method: 'PUT',
+			body: JSON.stringify({
+				bio: bio,
+			}),
+			headers: {
+				'Content-type': 'application/json',
+			},
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					setUser({
+						...user,
+						bio: bio,
 					});
 				} else {
 					throw new Error('Something wrong');
@@ -99,6 +130,7 @@ export default function MyContent() {
 			})
 			.catch((e) => console.log(e.message));
 	};
+
 
 	const getServices = (user) => {
 		const url = 'http://localhost:3001/api/users/services/' + user._id;
@@ -154,6 +186,7 @@ export default function MyContent() {
 								lastName={user.lastName}
 								email={user.email}
 								password={user.password}
+								bio={user.bio}
 								updateUser={updateUser}
 							/>
 						}
