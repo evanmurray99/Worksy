@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 export const logIn = async (email, password) => {
 	try {
+		console.log("login")
 		const url = 'http://localhost:3001/api/users/login';
 		const body = {
 			email: email,
@@ -19,7 +20,7 @@ export const logIn = async (email, password) => {
 	}
 };
 
-export default function Login() {
+export default function Login({setToken}) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
@@ -29,21 +30,34 @@ export default function Login() {
 		e.preventDefault();
 		setError('');
 		const data = await logIn(email, password);
+
 		try {
 			if (data.token) {
-				Cookies.set('token', data.token);
-				navigate('/content');
+				console.log(data.token)
+				setToken(data.token)
+				// Cookies.set('token', data.token);
+				console.log(data.token)
+				navigate('/');
 			} else if (data.message) setError(data.message);
 		} catch (e) {
 			setError('Server error');
 		}
 	};
+
+	const handleEnter = (event) => {
+		if(event.key === "Enter")
+		{
+			handleLogin(event);
+		}
+	}
+
 	return (
 		<>
 			<div className="rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px] ">
 				<form
 					className=" bg-white p-4 my-10 max-w-[400px] w-full mx-auto"
 					onSubmit={handleLogin}
+					onKeyDown={handleEnter}
 				>
 					<div className="text-center py-6 text-gray-700">
 						<h1 className="text-2xl font-bold mb-4">LOGIN</h1>

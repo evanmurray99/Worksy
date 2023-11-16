@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 import PostListView from '../Components/PostListView';
 import AccountForm from '../Components/AccountForm';
@@ -29,29 +29,26 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
-export default function MyContent() {
+export default function MyContent({user, setUser, token, setToken}) {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
-	const [user, setUser] = useState();
+	// const [user, setUser] = useState();
 	const [services, setServices] = useState();
 	const [categoryList, setCategories] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log('update content');
-		const token = Cookies.get('token');
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
 		// do a check token before request
 		fetch(url, {
 			method: 'GET',
 		})
-			.then((response) => {
+			.then((response) => { 
 				if (response.status === 200) return response.json();
 				else {
 					navigate('/login');
 				}
 			})
 			.then((data) => {
-				setUser(data.user);
 				getServices(data.user);
 			})
 			.catch((e) => console.log(e.message));
@@ -156,8 +153,13 @@ export default function MyContent() {
 	const dynamicButtons = (
 		<React.Fragment>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/home">
+				<Link className="navLinks" to="/">
 					Home
+				</Link>
+			</button>
+			<button className="leftAlign">
+				<Link className="navLinks" to="/chat">
+					Chat
 				</Link>
 			</button>
 			<button className="leftAlign" onClick={() => updateModalIsOpen(true)}>
@@ -174,6 +176,8 @@ export default function MyContent() {
 						leftButtons={dynamicButtons}
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
+						setToken={setToken}
+						token={token}
 						user={user}
 						updateServices={setServices}
 						categoryList={categoryList}

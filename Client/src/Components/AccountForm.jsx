@@ -69,11 +69,19 @@ export default function AccountForm(props) {
 		validateForm(firstName, lastName, email, props.password, newPassword, confirmPass, bio, props.updateUser, setError);
 	}
 
+	const handleEnter = (event) => {
+		if(event.key === "Enter")
+		{
+			handleSubmit(event);
+		}
+	}
+
 	return (
 		<div className="background">
 			<form
 				action=""
 				onSubmit={handleSubmit}
+				onKeyDown={handleEnter}
 			>
 				<div className="floatLeft leftWidth">
 					<div className="block">

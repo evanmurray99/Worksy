@@ -1,8 +1,11 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
-export default function SearchResult({data, displayChatModal, setChatData}){
+import NewChatModal from './NewChatModal';
+export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats}){
     
     const [user, setUser] = useState(null);
+    const [modalIsOpen, updateIsOpen] = useState(false);
+
     const getRating = (rating) => {
         const stars = [];
         for (let i = 0; i < 5; i++) {
@@ -38,7 +41,8 @@ export default function SearchResult({data, displayChatModal, setChatData}){
     }, []);
 
     const startChat = ()=>{
-        setChatData(data)
+        console.log(data)
+        updateIsOpen(true)
         displayChatModal()
     }
     
@@ -81,9 +85,8 @@ export default function SearchResult({data, displayChatModal, setChatData}){
                     <button className = 'bookmarkButton checkBookmark'></button>
                 </div>
             </div>
+                <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateModalIsOpen={updateIsOpen} data={data} user={currUser} setChats={setChats} chats={chats}/>
             </div>
-            
-        
-    )
-                }
+        )
+    }
 }
