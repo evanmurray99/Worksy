@@ -4,7 +4,7 @@ const request = require('supertest');
 const db = require('../Config/db')
 const app = require('../app'); 
 const e = require('express');
-require("./User.test")
+//require("./User.test")
 
 
 describe('CHAT API TEST', function() {
@@ -12,6 +12,7 @@ describe('CHAT API TEST', function() {
     let buyer_id;
     let service_id;
     let id;
+    let message_id;
 
     before((done) => {
         db.connectDB()
@@ -209,9 +210,45 @@ describe('CHAT API TEST', function() {
             expect(response.status).to.equal(200);
             expect(response.body).to.have.property('message', 'Message added to chat');
 
+            message_id = response.body._id;
+
             done();
         });
     });
+
+    it('Get a message by id', (done) => {
+        request(app)
+        .get(`/api/chats/message/${message_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(); 
+            }
+
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property('sender', seller_id);
+            expect(response.body).to.have.property('body', 'test content');
+
+            done(); 
+        });
+    });
+
+    it('Get a message with invalid id', (done) => {
+        request(app)
+        .get(`/api/chats/message/123`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done();
+            }
+
+            expect(response.status).to.equal(400);
+            expect(response.body).to.have.property('message', 'Invalid message ID');
+
+            done();
+        });
+    });
+
 
     it('Add message to chat with invalid chat id', (done) => {
         const newMessage = {
@@ -413,6 +450,23 @@ describe('CHAT API TEST', function() {
             done();
         });
     });
+
+    it('Get message by id after deleting chat', (done) => {
+        request(app)
+        .get(`/api/chats/message/${message_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done();
+            }
+
+            expect(response.status).to.equal(404);
+            expect(response.body).to.have.property('message', 'Message not found');
+
+            done();
+        });
+    });
+
 
     it('Delete chat with invalid id', (done) => {
         request(app)
@@ -671,6 +725,22 @@ describe('CHAT API TEST', function() {
     it('Delete chat after db is closed - should throw and catch 500 error', (done) => {
         request(app)
         .delete(`/api/chats/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(); 
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body).to.have.property('message', 'Internal server error');
+
+            done(); 
+        });
+    });
+
+    it('Get message by id after db is closed - should throw and catch 500 error', (done) => {
+        request(app)
+        .get(`/api/chats/message/${message_id}`)
         .set('Accept', 'application/json')
         .end((err, response) => {
             if (err) {
