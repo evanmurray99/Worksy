@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
 import NewChatModal from '../Components/NewChatModal';
+import ReviewPopUp from '../Components/ReviewPopUp';
 import SearchResult from '../Components/SearchResult.jsx';
 import Cookies from 'js-cookie';
 import '../Styles/Search.css'
@@ -69,6 +70,9 @@ export default function Services() {
   const [page, setPage] = useState(0)
   const [modalIsOpen, updateModalIsOpen] = useState(false)
   const [chatData, setChatData] = useState(null)
+
+// states for set review and open and close pop up
+  const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false)
 
   const perPage = 3;
 
@@ -215,7 +219,9 @@ export default function Services() {
       return prevCategories;
     });
   };
-
+// pop up state
+  const handleReviewOpenPopUp = () => { setReviewPopUpOpen(true) };
+  
   const displayChatModal = () =>{
      updateModalIsOpen(true)
 
@@ -331,7 +337,9 @@ export default function Services() {
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.service.id} className = 'resultItemContainer'>
-                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} currUser={user} setChats={setChats} chats={chats}/>
+                    {/* added variables  */}
+                      <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} displayReview={handleReviewOpenPopUp}/>                    
+                      <ReviewPopUp post_id={result.service._id} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
                     </div>
                    
                 )):

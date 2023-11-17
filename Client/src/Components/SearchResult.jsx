@@ -104,9 +104,10 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                     <button className = 'chat' onClick={startChat}></button>
                 </div>
 
+                    {/* here will come the code for the review */}
                 <div className = 'rating'>
                     {getRating(data.rating)}
-                    {`${data.reviews.length} reviews`}
+                    <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
                 </div>
                 <div className = 'bookmark'>
                     <button className = 'bookmarkButton checkBookmark'></button>
