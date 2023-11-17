@@ -76,6 +76,46 @@ describe('SERVICE API TEST', function() {
         });   
     });
 
+    it('Search for service', (done) => {
+      request(app)
+      .get(`/api/services/search/test`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {  
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('array')
+          expect(response.body[0].score).to.be.equal(3)
+  
+
+          done(); // Signal that the test case is complete
+      });
+  });
+
+    it('Get service', (done) => {
+        request(app)
+        .get(`/api/services/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {  
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property('title', 'test title');
+            expect(response.body).to.have.property('description', 'test description');
+            expect(response.body).to.have.property('price', 100);
+            expect(response.body).to.have.property('seller', user_id);
+            expect(response.body).to.have.property('categories').to.be.an('array').that.includes('test category');
+            expect(response.body).to.have.property('rating', 0);
+            expect(response.body).to.have.property('reviews').to.be.an('array').that.is.empty;
+
+            done(); // Signal that the test case is complete
+        });
+    });
+
 
     it('Edit service', (done) => {
       const editService = {
@@ -193,9 +233,30 @@ describe('SERVICE API TEST', function() {
         });
     });
 
-    it('Delete user', (done) => {
-    
+    it ('Edit already deleted service', (done) => {
+      const editService = {
+        description : "changed description",
+        title : "changed title",
+        price: 100,
+        categories : ["changed category"]
+      };
 
+      request(app)
+      .put(`/api/services/${id}`)
+      .send(editService)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(404);
+
+          done(); // Signal that the test case is complete
+      });
+    });
+
+    it('Delete user', (done) => {
         // Send a DELETE request to delete the user by ID
         request(app)
           .delete(`/api/users/${user_id}`)
@@ -218,6 +279,112 @@ describe('SERVICE API TEST', function() {
             done(); // Signal that the test case is complete
           });
       });
+
+
+      it('Try to get a service when db is closed - should catch and throw 500 error ', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/services/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {  
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+
+            done(); // Signal that the test case is complete
+        });
+      });
+
+
+      it('Try to add a service for created user when db is closed - should catch and throw 500 error', (done) => { 
+        const newService = {
+            seller : user_id,
+            description : "test description",
+            title : "test title",
+            price: 100,
+            categories : ["test category"]
+        };
+
+        db.closeDB()
+        request(app)
+        .post('/api/services')
+        .send(newService)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+
+
+            done(); // Signal that the test case is complete
+        });   
+      });
+
+
+      it ('Try to delete created service when db is closed - should catch and throw 500 error ', (done) => {
+        db.closeDB()
+        request(app)
+        .delete(`/api/services/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+
+            done(); // Signal that the test case is complete
+        });
+      });
+
+      it('Try to Search for service when db is closed - should catch and throw 500 error ', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/services/search/test`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {  
+                return done(err); // Signal that the test case failed with an error
+            }
+  
+            expect(response.status).to.equal(500);
+    
+  
+            done(); // Signal that the test case is complete
+        });
+    });
+
+      it ('Try to edit created service when db is closed - should catch and throw 500 error ', (done) => {
+        const editService = {
+          description : "changed description",
+          title : "changed title",
+          price: 100,
+          categories : ["changed category"]
+        };
+
+        db.closeDB()
+
+        request(app)
+        .put(`/api/services/${id}`)
+        .send(editService)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+
+            done(); // Signal that the test case is complete
+        });
+      });
+
+
+
 
       after((done) => {
         db.closeDB()

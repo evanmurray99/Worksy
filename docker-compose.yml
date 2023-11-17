@@ -1,0 +1,20 @@
+version: '3.8'
+
+services: 
+  server:
+    container_name: worksy-server
+    image: worksy-server:1.0.0
+    build: 
+      context: ./Server
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+  client: 
+    container_name: worksy-client
+    image: worksy-client:1.0.0
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    ports:
+      - 3030:3030
+

@@ -1,0 +1,101 @@
+.backDrop
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: auto;
+}
+
+div.backDrop .modal
+{
+    min-width: 50%;
+    max-width: 80%;
+    margin: auto;
+    background-color: white;
+    border-radius: 15px;
+    overflow: auto;
+}
+
+div.backDrop .chatModal
+{
+    margin-top: 65px;
+    min-width: 350px;
+    max-width: 350px;
+    background-color: white;
+    border-radius: 15px 0px 0px 0px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.chatModal .modalTitle
+{
+    padding: 0px 10px 0px 0px;
+    background-color: #55BDCB;
+    border-radius: 15px 0px 0px 0px;
+    display:flex;
+}
+.modalTitle
+{
+    padding: 0px 10px 0px 0px;
+    background-color: #55BDCB;
+    border-radius: 15px 15px 0px 0px;
+    display:flex;
+}
+
+.largeText
+{
+    font-size: 30px;
+    margin: auto;
+}
+
+div.modal .modalClose
+{
+    border-radius: 15px 0px 0px 0px;
+    background-color: #DC6060;
+}
+
+.noUser{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.noUserText{
+    padding: 15px;
+    font-size: 20px;
+    color: gray;
+    font-weight: bold;
+}
+.loginButton{
+    padding: 5px;
+    background-color: #55BDCB;
+    color: black;
+
+}
+
+.newChat{
+    display: flex;
+    flex-direction: column;
+    padding:15px;
+    justify-content: center;
+    align-items: center;
+}
+.newMessage{
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid grey;
+   
+}
+
+.chatIntro{
+    font-weight:bold;
+    color:grey;
+    margin-bottom: 15px;
+}

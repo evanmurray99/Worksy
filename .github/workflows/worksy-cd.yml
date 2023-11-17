@@ -1,0 +1,43 @@
+name: Continuous Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  publish_to_registry:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository on the runner machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      # Build Client image and push to Docker Hub
+      - name: Build and push Client
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Client
+          push: true
+          file: ./Client/Dockerfile
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/worksy-client:latest
+
+      # Build Server image and push to Docker Hub
+      - name: Build and push Server
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Server
+          push: true
+          file: ./Server/Dockerfile
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/worksy-server:latest

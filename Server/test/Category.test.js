@@ -9,15 +9,18 @@ require("./Service.test")
 describe('CATEGORY API TEST', function() {
     let id;
     let user_id;
+
     before((done) => {
         db.connectDB()
-          .then(() => {
+        .then(() => {
             done(); // Signal that before hook is complete
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
             done(error); // Signal that before hook failed with an error
-          });
+        });
     });
+
+
 
     it('Create a user', (done) => {
         const newUser = {
@@ -29,24 +32,25 @@ describe('CATEGORY API TEST', function() {
         };
     
         request(app)
-          .post('/api/users')
-          .send(newUser)
-          .set('Accept', 'application/json')
-          .end((err, response) => {
+        .post('/api/users')
+        .send(newUser)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
             if (err) {
-              return done(err); // Signal that the test case failed with an error
+                return done(err); // Signal that the test case failed with an error
             }
     
             expect(response.status).to.equal(201);
             expect(response.body).to.have.property('firstName', 'Test');
-        
-              user_id = response.body._id;
-              
+            user_id = response.body._id;
+            
             done(); // Signal that the test case is complete
-          });
-      });
+        });
+    });
 
-      it('Add Category ', (done) => { 
+
+
+    it('Add Category ', (done) => { 
         const newCategory = {
             name : "test category"
         };
@@ -64,10 +68,11 @@ describe('CATEGORY API TEST', function() {
             expect(response.body.message).to.equal('Category created')
             done(); // Signal that the test case is complete
         }); 
+    });
 
-      })
 
-      it('Add Duplicate Category ', (done) => { 
+
+    it('Add Duplicate Category ', (done) => { 
         const newCategory = {
             name : "test category"
         };
@@ -84,10 +89,11 @@ describe('CATEGORY API TEST', function() {
             expect(response.status).to.equal(500);
             done(); // Signal that the test case is complete
         }); 
+    });
 
-      })
 
-      it('Get Categories', (done) => { 
+
+    it('Get Categories', (done) => { 
         request(app)
         .get(`/api/categories`)
         .set('Accept', 'application/json')
@@ -103,6 +109,8 @@ describe('CATEGORY API TEST', function() {
         }); 
       
     });
+
+
 
     it('Create Service for Category ', (done) => { 
         const newService = {
@@ -134,6 +142,8 @@ describe('CATEGORY API TEST', function() {
         });   
     });
 
+
+
     it('Add Service to Category ', (done) => { 
         request(app)
         .put(`/api/categories/${'test category'}/add-service/${id}`)
@@ -150,6 +160,8 @@ describe('CATEGORY API TEST', function() {
         }); 
     });
 
+
+
     it('Add Service to non-existent Category ', (done) => { 
         request(app)
         .put(`/api/categories/${'fake'}/add-service/${id}`)
@@ -165,6 +177,8 @@ describe('CATEGORY API TEST', function() {
             done(); // Signal that the test case is complete
         }); 
     });
+
+
 
     it('Get services for Category', (done) => { 
         request(app)
@@ -184,6 +198,8 @@ describe('CATEGORY API TEST', function() {
       
     });
 
+
+
     it('Get services for non-existent Category', (done) => { 
         request(app)
         .get(`/api/categories/${'fake category'}`)
@@ -202,7 +218,9 @@ describe('CATEGORY API TEST', function() {
       
     });
 
-     it('Remove Service from category', (done) => { 
+
+
+    it('Remove Service from category', (done) => { 
         request(app)
         .delete(`/api/categories/${'test category'}/remove-service/${id}`)
         .set('Accept', 'application/json')
@@ -216,11 +234,11 @@ describe('CATEGORY API TEST', function() {
 
             done(); // Signal that the test case is complete
         }); 
-     });
-
-     it('Remove  non-existent Service from category', (done) => { 
+    });
 
 
+
+    it('Remove  non-existent Service from category', (done) => { 
         request(app)
         .delete(`/api/categories/${'test category'}/remove-service/${id}`)
         .set('Accept', 'application/json')
@@ -231,16 +249,14 @@ describe('CATEGORY API TEST', function() {
 
             expect(response.status).to.equal(404);
             expect(response.body.message).to.equal('Service not found in the category')
-           
 
             done(); // Signal that the test case is complete
         }); 
-     });
+    });
     
 
-     it('Remove Service from non-existent', (done) => { 
 
-
+    it('Remove Service from non-existent', (done) => { 
         request(app)
         .delete(`/api/categories/${'fake'}/remove-service/${id}`)
         .set('Accept', 'application/json')
@@ -251,13 +267,14 @@ describe('CATEGORY API TEST', function() {
 
             expect(response.status).to.equal(404);
             expect(response.body.message).to.equal('Category not found')
-           
 
             done(); // Signal that the test case is complete
         }); 
-     });
+    });
 
-    it ('Delete Created Category', (done) => {
+
+
+    it('Delete Created Category', (done) => {
         request(app)
         .delete(`/api/categories`)
         .send({name : 'test category'})
@@ -274,7 +291,9 @@ describe('CATEGORY API TEST', function() {
         });
     });
 
-    it ('Delete non-existent Category', (done) => {
+
+
+    it('Delete non-existent Category', (done) => {
         request(app)
         .delete(`/api/categories`)
         .send({name : 'fake category'})
@@ -291,7 +310,9 @@ describe('CATEGORY API TEST', function() {
         });
     });
 
-    it ('Delete created service', (done) => {
+
+
+    it('Delete created service', (done) => {
         request(app)
         .delete(`/api/services/${id}`)
         .set('Accept', 'application/json')
@@ -302,7 +323,7 @@ describe('CATEGORY API TEST', function() {
 
             expect(response.status).to.equal(200);
             expect(response.body).to.be.an('object');
-            // Add more assertions based on your API response structure
+
             done(); // Signal that the test case is complete
         });
     });
@@ -310,7 +331,6 @@ describe('CATEGORY API TEST', function() {
 
 
     it('Delete user', (done) => {
-   
         request(app)
           .delete(`/api/users/${user_id}`)
           .set('Accept', 'application/json')
@@ -330,16 +350,110 @@ describe('CATEGORY API TEST', function() {
             expect(response.body).to.have.property('message', 'User deleted successfully');
     
             done(); // Signal that the test case is complete
-          });
-      });
+        });
+    });
 
-      after((done) => {
+    it('Trying to add service to catagory when db is closed - should catch and throw 500 error', (done) => { 
         db.closeDB()
-          .then(() => {
-            done(); // Signal that after hook is complete
-          })
-          .catch((error) => {
-            done(error); // Signal that after hook failed with an error
-          });
-      });
+        request(app)
+        .put(`/api/categories/${'test category'}/add-service/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body.message).to.equal('Internal server error')
+            
+
+            done(); // Signal that the test case is complete
+        }); 
+    });
+
+    it('Trying to get category when db is closed - should catch and throw 500 error', (done) => { 
+        db.closeDB()
+        request(app)
+        .get(`/api/categories`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+            expect(response.status).to.equal(500);
+            expect(response.body.message).to.equal('Internal server error')
+
+            done(); // Signal that the test case is complete
+        }); 
+      
+    });
+
+    it('Trying to get service when db is closed - should catch and throw 500 error', (done) => { 
+        db.closeDB()
+        request(app)
+        .get(`/api/categories/${'test category'}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body.message).to.equal('Internal server error')
+
+            done(); // Signal that the test case is complete
+        }); 
+      
+    });
+
+
+
+    it('Trying to remove service from category when db is closed - should catch and throw 500 error', (done) => { 
+        db.closeDB()
+        request(app)
+        .delete(`/api/categories/${'test category'}/remove-service/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+            expect(response.status).to.equal(500);
+
+           
+
+            done(); // Signal that the test case is complete
+        }); 
+    });
+
+    
+
+    it('Trying to delete created category when db is closed - should catch and throw 500 error', (done) => { 
+        db.closeDB()
+        request(app)
+        .delete(`/api/categories`)
+        .send({name : 'test category'})
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+          
+            done(); // Signal that the test case is complete
+        });
+ 
+    });
+
+
+    after((done) => {
+    db.closeDB()
+        .then(() => {
+        done(); // Signal that after hook is complete
+        })
+        .catch((error) => {
+        done(error); // Signal that after hook failed with an error
+        });
+    });
+
 });

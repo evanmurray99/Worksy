@@ -1,0 +1,307 @@
+.resultContainer{
+    margin: 30px;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.filterContainer {
+    padding: 30px;
+    border-right: 1px solid gray;
+    width: 20%;
+    margin: 5px
+}
+.filterTitle{
+    font-weight: bold;
+}
+
+.filterSection{
+    border-bottom: 1px solid lightgrey;
+    margin-top: 10px;
+}
+.contentContain {
+    width: 100%;
+    margin : 5px ;
+  
+    background : white;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+.searchResults{
+    height: 90%;
+    
+}
+.pageToggle{
+    border-top: 1px solid lightgrey;
+    padding: 5px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+.radioContainer {
+    display: flex;
+    flex-direction: column; /* Align checkboxes in a column */
+  }
+  
+  .radioLabel {
+    font-size: 12px;
+    display: flex;
+    align-items: center; /* Align items vertically in the label */
+    
+    margin-bottom: 8px; /* Add spacing between labels */
+  }
+  
+  input[type="radio"] {
+    appearance: none; /* Remove default radio button appearance */
+    max-width: 10px; /* Set the width of the custom square */
+    max-height: 10px; /* Set the height of the custom square */
+    border: 1px solid #333; /* Border color */
+    margin-right: 8px; /* Add spacing between checkbox and text */
+    cursor: pointer; /* Change cursor on hover */
+  }
+  
+  input[type="radio"]:checked {
+    background-color: black; /* Change background color when checked */
+    border-color: black; /* Change border color when checked */
+  }
+  .priceSlider {
+    width: 100%;
+    max-height: 2px;
+    -webkit-appearance: none;
+    background: lightgray;
+    outline: none;
+    border-radius: 15px;
+    padding-left: 0px;
+  }
+ 
+  .sliderContainer{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+  .priceSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width:20px;
+    border: 1px solid black;
+    min-height: 15px;
+    background: white;
+    cursor: pointer; 
+  }
+  .valueLabel{
+    
+    width: 100%;
+    font-size: 12px;
+    margin-bottom: 10px;
+    margin-right : 10px
+  }
+  .priceInfo{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    
+  }
+  .sliderValue {
+    font-size:12px ;
+    font-weight: lighter;
+  }
+  input:not([type='file']) {
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 100%;
+    padding-left: 0px; 
+}
+div{
+    caret-color: transparent;
+}
+.page {
+    display: flex;
+    flex-direction: row;
+    width: 30px;
+    margin-left:5px;
+    margin-right:5px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border : 1px solid grey;
+    background-color: lightgrey;
+}
+.pageNavigator {
+    margin-left: 50px;
+    display: flex;
+    flex-direction: row;
+}
+.navigateButton{
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 20px;
+    border: 1px solid black;
+}
+.resultItemContainer{
+    height: 32%;
+}
+.noResults{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+.failedQuery{
+    font-size: 40px;
+    font-weight: bold;
+    color: darkgray;
+}
+.servicePost{
+    width: 100%;
+    border: 1px solid black;
+    margin: 5px;
+    height: 90%;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.serviceTitle{
+    max-height: 20%;
+    white-space: nowrap;
+    width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+    font-weight: bold;
+    background-color: #55BDCB;
+    color: white;
+    border-top-left-radius: 15px;
+}
+.serviceCategories{
+    background-color: #55BDCB;
+    max-height: 20%;
+    min-height: 20%;
+    display: flex;
+    flex-direction: row;
+    padding-top:10px;
+    padding-bottom: 10px;
+    align-items: center;
+    border-bottom-left-radius: 15px;
+}
+.category{
+    background-color: #6AEDC6;
+    padding : 3px;
+    border-radius: 15px;
+    margin-left: 5px;
+    font-size: 12px;
+
+}
+.serviceInfo{
+    display: flex;
+    flex-direction: column;
+    min-width: 70%;
+    max-width: 70%;
+    justify-content: space-between;
+}
+.serviceDescription{
+    width: 100%;
+    max-height: 50%;
+    overflow-y:scroll ;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+.serviceDetails{
+    border-top-right-radius:15px ;
+    border-bottom-right-radius:15px ;
+    max-width: 30%;
+    min-width:30%;
+    height : 100%;
+    display: flex;
+    padding: 15px;
+    flex-direction: column;
+    background-color: #6AEDC6;
+}
+
+.servicePrice{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.star {
+    display: inline-block;
+    width: 20px;
+    background: gray;
+    height: 20px;
+    border: 1px solid #ccc;
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+}
+
+/* Style the filled-in star */
+.checkedStar {
+   background: rgb(234, 195, 67); /* or any other color you prefer */
+}
+
+.chat {
+    width: 20px;
+    height: 20px;
+    border: none;/* You can change the background color to your preference */
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-top: 5px;
+  
+    margin-bottom: 5px;
+    cursor: pointer;
+    background-size: contain;
+    background-image: url('../assets/chat-icon.png');
+    background-position: center; /* Center the background image */
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover effect for the button */
+  .chat:hover {
+    width: 25px;
+    height: 25px; /* Change the hover background color */
+  }
+  .serviceUser{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  .bookmark{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid grey;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+

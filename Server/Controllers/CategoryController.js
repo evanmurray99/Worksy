@@ -30,9 +30,7 @@ const addCategory = async (req, res) => {
       if (!category) {
         return res.status(404).json({ message: 'Category not found' });
       }
-      if(!category.services){
-        category.services = [];
-      }
+
       category.services.push(service);
   
       
@@ -124,6 +122,7 @@ const getServices = async (req, res) => {
         res.status(404).json({ message: 'No categories found with the given name' });
       }
     } catch (error) {
+      console.error('Error deleting categories:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   };

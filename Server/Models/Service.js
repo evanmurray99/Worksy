@@ -1,12 +1,5 @@
 const mongoose = require('mongoose');
 
-const reviewSchema = new mongoose.Schema({
-    rating : Number, 
-     body: {
-        type : String,
-       
-      },
-});
 const serviceSchema = new mongoose.Schema({
     seller :  {
         type: mongoose.Schema.Types.ObjectId, ref: 'Users',
@@ -35,9 +28,7 @@ const serviceSchema = new mongoose.Schema({
       },
     categories : [{ type: String }], 
     rating : Number,
-    reviews : [reviewSchema],
-
-
+    reviews : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }]
 });
 
 const Service =  mongoose.model('Service', serviceSchema, 'Services');
