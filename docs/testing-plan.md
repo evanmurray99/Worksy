@@ -5,7 +5,7 @@ ChangeLog
 | Version | Change Date  | By   | Description          |
 |---------|--------------|------|----------------------|
 | 1.0.0   | Oct, 19 2023 | Evan | Initial Testing Plan |
-|         |              |      |                      |
+| 2.0.0   | Nov, 16 2023 |Diljot|Acceptance, Regression|
 |         |              |      |                      |
 |         |              |      |                      |
 
@@ -119,6 +119,38 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Acceptance Tests:
 
+1. **As a User, I want to be able to edit my service information**:
+    - Log in as a user, navigate to the service management section, and edit the details of a created service
+    - Confirm that the changes are reflected in the system, and the updated service information is displayed.
+
+2. **As a User, I want to see a list of services in a specific category**:    
+    - Log in as a user, navigate to the service listing page, and select a specific category.
+    -     * Confirm that the displayed services belong only to the selected category.
+
+3. **As a User, I want to delete a service I created**:  
+    - Log in as a user, navigate to the service management section, and delete a service.
+    - Confirm that the service is no longer present in the user's list of services and the overall service listing.
+
+4. **As a User, I want to view detailed information about a service:**:    
+    - Log in as a user, navigate to the service details page, and select a specific service.
+    - Confirm that detailed information about the service is displayed, including description, availability, and associated user.
+
+#### Regression Tests: 
+
+1. **Test Service Creation**:
+    - Verify that creating a service through the "/api/services" endpoint works as expected.
+    - Ensure that the service is stored in the database, and the response indicates successful creation.
+2. **Test Service Update**:
+    - Create a service and update its details by sending a PUT request through API.
+    - Confirm that the updated information is correctly reflected in the service's data.
+3. **Test Service Delete**:
+    - Create a service and then delete it by sending a DELETE request through API.
+    - Ensure that the service is no longer retrievable from the database.
+4. **Test Adding Service to User**:
+    - Create a user and a service, then associate the service with the user by sending a PUT request.
+    - Verify that the user's list of services is updated.
+
+
 ### Feature 2: Account 
 
 #### Unit Tests:
@@ -224,12 +256,50 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Acceptance Tests:
 
-1. As a user, I want to be able to create an account so I can use the app
+1. **As a user, I want to be able to create an account so I can use the app**:
     - Navigate from home page to click "signup" button that leads me to the signup page
     - Fill out name, lastname, email, and both password fields
     - Select if you are a student or not.
     - Submit the document by clicking the "create account" button
     - Return to homepage 
+
+2. **As a user, I want to log in to access my account**:
+    - Navigate from the home page to click the "login" button leading to the login page.
+    - Enter valid login credentials (email and password) and submit the form.
+    - Expect a redirection to the home page, indicating a successful login. 
+3. **As a user, I want to update my profile information**:
+    - Log in using valid credentials and navigate to the profile settings page.
+    - Update profile information, such as name, email, or profile picture.
+    - Confirm that the changes are saved by checking the updated data on the user profile page.
+4. **As a user, I want to view my servicers**:
+    - Log in with valid credentials and navigate to the services section.
+    - Confirm that the displayed services belong to the logged-in user.
+    - Ensure that only the user's services are visible.
+5. **As a user, I want to delete my account**:
+    - Log in with valid credentials and navigate to the account settings page.
+    - Click on the option to delete the account and follow the confirmation process.
+    - Expect a successful deletion and a redirect to the home page.
+
+#### Regression Tests:
+1. **Test User Creation**:
+    - Verify that creating a user through the "/api/users" endpoint works as expected.
+    - Ensure that the user is stored in the database, and the response indicates successful creation.
+
+2. **Test User Update**:
+    - Create a user and update their details by sending a PUT request to "/api/users/:id."
+    - Confirm that the updated information is correctly reflected in the user's data.
+
+3. **Test User Deletion**:
+    - Create a user and then delete it by sending a DELETE request to "/api/users/:id."
+    - Ensure that the user is no longer retrievable from the database.
+
+4. **Test Adding Service to User**:
+    - Create a user and a service, then associate the service with the user by sending a PUT request.
+    - Verify that the user's list of services is updated.
+
+5. **Test Invalid User Update**:
+    - Attempt to update a user with an invalid user ID.
+    - Confirm that the API responds with an error message, and the user remains unchanged.
     
 ### Feature 3: Search  
 
@@ -305,7 +375,90 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - The test deletes the user account that was created in the initial test.
     - It sends a DELETE request to "/api/users/{userId}" and expects a successful response (status 200 or 404).
 
+### Integration Test: 
+
+1. **Test Service Creation in Category**:
+    - Create a user and a category.
+    - Send a POST request to create a service associated with the created category.
+    - Verify that the service is successfully created and associated with the specified category.
+
+2. **Test Service Creation in Category**:
+    - Create a user and a category.
+    - Send a POST request to create a service associated with the created category.
+    - Verify that the service is successfully created and associated with the specified category.
+
+2. **Test Service Search by Keywords**:
+    - Create multiple services with distinct names and descriptions.
+    - Initiate a search using specific keywords related to one of the services.
+    - Confirm that the search results include the targeted service and exclude unrelated ones.
+3. **Test Service Category Association**:
+    - Create a service and associate it with a specific category.
+    - Retrieve the service and verify that it is correctly associated with the chosen category.
+4. **Test Category Listing of Services**:
+    - Create multiple services, each associated with different categories.
+    - Access the category section from the navigation menu.
+    - For each category, verify that the displayed services match the ones associated with that category.
+5. **Test Service Removal from Category**:
+    - Create a service associated with a category.
+    - Send a DELETE request to disassociate the service from the category.
+    - Confirm that the service is no longer associated with the category.
+6. **Test Invalid Category Association**:
+    - Attempt to associate a service with a non-existent category.
+    - Expect a response with a status of 404 and an appropriate error message.
+7. **Test Service Deletion with Category Cleanup**:
+    - Create a service associated with a category.
+    - Delete the service, triggering a cleanup of associations in the related category.
+    - Verify that the category no longer has associations with the deleted service.
+8. **Test Category Listing After Deletion**:
+    - Create multiple services associated with different categories.
+    - Delete one of the categories.
+    - Confirm that the deleted category no longer appears in the category listing.
+9. **Test Category Deletion with Associated Services**:
+    - Create a category and associate services with it.
+    - Attempt to delete the category.
+    - Expect a response with a status of 400 or another appropriate error code, indicating that the category has associated services.
+10. **Test Category Search with Invalid Name**:
+    - Attempt to search for a category with an invalid name.
+    - Expect a response with a status of 404 and an appropriate error message.
+
+
 #### Acceptance Tests:
+
+1. **As a user, I want to be able to search for Services**:
+    - Navigate from the home page to the search bar.
+    - Enter specific keywords related to the desired services.
+    - Initiate the search and ensure the results page displays relevant services.
+    - Click on a service to view detailed information.
+    - Verify that the service details match the expected data.
+2. **As a user, I want to explore categories**:  
+    - Access the category section from the navigation menu.
+    - Select a category of interest. A
+    - Confirm that the category page displays relevant services associated with the chosen category.
+    - Click on a service to view detailed information.
+    - Verify that the service details match the expected data.
+3. **Test Service Filtering in Category**:
+    - Access a specific category from the category section.
+    - Verify that the displayed services are only those associated with the selected category.
+    - Click on a service to view detailed information.
+    - Verify that the service details match the expected data.
+4. **Test Service Search with No Results**:
+    - Navigate to the search bar and enter keywords with no matching services.
+    - Confirm that the search results page indicates no matching services found.
+5. **Test Category Navigation from Service**:
+    - Access a service details page.
+    - Click on the associated category to navigate to the category page.
+    - Verify that the displayed services are only those associated with the selected category.
+
+#### Regression Tests:
+1. **Search with Empty Query**:
+    - Attempt to perform a search with an empty query.
+    - Expect a response with a status of 400 (Bad Request) and an appropriate error message.
+2. **Search with Special Characters**:
+    - Attempt to perform a search with special characters in the query.
+    - Verify that the search results are not affected by special characters and return accurate results.
+3. **Attempt to Access Deleted Service**:
+    -Try to access a service that was previously deleted.
+    -Expect a response with a status of 404 (Not Found) and an appropriate error message.    
 
 ### Feature 4: Chat
 
@@ -353,7 +506,51 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - Test how the chat feature handles errors, such as network issues or server errors.
     - Simulate error conditions and verify that the feature responds appropriately.
 
+#### Integration Tests:
+
+1. **Authenticated User Sends and Receives Messages**:
+    - Simulate two authenticated users interacting with the chat feature.
+    - User A sends messages to User B, and User B receives and responds.
+    - Verify that the chat history is correctly updated for both users.
+2. **Message Validation and Formatting in Chat**:
+    - Send a variety of messages with different formats and content.
+    - Verify that the messages are correctly validated and formatted in the chat history.
+3. **User Status Updates in Chat**:
+    - Simulate users logging in and out.
+    - Verify that the chat feature correctly updates and displays the online/offline status of users.
+4. **Multiple Users Engage in Chat**:
+    - Simulate multiple users engaging in a group chat.
+    - Verify that messages from different users are correctly displayed in the chat history.
+5. **Message Deletion in Chat**:
+    - Simulate users deleting their messages.
+    - Verify that deleted messages are appropriately removed from the chat history.
+
 #### Acceptance Tests:
+
+1. **User Engages in One-on-One Chat**:
+    - As a user, initiate a chat with another user.
+    - Send and receive messages.
+    - Verify that the chat history is correctly updated in real-time.
+2. **User Engages in Group Chat**:
+    - As a user, join a group chat with multiple participants.
+    - Exchange messages in the group.
+    - Verify that all messages are correctly displayed for all participants.
+3. **User Receives Real-Time Notifications**:
+    - As a user, have another user send you a message.
+    - Verify that you receive a real-time notification about the new message.
+
+#### Regression Tests:
+
+1. **Message Storage Integrity**:
+    - Send a series of messages and verify that they are correctly stored in the chat history.
+    - Retrieve the chat history and ensure that all messages are intact.
+2. **Error Handling and Recovery**:
+    - Introduce simulated errors (e.g., network issues) during a chat session.
+    - Verify that the chat feature handles errors gracefully and recovers without data loss.
+3. **User Authentication Persistence**:
+    - Simulate user logouts and logins.
+    - Verify that the chat feature maintains user authentication and continues to track user online/offline status correctly.
+
 
 ### Feature 6: Review 
 
@@ -400,11 +597,75 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - Test that users can retrieve their own review history, including products or services they have reviewed.
     - Ensure that the retrieved list of reviews is accurate.
 
+#### Intregration Tests:
+1. **Test Review Creation and Retrieval**:
+    - Create a user, a product or service, and a review for that item.
+    - Send requests to create and retrieve the review.
+    - Verify that the created review is accurately retrieved and associated with the correct user and item.
+2. **Test Review Editing and Retrieval**:
+    - Create a user, a product or service, and a review for that item.
+    - Send requests to edit and retrieve the review.
+    - Verify that the edited review is accurately retrieved and associated with the correct user and item.
+3. **Test Review Deletion and Retrieval**:
+    - Create a user, a product or service, and a review for that item.
+    - Send requests to delete and retrieve the review.
+    - Verify that the deleted review is no longer retrievable and that the system correctly handles review deletion.
+4. **Test Review Validation and Rating Range**:
+    - Attempt to create reviews with invalid ratings (below and above the valid range).
+    - Verify that the system returns appropriate error messages or status codes for rating validation.
+5. **Test Review Title and Text Length Constraints**:
+    - Attempt to create reviews with titles and text exceeding the character limits.
+    - Verify that the system enforces length constraints and returns meaningful error messages.
+6. **Test Review Ownership Verification**:
+    - Create a user, a product or service, and a review for that item.
+    - Send a request to check if the user owns the review.
+    - Verify that the system correctly identifies the owner of the review.
+7. **Test Duplicate Review Prevention**:
+    - Create a user, a product or service, and a review for that item.
+    - Attempt to create a duplicate review for the same item by the same user.
+    - Verify that the system prevents the creation of duplicate reviews.
+8. **Test User Review History Retrieval**:
+    - Create a user and multiple reviews for different products or services.
+    - Send a request to retrieve the user's review history.
+    - Verify that the retrieved list of reviews accurately represents the user's review history.    
+
 #### Acceptance Tests:
 
+1. **User Reviews Product**:
+    - As a user, navigate to a product or service page.
+    - Create a review with a title, text, and a rating.
+    - Verify that the review is displayed on the product or service page.
+2. **User Edits Review**:
+    - As a user, navigate to a product or service page where you have a review.
+    - Edit the review by changing the title, text, or rating.
+    - Verify that the updated review is correctly displayed on the product or service page.
+3. **User Deletes Review**:
+    - As a user, navigate to a product or service page where you have a review.
+    - Delete the review.
+    - Verify that the review is no longer displayed on the product or service page.
+4. **User Views Review History**:
+    - As a user, navigate to your profile or account settings.
+    - Access the review history section.
+    - Verify that the displayed review history matches the reviews you have created.
+5. **User Tries to Review Own Product**:
+    - As a user, navigate to a product or service page that you own.
+    - Attempt to create a review for your own product or service.
+    - Verify that the system prevents you from reviewing your own item.
+
 #### Regression tests:
-- All unit tests and integration tests are executed for each commit pushed to the develop
-and main branch.
+1. **Review Deletion with Invalid Ownership**:
+    - Attempt to delete a review owned by another user.
+    - Verify that the system returns an appropriate error message or status code.
+2. **Review Retrieval Sorting**:
+    - Create multiple reviews for a product or service with varying ratings and dates.
+    - Retrieve the reviews for the item and verify that they are correctly sorted by date or rating.
+3. **Review Validation with Empty Title or Text**:
+    - Attempt to create a review with an empty title or text.
+    - Verify that the system returns an appropriate error message.
+4. **Review Validation for Non-Existent Item**:
+    - Attempt to create a review for a product or service that does not exist.
+    - Verify that the system returns an appropriate error message or status code.
+
 
 
 ## 2.2	Test Completeness
