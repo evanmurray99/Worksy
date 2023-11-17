@@ -48,7 +48,7 @@ export default function ReviewPopUp({ post_id, isOpen, closePopUp }) {
         },
           
           body: JSON.stringify({
-            reviewer: 'John',
+            reviewer: post_id,
             rating: rating,
             text: comment
           }),
