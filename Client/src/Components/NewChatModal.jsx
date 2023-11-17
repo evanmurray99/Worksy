@@ -5,10 +5,14 @@ import {useNavigate} from 'react-router-dom'
 
 export default function NewChatModal({title, isOpen, updateModalIsOpen, data, user, setChats, chats}) {
 	var result = null;
+	const [newMessage, setNewMessage] = useState()
 
     // const [loggedInUser, setLoggedInUser] = useState(null)
+	useEffect(() => {
+		setNewMessage("Hi! I would like to learn more about your service " + data.title + ". Thank you!")
+	},[data])
 
-	var newMessage = "Hi! I would like to learn more about your service " + data.title + ". Thank you!"
+	// var newMessage = "Hi! I would like to learn more about your service " + data.title + ". Thank you!"
     const navigate = useNavigate();
 
     const beginNewChat = async (event) => {
@@ -32,6 +36,21 @@ export default function NewChatModal({title, isOpen, updateModalIsOpen, data, us
 
 		setChats(prevChats => [...prevChats, result]);
         updateModalIsOpen(false)
+
+		const addMsg = 'http://localhost:3001/api/chats/'+result._id;
+		const newMsg = await fetch(addMsg, {
+			method: 'PUT',
+			headers: {
+				'Content-type': 'application/json',
+		    },
+			body: JSON.stringify({
+			   sender: user._id,
+			   created: new Date(),
+			   body: newMessage,
+	 	    }),
+		})
+
+		const res = await newMsg.json().catch((e) => console.log(e.message));
     }
 
 //    useEffect(() => {

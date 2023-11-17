@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export const logIn = async (email, password) => {
 	try {
@@ -20,7 +20,7 @@ export const logIn = async (email, password) => {
 	}
 };
 
-export default function Login({setToken}) {
+export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
@@ -32,10 +32,9 @@ export default function Login({setToken}) {
 		const data = await logIn(email, password);
 
 		try {
+			console.log(data.token)
 			if (data.token) {
-				console.log(data.token)
-				setToken(data.token)
-				// Cookies.set('token', data.token);
+				Cookies.set('token', data.token)
 				console.log(data.token)
 				navigate('/');
 			} else if (data.message) setError(data.message);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import PostListView from '../Components/PostListView';
 import AccountForm from '../Components/AccountForm';
@@ -29,9 +29,10 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
-export default function MyContent({user, setUser, token, setToken}) {
+export default function MyContent({}) {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
-	// const [user, setUser] = useState();
+	const [user, setUser] = useState();
+	const [token, setToken] = useState(Cookies.get('token'));
 	const [services, setServices] = useState();
 	const [categoryList, setCategories] = useState([]);
 	const navigate = useNavigate();
@@ -49,6 +50,7 @@ export default function MyContent({user, setUser, token, setToken}) {
 				}
 			})
 			.then((data) => {
+				setUser(data.user);
 				getServices(data.user);
 			})
 			.catch((e) => console.log(e.message));
@@ -63,7 +65,7 @@ export default function MyContent({user, setUser, token, setToken}) {
 				setCategories(data);
 			})
 			.catch((e) => console.log(e.message));
-	}, []);
+	}, [token]);
 
 	const updateUser = (firstName, lastName, email, password, bio) => {
 		console.log(firstName, lastName, email, bio);

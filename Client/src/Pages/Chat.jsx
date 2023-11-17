@@ -2,78 +2,90 @@ import React, { useState, useEffect } from 'react';
 
 import ChatRoom from '../components/ChatRoom';
 import NavBar from '../Components/NavBar';
+import Cookies from 'js-cookie'
 import { Link, useNavigate } from 'react-router-dom';
+
+const getChats = (user, setChats) => {
+	if(user !== undefined)
+	{
+	  setChats([])
+  
+	  const url = 'http://localhost:3001/api/chats/seller/' + user._id;
+	  fetch(url, {
+		method: 'GET',
+		headers: {
+		  'Content-type': 'application/json',
+		},
+	  })
+		.then((response) => {
+		  if (response.status === 200) return response.json();
+		  else throw new Error('Error in getChat');
+		})
+		.then((data) => {
+		  setChats([...data]);
+		})
+		.catch((e) => console.log(e.message));
+  
+		const buyer = 'http://localhost:3001/api/chats/buyer/' + user._id;
+		fetch(buyer, {
+		  method: 'GET',
+		  headers: {
+			'Content-type': 'application/json',
+		  },
+		})
+		  .then((response) => {
+			if (response.status === 200) return response.json();
+			else throw new Error('Error in getChat');
+		  })
+		  .then((data) => {
+			setChats(prevChats => [...prevChats, ...data]);
+		  })
+		  .catch((e) => console.log(e.message));
+	}
+  };
 
 function listChatRooms(chats, setChats, user)
 {
 	var result = [];
-	var len = chats.length;
-	console.log(len)
 
-	for(var i = 0; i < len; i++)
+	if(chats !== undefined)
 	{
-		var temp = chats[i];
-		console.log(i)
-		// result.push(<ChatRoom key={"ChatRoom"+i} chat={temp} currUser={user} setChats={setChats}/>)
+		var len = chats.length;
+
+		for(var i = 0; i < len; i++)
+		{
+			var temp = chats[i];
+			result.push(<ChatRoom key={"ChatRoom"+i} chat={temp} currUser={user} setChats={setChats}/>)
+		}
 	}
 
 	return result;
 }
 
-export default function Chat({token, setToken, user}) {
-	const [chats, setChats] = useState([]);
+export default function Chat() {
+	const [chats, setChats] = useState();
+	const [user, setUser] = useState();
+	const [token, setToken] = useState(Cookies.get('token'));
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const getChats = async() =>{
-			if(user !== undefined)
-				{
-					setChats([])
-					const buyer = 'http://localhost:3001/api/chats/buyer/' + user._id;
-					const seller = 'http://localhost:3001/api/chats/seller/' + user._id;
-		
-					// do a check token before request
-					await fetch(buyer, {
-						method: 'GET',
-					})
-						.then((response) => {
-							if (response.status === 200) return response.json();
-						})
-						.then((data) => {
-							setChats(prevChats => [...prevChats, ...data]);
-						})
-						.catch((e) => console.log(e.message));
-		
-					await fetch(seller, {
-							method: 'GET',
-						})
-							.then((response) => {
-								if (response.status === 200) return response.json();
-							})
-							.then((data) => {
-								setChats(prevChats => [...prevChats, ...data]);
-							})
-							.catch((e) => console.log(e.message));
+		const url = 'http://localhost:3001/api/users/' + token + '/auth';
+		// do a check token before request
+		fetch(url, {
+			method: 'GET',
+		})
+			.then((response) => { 
+				if (response.status === 200) return response.json();
+				else {
+					navigate('/login');
 				}
-			}
-			getChats()
-			console.log(chats)
-		}, [user, ]);
-
-		useEffect(() => {
-			const url = 'http://localhost:3001/api/users/' + token + '/auth';
-			// do a check token before request
-			fetch(url, {
-				method: 'GET',
 			})
-				.then((response) => { 
-					if (response.status === 200) return response.json();
-					else {
-						navigate('/login');
-					}
-				})
-				.catch((e) => console.log(e.message));
-		}, []);
+			.then((data) => {
+				setUser(data.user)
+				getChats(data.user, setChats)
+			})
+			.catch((e) => console.log(e.message));
+	}, []);
 
 		var chatRooms = listChatRooms(chats, setChats, user);
 

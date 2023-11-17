@@ -3,10 +3,52 @@ import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
 import NewChatModal from '../Components/NewChatModal';
 import SearchResult from '../Components/SearchResult.jsx';
+import Cookies from 'js-cookie';
 import '../Styles/Search.css'
 
+const getChats = (user, setChats) => {
+  if(user !== undefined)
+  {
+    setChats([])
 
-export default function Home({user, setToken, token, chats, setChats}) {
+    const url = 'http://localhost:3001/api/chats/seller/' + user._id;
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        else throw new Error('Error in getChat');
+      })
+      .then((data) => {
+        setChats([...data]);
+      })
+      .catch((e) => console.log(e.message));
+
+      const buyer = 'http://localhost:3001/api/chats/buyer/' + user._id;
+      fetch(buyer, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          else throw new Error('Error in getChat');
+        })
+        .then((data) => {
+          setChats(prevChats => [...prevChats, ...data]);
+        })
+        .catch((e) => console.log(e.message));
+  }
+};
+
+export default function Services() {
+  const[token, setToken] = useState(Cookies.get('token'))
+  const[user, setUser] = useState();
+  const[chats, setChats] = useState();
 
   const orderMap = {
     '1' : 'Relevance',
@@ -29,6 +71,23 @@ export default function Home({user, setToken, token, chats, setChats}) {
   const [chatData, setChatData] = useState(null)
 
   const perPage = 3;
+
+  useEffect(() => {
+		const url = 'http://localhost:3001/api/users/' + token + '/auth';
+		// do a check token before request
+		fetch(url, {
+			method: 'GET',
+		})
+			.then((response) => { 
+				if (response.status === 200) return response.json();
+			})
+			.then((data) => {
+				setUser(data.user);
+				getChats(data.user, setChats);
+			})
+			.catch((e) => console.log(e.message));
+      console.log(chats)
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

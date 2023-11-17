@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
 import NewChatModal from './NewChatModal';
+import {useNavigate} from 'react-router-dom'
 export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats}){
     
     const [user, setUser] = useState(null);
@@ -39,15 +40,41 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
             // Perform any necessary cleanup here, such as cancelling the ongoing fetch.
         };
     }, []);
+    
+    const navigate = useNavigate()
 
     const startChat = ()=>{
-        console.log(data)
-        updateIsOpen(true)
-        displayChatModal()
+        var len = chats.length
+        var noChat = true
+
+        for(var i = 0; i < len; i ++)
+        {
+            if(chats[i].service === data._id)
+            {
+                noChat = false;
+            }
+        }
+
+        console.log(data.seller)
+        console.log(user._id)
+        if(currUser._id !== data.seller)
+        {
+            if(noChat === true)
+            {
+                console.log(data)
+                updateIsOpen(true)
+                displayChatModal()
+            }
+            else
+            {
+                navigate('/chat')
+            }
+        }
     }
     
     if(user && data){
     return(
+        
         <div className='servicePost'>
             <div className = 'serviceInfo'>
                 <div className = 'serviceTitle'>

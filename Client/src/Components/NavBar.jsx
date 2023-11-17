@@ -9,9 +9,6 @@ import SearchBar from './SearchBar'
 export default function NavBar ({leftButtons, modalIsOpen, updateModalIsOpen, user, updateServices, categoryList, setToken, token}){
     let post = null
 
-    // const token = Cookies.get('token');
-    // console.log(token)
-
     var logout = (event) => {}
     var logText = "Login"
 
@@ -20,7 +17,8 @@ export default function NavBar ({leftButtons, modalIsOpen, updateModalIsOpen, us
         logText = "Logout"
 
         var logout = (event) => {
-            setToken('');
+            Cookies.remove('token')
+            setToken(undefined);
         }
     }
 
