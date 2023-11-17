@@ -165,6 +165,11 @@ const addMessage = async (req, res) => {
 const getMessage = async (req, res) => {
     try {
         const messageId = req.params.id;
+
+        if (!messageId || !mongoose.Types.ObjectId.isValid(messageId)) {
+            return res.status(400).json({ message: 'Invalid message ID' });
+        }
+
         const message = await Message.findById(messageId);
 
         if (!message) {
