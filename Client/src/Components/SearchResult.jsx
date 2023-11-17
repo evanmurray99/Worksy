@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
 import NewChatModal from './NewChatModal';
 import {useNavigate} from 'react-router-dom'
-export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats}){
+export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats, displayReview}){
     
     const [user, setUser] = useState(null);
     const [modalIsOpen, updateIsOpen] = useState(false);
@@ -105,8 +105,10 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                 </div>
 
                     {/* here will come the code for the review */}
+                    {/* here will come the code for the review */}
                 <div className = 'rating'>
                     {getRating(data.rating)}
+                    <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
                     <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
                 </div>
                 <div className = 'bookmark'>
