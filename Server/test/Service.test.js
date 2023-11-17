@@ -152,7 +152,7 @@ describe('SERVICE API TEST', function() {
 
           expect(response.status).to.equal(200);
           expect(response.body).to.be.an('array');
-          expect(response.body[0]).to.have.property('title', 'test title');
+          expect(response.body[0]).to.have.property('title', 'changed title');
 
           done(); // Signal that the test case is complete
       });
