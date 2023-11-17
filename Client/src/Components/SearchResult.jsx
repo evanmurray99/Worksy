@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
-export default function SearchResult({data, displayChatModal, setChatData}){
+export default function SearchResult({data, displayChatModal, setChatData, displayReview}){
     
     const [user, setUser] = useState(null);
     const getRating = (rating) => {
@@ -73,9 +73,10 @@ export default function SearchResult({data, displayChatModal, setChatData}){
                     <button className = 'chat' onClick={startChat}></button>
                 </div>
 
+                    {/* here will come the code for the review */}
                 <div className = 'rating'>
                     {getRating(data.rating)}
-                    {`${data.reviews.length} reviews`}
+                    <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
                 </div>
                 <div className = 'bookmark'>
                     <button className = 'bookmarkButton checkBookmark'></button>

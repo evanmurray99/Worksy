@@ -305,8 +305,22 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - The test deletes the user account that was created in the initial test.
     - It sends a DELETE request to "/api/users/{userId}" and expects a successful response (status 200 or 404).
 
-#### Acceptance Tests:
+### Integration Test: 
 
+#### Acceptance Tests:
+1. As a user, I want to be able to search for Services
+    - Navigate from the home page to the search bar.
+    - Enter specific keywords related to the desired services.
+    - Initiate the search and ensure the results page displays relevant services.
+    - Click on a service to view detailed information.
+    - Verify that the service details match the expected data.
+2. As a user, I want to explore categories  
+    - Access the category section from the navigation menu.
+    - Select a category of interest. A
+    - Confirm that the category page displays relevant services associated with the chosen category.
+    - Click on a service to view detailed information.
+    - Verify that the service details match the expected data.
+3.    
 ### Feature 4: Chat
 
 #### Unit Tests:
