@@ -161,22 +161,6 @@ const addMessage = async (req, res) => {
     }
 };
 
-// // GET /message by Id
-// const getMessage = async (req, res) => {
-//     try {
-//         const messageId = req.params.id;
-//         const message = await Message.findById(messageId);
-
-//         if (!message) {
-//             return res.status(404).json({ message: 'Message not found' });
-//         }
-//         res.status(200).json(message);
-//     } catch (err) {
-//         console.error('Error fetching chat by ID:', err);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// };
-
 // GET /message by Id
 const getMessage = async (req, res) => {
     try {
@@ -193,6 +177,8 @@ const getMessage = async (req, res) => {
     }
 };
 
+// DELETE /chats by Id
+//deletes chat and all messages in it
 // DELETE /chats by Id
 //deletes chat and all messages in it
 const deleteChat = async (req, res ) => {
