@@ -2,6 +2,7 @@ import { useState} from 'react';
 import { Link, Route, redirectDocument, useNavigate} from 'react-router-dom';
 import studentImg from '../assets/students.jpg';
 import hireImg from '../assets/hirers.jpg';
+import axios from 'axios';
 
 const isValidEmail = (email, isStudent) => {
     
@@ -13,6 +14,25 @@ const isValidEmail = (email, isStudent) => {
 
       return emailRegex.test(email);
     }
+};
+
+export const signUp = async (firstName, lastName, email, isStudent, password) => {
+	try {
+		const url = 'http://localhost:3001/api/users/';
+		const body = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			isStudent: isStudent,
+			password: password,
+		};
+		return await axios
+			.post(url, body)
+			.then((response) => response.data)
+			.catch((e) => e.response.data);
+	} catch (e) {
+		console.log('Error occured', e.message);
+	}
 };
 
 export default function Signup() {
@@ -27,7 +47,7 @@ export default function Signup() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-
+		setError('');
 		//check if passwords match before sending to backend
 		if (password !== confirmPassword ) {
 			setError('Passwords do not match');
@@ -40,31 +60,15 @@ export default function Signup() {
 			return;
 		}
 
-		try {
-			const response = await fetch('http://localhost:3001/api/users/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					firstName,
-					lastName,
-					email,
-					isStudent,
-					password,
-				}),
-			});
-
-			const data = await response.json();
-			console.log(data);
-
+		const data = await signUp(firstName, lastName, email, isStudent, password);
+		
+		try{
 			if (data.message) {
 				setError(data.message);
 			} 
 			else {
 				navigate('/login');
 			}
-		
 		} catch (error) {
 			setError('An error occurred while registering');
 		}
@@ -111,6 +115,7 @@ export default function Signup() {
 								id="firstname"
 								required={true}
 								value={firstName}
+								placeholder='First name'
 								onChange={(event) => setFirstName(event.target.value)}
 							/>
 						</div>
@@ -122,6 +127,7 @@ export default function Signup() {
 								id="lastname"
 								required={true}
 								value={lastName}
+								placeholder='Last name'
 								onChange={(event) => setLastName(event.target.value)}
 							/>
 						</div>
@@ -134,6 +140,7 @@ export default function Signup() {
 							id="email"
 							required={true}
 							value={email}
+							placeholder='Email'
 							onChange={(event) => setEmail(event.target.value)}
 						/>
 					</div>
@@ -148,6 +155,7 @@ export default function Signup() {
 								id="AcceptConditions"
 								className="peer sr-only"
 								checked={isStudent}
+								placeholder='Is student'
 								onChange={(event) => setIsStudent(event.target.checked)}
 							/>
 
@@ -165,6 +173,7 @@ export default function Signup() {
 							id="password"
 							required={true}
 							value={password}
+							placeholder='Password'
 							onChange={(event) => setPassword(event.target.value)}
 						/>
 					</div>
@@ -176,6 +185,7 @@ export default function Signup() {
 							id="password"
 							required={true}
 							value={confirmPassword}
+							placeholder='Confirm password'
 							onChange={(event) => setConfirmPassword(event.target.value)}
 						/>
 					</div>
