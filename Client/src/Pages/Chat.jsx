@@ -22,7 +22,7 @@ const getChats = (user, setChats) => {
 		  else throw new Error('Error in getChat');
 		})
 		.then((data) => {
-		  setChats([...data]);
+		  setChats([...prevChats,...data]);
 		})
 		.catch((e) => console.log(e.message));
   

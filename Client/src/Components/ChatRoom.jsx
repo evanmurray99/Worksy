@@ -37,9 +37,9 @@ export default function ChatRoom({chat, currUser, setChats}) {
 	const[otherUser, setUser] = useState({});
 	// const[latestMsg, setLatest] = useState({body: '', created: new Date()})
 	// var latestMsg = undefined;
-	console.log(chat)
+	// console.log(chat)
 	var otherUserId = undefined;
-	console.log(otherUserId)
+	// console.log(otherUserId)
 
 	useEffect(() => {
 		async function fetchData()
@@ -61,7 +61,7 @@ export default function ChatRoom({chat, currUser, setChats}) {
 			{
 				otherUserId = chat.buyer;
 			}
-			console.log(otherUserId)
+			// console.log(otherUserId)
 
 			await fetch(`http://localhost:3001/api/users/${otherUserId}`, {
 				method: 'GET',
@@ -71,7 +71,7 @@ export default function ChatRoom({chat, currUser, setChats}) {
 				})
 				.then((data) => {
 					setUser(data);
-					console.log(data)
+					// console.log(data)
 				})
 				.catch((e) => console.log(e.message));
 		}
@@ -80,7 +80,7 @@ export default function ChatRoom({chat, currUser, setChats}) {
 	}, [chat]);
 
 	let title = service.title;
-	console.log(otherUser)
+	// console.log(otherUser)
 	// let len = chat.messages.length;
 	// let messages = chat.messages;
 
@@ -118,7 +118,7 @@ export default function ChatRoom({chat, currUser, setChats}) {
 				res.push(chatRooms[i])
 			}
 		}
-		console.log(res)
+		// console.log(res)
 
 		return res
 	}

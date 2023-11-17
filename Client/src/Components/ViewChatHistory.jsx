@@ -13,7 +13,7 @@ function createMsg(message, currUser, pos)
     {
         var messageType = "otherUser"
     }
-    console.log(message)
+    // console.log(message)
 
     return (
         <div key={"message"+pos} className={'message '+messageType}>
@@ -49,14 +49,14 @@ export default function ViewChatHistory ({chat, currUser, otherUser}) {
                   else throw new Error('Error in getChat');
                 })
                 .then((data) => {
-                    console.log(data)
+                    // console.log(data)
                     setMessages(prevMsgs => [...prevMsgs, data]);
                 })
                 .catch((e) => console.log(e.message));
             // console.log(chat.messages[i])
         }
-        console.log(messages)
-        console.log(messageList)
+        // console.log(messages)
+        // console.log(messageList)
         // var messages = chat.messages;
         }
         fetchData();

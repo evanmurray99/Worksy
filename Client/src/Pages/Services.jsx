@@ -86,7 +86,7 @@ export default function Services() {
 				getChats(data.user, setChats);
 			})
 			.catch((e) => console.log(e.message));
-      console.log(chats)
+      // console.log(chats)
   }, []);
 
   useEffect(() => {
