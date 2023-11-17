@@ -3,37 +3,78 @@ import '../Styles/PopUpModal.css';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom'
 
-export default function NewChatModal({title, isOpen, updateIsOpen, data}) {
+export default function NewChatModal({title, isOpen, updateModalIsOpen, data, user, setChats, chats}) {
 	var result = null;
-    const [loggedInUser, setLoggedInUser] = useState(null)
-    const template = data ? `Hi! I would like to learn more about your service ${data.title}. Thank you!` : ''
-    const [newMessage, setNewMessage] = useState(template)
+	const [newMessage, setNewMessage] = useState()
+
+    // const [loggedInUser, setLoggedInUser] = useState(null)
+	useEffect(() => {
+		setNewMessage("Hi! I would like to learn more about your service " + data.title + ". Thank you!")
+	},[data])
+
+	// var newMessage = "Hi! I would like to learn more about your service " + data.title + ". Thank you!"
     const navigate = useNavigate();
 
-    const beginNewChat = () => {
-        updateIsOpen(true)
-    }
-    useEffect(() => {
-		const template = data ? `Hi! I would like to learn more about your service ${data.title}. Thank you!` : ''
-        setNewMessage(template)
-		const token = Cookies.get('token');
-		const url = 'http://localhost:3001/api/users/' + token + '/auth';
-		// do a check token before request
-		fetch(url, {
-			method: 'GET',
-		})
-			.then((response) => {
-				if (response.status === 200) return response.json();
-				else {
-					return
-				}
-			})
-			.then((data) => {
-				setLoggedInUser(data.user);
-			})
-			.catch((e) => console.log(e.message));
+    const beginNewChat = async (event) => {
+		event.preventDefault();
 
-	}, [data]);
+		const url = 'http://localhost:3001/api/chats';
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+		    },
+			body: JSON.stringify({
+			   seller: data.seller,
+			   buyer: user,
+			   service: data._id,
+			   messages: [],
+	 	    }),
+		})
+
+		const result = await response.json().catch((e) => console.log(e.message));
+
+		setChats(prevChats => [...prevChats, result]);
+        updateModalIsOpen(false)
+
+		const addMsg = 'http://localhost:3001/api/chats/'+result._id;
+		const newMsg = await fetch(addMsg, {
+			method: 'PUT',
+			headers: {
+				'Content-type': 'application/json',
+		    },
+			body: JSON.stringify({
+			   sender: user._id,
+			   created: new Date(),
+			   body: newMessage,
+	 	    }),
+		})
+
+		const res = await newMsg.json().catch((e) => console.log(e.message));
+    }
+
+//    useEffect(() => {
+// 		setNewMessage(template)
+		// const template = data ? `Hi! I would like to learn more about your service ${data.title}. Thank you!` : ''
+       // setNewMessage(template)
+		// const token = Cookies.get('token');
+		// const url = 'http://localhost:3001/api/users/' + token + '/auth';
+		// do a check token before request
+		// fetch(url, {
+		// 	method: 'GET',
+		// })
+		// 	.then((response) => {
+		// 		if (response.status === 200) return response.json();
+		// 		else {
+		// 			return
+		// 		}
+		// 	})
+		// 	.then((data) => {
+		// 		setLoggedInUser(data.user);
+		// 	})
+		// 	.catch((e) => console.log(e.message));
+
+	// }, []);
 
     const goToLogin=()=> {
         navigate('/login')
@@ -42,30 +83,32 @@ export default function NewChatModal({title, isOpen, updateIsOpen, data}) {
 
 	if (isOpen) {
 		result = (
-			<div className="backDrop" onClick={() => updateIsOpen(false)}>
+			<div className="backDrop" onClick={() => updateModalIsOpen(false)}>
 				<div className="modal" onClick={(event) => event.stopPropagation()}>
 					<div className="modalTitle">
 						<button
 							className="modalClose floatLeft"
-							onClick={() => updateIsOpen(false)}
+							onClick={() => updateModalIsOpen(false)}
 						>
 							X
 						</button>
 						<p className="largeText">{title}</p>
 					</div>
-                    {loggedInUser ?
+                    {user ?
                     <div className = 'newChat'>
                         <div className='chatIntro'>
                             {`Start Chatting with the creator of this service!`}
                         </div>
-                        <textarea
-                            type={'text'}
-                            className={'newMessage'}
-                            value={newMessage}
-                            onChange = {(e)=>setNewMessage(e.target.value)}
-                            placeholder={'Enter a new Message here'}
-                        ></textarea>
-                         <button className="loginButton" onClick={beginNewChat}>SEND</button>
+						<form onSubmit={beginNewChat}>
+							<textarea
+								type={'text'}
+								className={'newMessage'}
+								value={newMessage}
+								onChange = {(e)=>setNewMessage(e.target.value)}
+								placeholder={'Enter a new Message here'}
+							></textarea>
+							<button className="loginButton">SEND</button>
+						</form>
                     </div>  
 
                      :

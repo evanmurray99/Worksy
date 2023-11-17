@@ -34,6 +34,12 @@ export default function EditProfile(props) {
 								onSubmit={() => {
 									props.updateProfile(firstname, lastname, email, bio);
 								}}
+								onKeyDown={(event) => {
+									if(event.key === "Enter")
+									{
+										props.updateProfile(firstname, lastname, email, bio);
+									}
+								}}
 							>
 								<div className="grid grid-cols-2 gap-4 sm:grdi-cols-2">
 									<div>

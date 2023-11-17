@@ -7,6 +7,7 @@ router.post('/', controller.createChat);
 router.get('/:id', controller.getChat);
 router.get('/seller/:id', controller.getChatsBySeller);
 router.get('/buyer/:id', controller.getChatsByBuyer);
+router.get('/message/:id', controller.getMessage);
 router.delete('/:id', controller.deleteChat);
 router.put('/:id', controller.addMessage);
 

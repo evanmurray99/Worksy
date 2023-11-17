@@ -140,8 +140,15 @@ export default function ChangePostForm({post, updateIsOpen, user, updateServices
 		}
 	}
 
+	const handleEnter = (event) => {
+		if(event.key === "Enter")
+		{
+			createSubmitHandler(event);
+		}
+	}
+
 	return (
-		<form id="createForm" onSubmit={createSubmitHandler}>
+		<form id="createForm" onSubmit={createSubmitHandler} onKeyDown={handleEnter}>
 			<div className="floatLeft changeLeft">
 				<div>
 					<label htmlFor="title">Title:</label>

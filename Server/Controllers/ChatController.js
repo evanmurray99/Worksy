@@ -154,13 +154,31 @@ const addMessage = async (req, res) => {
         chat.messages.push(newMessage);
         await chat.save();
 
-        res.status(200).json({ message: 'Message added to chat' });
+        res.status(200).json({_id: newMessage._id, message: 'Message added to chat' });
     } catch (err) {
         console.error('Error adding message to chat:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
+// GET /message by Id
+const getMessage = async (req, res) => {
+    try {
+        const messageId = req.params.id;
+        const message = await Message.findById(messageId);
+
+        if (!message) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+        res.status(200).json(message);
+    } catch (err) {
+        console.error('Error fetching chat by ID:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// DELETE /chats by Id
+//deletes chat and all messages in it
 // DELETE /chats by Id
 //deletes chat and all messages in it
 const deleteChat = async (req, res ) => {
@@ -195,6 +213,7 @@ const controller = {
     getChatsBySeller,
     getChatsByBuyer,
     addMessage,
+    getMessage,
     deleteChat
 };
 

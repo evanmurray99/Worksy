@@ -29,22 +29,21 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
-export default function MyContent() {
+export default function MyContent({}) {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
+	const [token, setToken] = useState(Cookies.get('token'));
 	const [services, setServices] = useState();
 	const [categoryList, setCategories] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log('update content');
-		const token = Cookies.get('token');
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
 		// do a check token before request
 		fetch(url, {
 			method: 'GET',
 		})
-			.then((response) => {
+			.then((response) => { 
 				if (response.status === 200) return response.json();
 				else {
 					navigate('/login');
@@ -66,7 +65,7 @@ export default function MyContent() {
 				setCategories(data);
 			})
 			.catch((e) => console.log(e.message));
-	}, []);
+	}, [token]);
 
 	const updateUser = (firstName, lastName, email, password, bio) => {
 		console.log(firstName, lastName, email, bio);
@@ -156,8 +155,13 @@ export default function MyContent() {
 	const dynamicButtons = (
 		<React.Fragment>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/home">
+				<Link className="navLinks" to="/">
 					Home
+				</Link>
+			</button>
+			<button className="leftAlign">
+				<Link className="navLinks" to="/chat">
+					Chat
 				</Link>
 			</button>
 			<button className="leftAlign" onClick={() => updateModalIsOpen(true)}>
@@ -174,6 +178,8 @@ export default function MyContent() {
 						leftButtons={dynamicButtons}
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
+						setToken={setToken}
+						token={token}
 						user={user}
 						updateServices={setServices}
 						categoryList={categoryList}

@@ -73,6 +73,14 @@ export default function Signup() {
 			setError('An error occurred while registering');
 		}
 	};
+
+	const handleEnter = (event) => {
+		if(event.key === "Enter")
+		{
+			handleSubmit(event);
+		}
+	}
+
 	return (
 		<>
 			<div className="flex flex-col items-center rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px]">
@@ -92,6 +100,7 @@ export default function Signup() {
 				<form
 					className="bg-white p-4 my-10 max-w-[500px] w-full mx-auto"
 					onSubmit={handleSubmit}
+					onKeyDown={handleEnter}
 				>
 					<div className="text-center py-6 text-gray-700">
 						<h1 className="text-2xl font-bold mb-4 uppercase">Sign up</h1>
