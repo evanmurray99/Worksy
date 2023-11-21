@@ -27,6 +27,7 @@ export default function Home() {
   const [order, setOrder] = useState('1');
   const [maxPage, setMaxPage] = useState(0)
   const [page, setPage] = useState(0)
+  const [token, setToken] = useState(Cookies.get('token'));
   const [modalIsOpen, updateModalIsOpen] = useState(false)
   const [chatData, setChatData] = useState(null)
 
@@ -203,7 +204,11 @@ export default function Home() {
 
   return (
     <React.Fragment>
-      <NavBar leftButtons={links} />
+      <NavBar leftButtons={links} 
+      setToken={setToken}
+      token={token}
+      user={loggedInUser}
+      />
       
       {results.length !== 0  || Object.keys(filteredCategories).length !== 0 ?  
       
