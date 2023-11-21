@@ -132,12 +132,12 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 
 	if (isOpen) {
 		result = (
-			<div className="backDrop" onClick={() => updateModalIsOpen(false)}>
+			<div className="backDrop" onClick={() => updateIsOpen(false)}>
 				<div className="modal" onClick={(event) => event.stopPropagation()}>
 					<div className="modalTitle">
 						<button
 							className="modalClose floatLeft"
-							onClick={() => updateModalIsOpen(false)}
+							onClick={() => updateIsOpen(false)}
 						>
 							X
 						</button>
