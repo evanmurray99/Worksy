@@ -205,7 +205,7 @@ export default function Home() {
     <React.Fragment>
       <NavBar leftButtons={links} />
       
-      {results.length !== 0  || filteredCategories !== {} ?  
+      {results.length !== 0  || Object.keys(filteredCategories).length !== 0 ?  
       
       <div className='resultContainer'>
             <div className='filterContainer'>

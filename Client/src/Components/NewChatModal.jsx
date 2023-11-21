@@ -124,7 +124,6 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 			.catch((e) => console.log(e.message));
 
 	}, [PageData]);
-=======
 
     const goToLogin=()=> {
         navigate('/login')
@@ -144,7 +143,7 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 						</button>
 						<p className="largeText">{title}</p>
 					</div>
-                    {user ?
+                    {loggedInUser?
                     <div className = 'newChat'>
                         <div className='chatIntro'>
                             {`Start Chatting with the creator of this service!`}
