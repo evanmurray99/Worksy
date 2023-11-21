@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
 import NewChatModal from '../Components/NewChatModal';
+import ReviewPopUp from '../Components/ReviewPopUp'
 import SearchResult from '../Components/SearchResult.jsx';
 import Cookies from 'js-cookie'
 import '../Styles/Search.css'
@@ -83,6 +84,7 @@ export default function Home() {
   const [page, setPage] = useState(0)
   const [modalIsOpen, updateModalIsOpen] = useState(false)
   const [chatData, setChatData] = useState(null)
+  const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false)
 
   const perPage = 3;
 
@@ -210,6 +212,8 @@ export default function Home() {
     });
   };
 
+  const handleReviewOpenPopUp = () => { setReviewPopUpOpen(true) };
+
   const displayChatModal = () =>{
      updateModalIsOpen(true)
 
@@ -320,7 +324,8 @@ export default function Home() {
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.id} className = 'resultItemContainer'>
-                        <SearchResult data={result} displayChatModal={displayChatModal} setChatData={setChatData} currUser={user} setChats={setChats} chats={chats}/>
+                        <SearchResult data={result} displayChatModal={displayChatModal} setChatData={setChatData} currUser={user} setChats={setChats} chats={chats} displayReview={handleReviewOpenPopUp}/>
+                        <ReviewPopUp post_id={result._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
                     </div>
                    
                 )):

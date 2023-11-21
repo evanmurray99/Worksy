@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/ReviewPopUp.css';
 
-export default function ReviewPopUp({ post_id, isOpen, closePopUp }) {
+export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -48,7 +48,8 @@ export default function ReviewPopUp({ post_id, isOpen, closePopUp }) {
         },
           
           body: JSON.stringify({
-            reviewer: post_id,
+            service: post_id,
+            reviewer: user._id,
             rating: rating,
             text: comment
           }),

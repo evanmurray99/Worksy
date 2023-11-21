@@ -339,7 +339,7 @@ export default function Services() {
                     <div key = {result.service.id} className = 'resultItemContainer'>
                     {/* added variables  */}
                       <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} displayReview={handleReviewOpenPopUp}/>                    
-                      <ReviewPopUp post_id={result.service._id} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
+                      <ReviewPopUp post_id={result.service._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
                     </div>
                    
                 )):
