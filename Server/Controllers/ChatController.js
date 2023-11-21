@@ -45,6 +45,25 @@ const getChat = async (req, res) => {
     }
 };
 
+const getMessages = async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const chat = await Chat.findById(chatId);
+
+        if (!chat) {
+            return res.status(404).json({ message: 'Chat not found' });
+        }
+
+        const messageIds = chat.messages; // Assuming messages is an array of message IDs
+        const messages = await Message.find({ _id: { $in: messageIds } });
+
+        res.status(200).json({ messages });
+    } catch (err) {
+        console.error('Error fetching chat by ID:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 
 // GET /chats by seller id
 //returns all chats where this user is a seller
@@ -141,6 +160,7 @@ const deleteChat = async (req, res ) => {
 const controller = {
     createChat,
     getChat,
+    getMessages,
     getChatsBySeller,
     getChatsByBuyer,
     addMessage,

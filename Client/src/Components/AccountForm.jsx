@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../Styles/AccountForm.css';
 
 export function validateForm(firstName, lastName, email, password) {

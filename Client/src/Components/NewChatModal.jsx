@@ -1,4 +1,4 @@
-import React, {useState, useEffect}from 'react';
+import {useState, useEffect}from 'react';
 import '../Styles/PopUpModal.css';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom'
@@ -37,14 +37,13 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
             })
 		})
 			.then((response) => {
-				if (response.status === 200 || response.data === 201) return response.json()
+				if (response.status === 200 || response.status === 201) return response.json()
 				else {
 					return
 				}
 			})
 			.then((data) => {
-                console.log(data)
-                sendMessage(data._id)
+				sendMessage(data._id)
 			})
 			.catch((e) => console.log(e.message))
 
@@ -62,11 +61,12 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 			.then((response) => {
 				if (response.status === 200 || response.data === 201) return response.json()
 				else {
+					console.log(response)
 					return
 				}
 			})
 			.then((data) => {
-				//
+				
 			})
 			.catch((e) => console.log(e.message))
     }
@@ -95,7 +95,7 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
                  {
                      sendMessage(checkDuplicate (data, loggedInUser._id , PageData.seller, PageData._id))
                  }else{
-                     initializeChat(loggedInUser._id , PageData.seller, PageData._id)
+					sendMessage(initializeChat(loggedInUser._id , PageData.seller, PageData._id))
                  }    
              
 			})

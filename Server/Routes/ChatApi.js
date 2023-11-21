@@ -5,6 +5,7 @@ const controller = require('../Controllers/ChatController');
 
 router.post('/', controller.createChat);
 router.get('/:id', controller.getChat);
+router.get('/messages/:id', controller.getMessages)
 router.get('/seller/:id', controller.getChatsBySeller);
 router.get('/buyer/:id', controller.getChatsByBuyer);
 router.delete('/:id', controller.deleteChat);
