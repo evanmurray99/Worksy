@@ -30,7 +30,13 @@ export default function SearchBar({}){
       return () => clearTimeout(timer);
     }, [query]);
 
-
+	const handleEnter = (event) => {
+		if(event.key === "Enter")
+		{
+            setQuery(event.target.value)
+			routeToResult(event);
+		}
+	}
 
     return (
         <div className="searchContainer leftAlign">
@@ -40,7 +46,8 @@ export default function SearchBar({}){
                 placeholder='Enter keywords here'
                 onChange={(e)=>{
                     setQuery(e.target.value)
-                }}                
+                }}
+                onKeyDown={handleEnter}                
             >
             </input>
             <button className='searchButton' onClick={routeToResult}>

@@ -141,6 +141,23 @@ describe('SERVICE API TEST', function() {
       });
     });
 
+    it('Get all services', (done) => {
+      request(app)
+      .get(`/api/services`)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('array');
+          expect(response.body[0]).to.have.property('title', 'changed title');
+
+          done(); // Signal that the test case is complete
+      });
+  });
+
     it('Edit invalid service', (done) => {
       const editService = {
           description : "changed description",
@@ -371,6 +388,22 @@ describe('SERVICE API TEST', function() {
         request(app)
         .put(`/api/services/${id}`)
         .send(editService)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+
+            done(); // Signal that the test case is complete
+        });
+      });
+
+      it('Try to get all services when db is closed - should catch and throw 500 error ', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/services`)
         .set('Accept', 'application/json')
         .end((err, response) => {
             if (err) {

@@ -163,6 +163,18 @@ const editService = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
+  const getAllServices = async (req, res) => {
+    try 
+    {
+      const result = await Service.find({});
+      res.json(result);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
   
 
 const controller = {
@@ -171,6 +183,7 @@ const controller = {
     deleteService,
     editService,
     searchServices,
+    getAllServices,
 }
 
 module.exports = controller;

@@ -124,6 +124,7 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 			.catch((e) => console.log(e.message));
 
 	}, [PageData]);
+=======
 
     const goToLogin=()=> {
         navigate('/login')
@@ -132,30 +133,32 @@ export default function NewChatModal({title, isOpen, updateIsOpen, PageData}) {
 
 	if (isOpen) {
 		result = (
-			<div className="backDrop" onClick={() => updateIsOpen(false)}>
+			<div className="backDrop" onClick={() => updateModalIsOpen(false)}>
 				<div className="modal" onClick={(event) => event.stopPropagation()}>
 					<div className="modalTitle">
 						<button
 							className="modalClose floatLeft"
-							onClick={() => updateIsOpen(false)}
+							onClick={() => updateModalIsOpen(false)}
 						>
 							X
 						</button>
 						<p className="largeText">{title}</p>
 					</div>
-                    {loggedInUser ?
+                    {user ?
                     <div className = 'newChat'>
                         <div className='chatIntro'>
                             {`Start Chatting with the creator of this service!`}
                         </div>
-                        <textarea
-                            type={'text'}
-                            className={'newMessage'}
-                            value={newMessage}
-                            onChange = {(e)=>setNewMessage(e.target.value)}
-                            placeholder={'Enter a new Message here'}
-                        ></textarea>
-                         <button className="loginButton" onClick={beginNewChat}>SEND</button>
+						<form onSubmit={beginNewChat}>
+							<textarea
+								type={'text'}
+								className={'newMessage'}
+								value={newMessage}
+								onChange = {(e)=>setNewMessage(e.target.value)}
+								placeholder={'Enter a new Message here'}
+							></textarea>
+							<button className="loginButton">SEND</button>
+						</form>
                     </div>  
 
                      :

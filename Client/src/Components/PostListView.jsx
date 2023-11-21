@@ -35,9 +35,31 @@ export default function PostListView({ post, user, deleteService, updateServices
 				<button
 					id="deleteButton"
 					className="floatRight"
-					onClick={(e) => {
+					onClick={async (e) => {
 						e.preventDefault();
 						deleteService(post._id);
+						var categories = post.categories;
+						var serviceId = post._id;
+
+						//This needs to be commented back in when the api to remove a service from a user is setup.
+						// const serviceUser = await fetch('http://localhost:3001/api/users/'+user._id+"/remove-service/"+serviceId, {
+						// 	method: 'DELETE',
+						// });
+							
+						// const userData = await serviceUser.json();
+						// console.log(userData.message);
+						
+						for(var i = 0; i < categories.length; i++)
+						{
+							console.log(categories[i])
+							const serviceCategory = await fetch('http://localhost:3001/api/categories/'+categories[i]+"/remove-service/"+serviceId, {
+								method: 'DELETE',
+							});
+								
+							const categoryData = await serviceCategory.json();
+							console.log(categoryData.message);
+						}
+
 						updateServices(services => services.filter(checkServiceId));
 						setDeleteModalIsOpen(false);
 					}}

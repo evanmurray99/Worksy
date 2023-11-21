@@ -6,20 +6,28 @@ import Cookies from 'js-cookie'
 import '../Styles/NavBar.css'
 import SearchBar from './SearchBar'
 
-function logout()
-{
-    Cookies.remove("token");
-}
-
-export default function NavBar ({leftButtons, modalIsOpen, updateModalIsOpen, user, updateServices, categoryList}){
+export default function NavBar ({leftButtons, modalIsOpen, updateModalIsOpen, user, updateServices, categoryList, setToken, token}){
     let post = null
+
+    var logout = (event) => {}
+    var logText = "Login"
+
+    if(token !== undefined)
+    {
+        logText = "Logout"
+
+        var logout = (event) => {
+            Cookies.remove('token')
+            setToken(undefined);
+        }
+    }
 
     return (
         <React.Fragment>
             <nav>
-                <Link id="worksy" className="navLinks leftAlign" to="/home">Worksy</Link>
+                <Link id="worksy" className="navLinks leftAlign" to="/">Worksy</Link>
                 {leftButtons}
-                <button className="rightAlign"><Link className="navLinks" onClick={logout} to="/login">Logout</Link></button>
+                <button className="rightAlign"><Link className="navLinks" onClick={logout} to="/login">{logText}</Link></button>
                 <SearchBar></SearchBar>
             </nav>
             

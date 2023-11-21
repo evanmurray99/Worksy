@@ -1,0 +1,34 @@
+name: Client Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Client
+
+    steps:
+      # Checkout the repository to runner machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Setup Node for ease of use
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests
+      - name: Run frontend tests
+        run: npm run test

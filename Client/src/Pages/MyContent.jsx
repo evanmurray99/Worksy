@@ -29,22 +29,21 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
-export default function MyContent() {
+export default function MyContent({}) {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
+	const [token, setToken] = useState(Cookies.get('token'));
 	const [services, setServices] = useState();
 	const [categoryList, setCategories] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log('update content');
-		const token = Cookies.get('token');
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
 		// do a check token before request
 		fetch(url, {
 			method: 'GET',
 		})
-			.then((response) => {
+			.then((response) => { 
 				if (response.status === 200) return response.json();
 				else {
 					navigate('/login');
@@ -66,18 +65,25 @@ export default function MyContent() {
 				setCategories(data);
 			})
 			.catch((e) => console.log(e.message));
-	}, []);
+	}, [token]);
 
-	const updateUser = (firstName, lastName, email, password) => {
-		console.log(firstName, lastName, email, password);
+	const updateUser = (firstName, lastName, email, password, bio) => {
+		console.log(firstName, lastName, email, bio);
 		const url = 'http://localhost:3001/api/users/' + user._id + '/update-user';
+
+		var realPass = ''
+		if(password !== undefined)
+		{
+			realPass = password
+		}
+
 		fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify({
 				firstName: firstName,
 				lastName: lastName,
 				email: email,
-				password: password,
+				password: realPass,
 			}),
 			headers: {
 				'Content-type': 'application/json',
@@ -90,7 +96,31 @@ export default function MyContent() {
 						firstName: firstName,
 						lastName: lastName,
 						email: email,
-						password: password,
+						password: realPass,
+					});
+				} else {
+					throw new Error('Something wrong');
+				}
+				return response.json();
+			})
+			.catch((e) => console.log(e.message));
+
+		const updateBio = 'http://localhost:3001/api/users/' + user._id + '/update-bio';
+
+		fetch(updateBio, {
+			method: 'PUT',
+			body: JSON.stringify({
+				bio: bio,
+			}),
+			headers: {
+				'Content-type': 'application/json',
+			},
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					setUser({
+						...user,
+						bio: bio,
 					});
 				} else {
 					throw new Error('Something wrong');
@@ -99,6 +129,7 @@ export default function MyContent() {
 			})
 			.catch((e) => console.log(e.message));
 	};
+
 
 	const getServices = (user) => {
 		const url = 'http://localhost:3001/api/users/services/' + user._id;
@@ -124,8 +155,13 @@ export default function MyContent() {
 	const dynamicButtons = (
 		<React.Fragment>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/home">
+				<Link className="navLinks" to="/">
 					Home
+				</Link>
+			</button>
+			<button className="leftAlign">
+				<Link className="navLinks" to="/chat">
+					Chat
 				</Link>
 			</button>
 			<button className="leftAlign" onClick={() => updateModalIsOpen(true)}>
@@ -142,6 +178,8 @@ export default function MyContent() {
 						leftButtons={dynamicButtons}
 						modalIsOpen={modalIsOpen}
 						updateModalIsOpen={updateModalIsOpen}
+						setToken={setToken}
+						token={token}
 						user={user}
 						updateServices={setServices}
 						categoryList={categoryList}
@@ -154,6 +192,7 @@ export default function MyContent() {
 								lastName={user.lastName}
 								email={user.email}
 								password={user.password}
+								bio={user.bio}
 								updateUser={updateUser}
 							/>
 						}

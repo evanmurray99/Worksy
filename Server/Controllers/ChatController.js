@@ -3,6 +3,8 @@ const User = require('../Models/User');
 const Message = require('../Models/Message');
 const mongoose = require("mongoose");
 
+
+
 // Create a new chat 
 const createChat = async (req, res) => {
     try {
@@ -23,7 +25,7 @@ const createChat = async (req, res) => {
         res.status(201).json(newChat);
     } catch (err) {
         console.error('Error creating chat:', err);
-        res.status(500).json({ message: 'Internal server error '});
+        res.status(500).json({ message: 'Internal server error'});
         
     }
 };
@@ -33,11 +35,18 @@ const createChat = async (req, res) => {
 const getChat = async (req, res) => {
     try {
         const chatId = req.params.id;
+
+
+        if (!chatId || !mongoose.Types.ObjectId.isValid(chatId)) {
+            return res.status(400).json({ message: 'Invalid chat ID' });
+        }
+
         const chat = await Chat.findById(chatId);
 
         if (!chat) {
             return res.status(404).json({ message: 'Chat not found' });
         }
+
         res.status(200).json(chat);
     } catch (err) {
         console.error('Error fetching chat by ID:', err);
@@ -70,9 +79,20 @@ const getMessages = async (req, res) => {
 const getChatsBySeller = async (req, res) => {
     try {
         const sellerId = req.params.id;
+
+        if(!sellerId || !mongoose.Types.ObjectId.isValid(sellerId)) {
+            return res.status(400).json({ message: 'Invalid seller ID' });
+        }
+
+        const seller = await User.findById(sellerId);
+
+        if (!seller) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         const chats = await Chat.find({ seller: sellerId });
 
-        if (!chats) {
+        if (!chats || chats.length === 0) {
             return res.status(404).json({ message: 'Chats not found' });
         }
 
@@ -89,9 +109,20 @@ const getChatsBySeller = async (req, res) => {
 const getChatsByBuyer = async (req, res) => {
     try {
         const buyerId = req.params.id;
+
+        if(!buyerId || !mongoose.Types.ObjectId.isValid(buyerId)) {
+            return res.status(400).json({ message: 'Invalid buyer ID' });
+        }
+
+        const buyer = await User.findById(buyerId);
+
+        if (!buyer) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         const chats = await Chat.find({ buyer: buyerId });
 
-        if (!chats) {
+        if (!chats || chats.length === 0) {
             return res.status(404).json({ message: 'Chats not found' });
         }
 
@@ -108,6 +139,18 @@ const addMessage = async (req, res) => {
     try {
         const chatId = req.params.id;
         const {sender, body} = req.body;
+
+        if (!chatId || !mongoose.Types.ObjectId.isValid(chatId)) {
+            return res.status(400).json({ message: 'Invalid chat ID' });
+        }
+
+        if (!sender || !mongoose.Types.ObjectId.isValid(sender)) {
+            return res.status(400).json({ message: 'Invalid sender ID' });
+        }
+
+        if (!body) {
+            return res.status(400).json({ message: 'Message body is required' });
+        }
 
         const messageSender = await User.findById(sender);
         const chat = await Chat.findById(chatId);
@@ -130,23 +173,54 @@ const addMessage = async (req, res) => {
         chat.messages.push(newMessage);
         await chat.save();
 
-        res.status(200).json({ message: 'Message added to chat' });
+        res.status(200).json({_id: newMessage._id, message: 'Message added to chat' });
     } catch (err) {
         console.error('Error adding message to chat:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
+// GET /message by Id
+const getMessage = async (req, res) => {
+    try {
+        const messageId = req.params.id;
+
+        if (!messageId || !mongoose.Types.ObjectId.isValid(messageId)) {
+            return res.status(400).json({ message: 'Invalid message ID' });
+        }
+
+        const message = await Message.findById(messageId);
+
+        if (!message) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+        res.status(200).json(message);
+    } catch (err) {
+        console.error('Error fetching chat by ID:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// DELETE /chats by Id
+//deletes chat and all messages in it
+// DELETE /chats by Id
+//deletes chat and all messages in it
 const deleteChat = async (req, res ) => {
     try {
         const chatId = req.params.id;
+
+
+        if (!chatId || !mongoose.Types.ObjectId.isValid(chatId)) {
+            return res.status(400).json({ message: 'Invalid chat ID' });
+        }
+
         const chat = await Chat.findById(chatId);
 
         if (!chat) {
             return res.status(404).json({ message: 'Chat not found' });
         }
 
-
+    
         await Message.deleteMany({ _id: { $in: chat.messages } });
         await chat.remove();
 
@@ -164,6 +238,7 @@ const controller = {
     getChatsBySeller,
     getChatsByBuyer,
     addMessage,
+    getMessage,
     deleteChat
 };
 
