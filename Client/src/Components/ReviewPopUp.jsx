@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../Styles/ReviewPopUp.css';
 
 export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
-
+  
+  const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
@@ -14,7 +15,7 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
         
         const response = await fetch(`http://localhost:3001/api/services/${post_id}`);
         const reviewData = await response.json();
-        setReviews(reviewData.reviews);
+        setReviews([...reviewData]);
 
       } catch (error) {
         console.log('Error in fetching reviews:', error);
@@ -24,14 +25,13 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
 
     fetchData();
 
-  }, []);
+  }, [post_id]);
 
 
-  const [reviews, setReviews] = useState([]);
+
 
   let averageRating = 0
-
-  if (reviews.length != 0) {
+  if (reviews.length > 0) {
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     averageRating = totalRating / reviews.length;
   }
