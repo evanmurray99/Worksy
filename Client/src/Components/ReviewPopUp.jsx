@@ -1,60 +1,104 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/ReviewPopUp.css';
 
+
+
+const getUser = async (reviews, setUser) => {
+
+      try{
+          {
+            
+            setUser([]);
+            
+            for(var i = 0; i < reviews.length; i++)
+              {
+                setUser(prevUsers => prevUsers.concat( {"reviewDataKey" :reviews[i]}  )); 
+                const yyresponse = await fetch(`http://localhost:3001/api/users/${reviews[i].reviewer}`);
+                const userData = await yyresponse.json();
+                setUser(prevUsers => prevUsers[i]( {...prevUsers[i],"reviewObject" : userData})); 
+                
+              }   
+              
+          }
+          
+          
+      }catch (error){
+        console.log('Error in fetching users:', error);
+      }
+    
+};
+
+
+
 export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
-  
+
+  // this is the array of the reviews
   const [reviews, setReviews] = useState([]);
+  // this is the state of the user for rating
   const [rating, setRating] = useState(0);
+  // this is the state of the user for comment
   const [comment, setComment] = useState('');
+  // this is the state of the user made review
+  const [userReviewer, setUser] = useState([]);
+  const reviewNames = [];
 
   // GET review using post_id
   // update the the state of reviews
   useEffect(() => {
+    
     const fetchData = async () => {
+      setReviews([]);
       try {
+        // console.log(post_id);
+        const response = await fetch(`http://localhost:3001/api/reviews/service/${post_id}`).then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} ).then((data) => { setReviews([...data]); getUser(data, setUser) ;  }); 
         
-        const response = await fetch(`http://localhost:3001/api/services/${post_id}`);
-        const reviewData = await response.json();
-        setReviews([...reviewData]);
 
       } catch (error) {
         console.log('Error in fetching reviews:', error);
       }
+      
 
     };
 
+    
+
     fetchData();
+  }, []);
 
-  }, [post_id]);
-
-
-
-
+  console.log(userReviewer);
   let averageRating = 0
   if (reviews.length > 0) {
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
     averageRating = totalRating / reviews.length;
   }
+  // console.log(userReviewer);
+
+  // if (reviews.service === post_id) {
+  //   obj.firstName = userReviewer.firstName;
+  //   console.log(obj.firstName);
+  // }
 
   const handleRatingChange = (selectedRating) => { setRating(selectedRating) }
-
+  // console.log(reviews);
   const handleSubmitedReview = async (event) => {
-
+    
     try {
         // Send POST request to create a new review
+        console.log(user._id);
         const response = await fetch('http://localhost:3001/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' 
         },
           
           body: JSON.stringify({
-            service: post_id,
+            ///someting is wrong here, this is service id
+            service: reviews[0],
             reviewer: user._id,
             rating: rating,
             text: comment
           }),
         });
-
+        
       if (!response.ok) {
         console.error('Error creating Review:', response.status);
         return;
@@ -62,19 +106,22 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
 
       // Get the newly created review data
       const newReviewData = await response.json();
-
       setReviews([...reviews, newReviewData])
 
       setComment('')
       setRating(0)
 
+      
     } catch (error) {
-      setError('An error occured while creating new review.');
+      console.log('An error occured while creating new review.',error);
     }
 
-
+    console.log(userReviewer[0]);
+    const firstNName = userReviewer.map(innerArray => innerArray[0].reviewObject.firstName);
+    console.log(firstNName);
   }
   return (
+    
     <div className={`review-pop-up ${isOpen ? 'open' : ''}`}>
       <div className="pop-up-content">
 
@@ -84,33 +131,62 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
           <h2>{Math.round(averageRating * 10) / 10}★</h2>
         </div>
 
-        <div className="review-list">
+        <div className='review-list-container'>
+          <div className="review-list">
 
-          {reviews.map((review, index) => (
+          {/* {console.log(userReviewer.map((userReviewer,index) => ( userReviewer[index])))  } */}
 
+          {userReviewer.map((userReviewer, index ) => (  
+            
             <div key={index} className="review-item">
-              <p className="review-text">{review.text}</p>
+                {/* <p className="review-text">{userReviewer.reviewDataKey.text}</p> */}
+                console.log(userReviewer.reviewDataKey.text ) 
+                <div className="review-star-container">
+                  {/* userReviewer[2].firstName have the name of the users of the review */}
+                  <p className="review-user">By: {userReviewer.reviewObject.firstName}</p> 
+                </div>  
 
-              <div className="review-star-container">
+                {/* <div className="review-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star}
+                        style={{ fontSize: '25px', color: star <= userReviewer.reviewObject.rating ? 'gold' : 'gray' }}>
+                        ★
+                      </span>
+                    ))}
+                  </div> */}
+            </div>    
+           
+             ))}
 
-                <p className="review-user">By: {review.reviewer}</p>
-                <div className="review-stars">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span key={star}
-                      style={{ fontSize: '25px', color: star <= review.rating ? 'gold' : 'gray' }}>
-                      ★
-                    </span>
-                  ))}
+
+
+            {/* {console.log(userReviewer[0])} */}
+            {/* {reviews.map((review, index) => (
+
+              <div key={index} className="review-item">
+                <p className="review-text">{review.text}</p>
+
+                <div className="review-star-container">
+                  {/* userReviewer[2].firstName have the name of the users of the review 
+                  <p className="review-user">By: {userReviewer.firstName}</p> 
+                  <div className="review-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star}
+                        style={{ fontSize: '25px', color: star <= review.rating ? 'gold' : 'gray' }}>
+                        ★
+                      </span>
+                    ))}
+                  </div>
                 </div>
-
               </div>
-            </div>
-          ))}
+            ))} */}
+          </div>
+          
         </div>
 
         <div className="review-form">
           <div className="comment-container">
-
+            
             <label htmlFor="review-comment">Comment:</label>
             <div className="rating-container">
 
