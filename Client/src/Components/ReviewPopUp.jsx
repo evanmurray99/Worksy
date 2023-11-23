@@ -1,35 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/ReviewPopUp.css';
 
-
-
-const getUser = async (reviews, setUser) => {
-
-      try{
-          {
-            
-            setUser([]);
-            
-            for(var i = 0; i < reviews.length; i++)
-              {
-                setUser(prevUsers => prevUsers.concat( {"reviewDataKey" :reviews[i]}  )); 
-                const yyresponse = await fetch(`http://localhost:3001/api/users/${reviews[i].reviewer}`);
-                const userData = await yyresponse.json();
-                setUser(prevUsers => prevUsers[i]( {...prevUsers[i],"reviewObject" : userData})); 
-                
-              }   
-              
-          }
-          
-          
-      }catch (error){
-        console.log('Error in fetching users:', error);
-      }
-    
-};
-
-
-
 export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
 
   // this is the array of the reviews
@@ -50,7 +21,9 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
       setReviews([]);
       try {
         // console.log(post_id);
-        const response = await fetch(`http://localhost:3001/api/reviews/service/${post_id}`).then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} ).then((data) => { setReviews([...data]); getUser(data, setUser) ;  }); 
+        const response = await fetch(`http://localhost:3001/api/reviews/service/${post_id}`)
+        .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
+      .then((data) => { setReviews([...data]); /*getUser(data, setUser, userReviewer) ;*/  }); 
         
 
       } catch (error) {
@@ -64,6 +37,33 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+    try{
+      {
+        setUser(await Promise.all(reviews.map(async(rev) => {
+        
+            const yyresponse = await fetch(`http://localhost:3001/api/users/${rev.reviewer}`);
+            const userData = await yyresponse.json();
+            var userList = {"reviewDataKey": rev, "reviewObject": userData}
+ 
+            return userList;
+        })) )
+          
+      }
+      
+  }catch (error){
+    console.log('Error in fetching users:', error);
+  }
+  
+};
+
+    
+
+fetchUserData();
+
+  }, [reviews]);
 
   console.log(userReviewer);
   let averageRating = 0
@@ -139,21 +139,21 @@ export default function ReviewPopUp({ post_id, user, isOpen, closePopUp }) {
           {userReviewer.map((userReviewer, index ) => (  
             
             <div key={index} className="review-item">
-                {/* <p className="review-text">{userReviewer.reviewDataKey.text}</p> */}
-                console.log(userReviewer.reviewDataKey.text ) 
+                <p className="review-text">{userReviewer.reviewDataKey.text}</p>
+                {/* console.log(userReviewer.reviewDataKey.text )  */}
                 <div className="review-star-container">
                   {/* userReviewer[2].firstName have the name of the users of the review */}
                   <p className="review-user">By: {userReviewer.reviewObject.firstName}</p> 
                 </div>  
 
-                {/* <div className="review-stars">
+                <div className="review-stars">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span key={star}
-                        style={{ fontSize: '25px', color: star <= userReviewer.reviewObject.rating ? 'gold' : 'gray' }}>
+                        style={{ fontSize: '25px', color: star <= userReviewer.reviewDataKey.rating ? 'gold' : 'gray' }}>
                         ★
                       </span>
                     ))}
-                  </div> */}
+                  </div>
             </div>    
            
              ))}
