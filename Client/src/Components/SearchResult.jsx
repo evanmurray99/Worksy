@@ -1,25 +1,66 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
+import ReviewPopUp from './ReviewPopUp';
 import NewChatModal from './NewChatModal';
 import {useNavigate} from 'react-router-dom'
-export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats, displayReview}){
+export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats}){
     
     const [user, setUser] = useState(null);
     const [modalIsOpen, updateIsOpen] = useState(false);
-
-    const getRating = (rating) => {
-        const stars = [];
-        for (let i = 0; i < 5; i++) {
-            if (rating > 0) {
-                stars.push(<span key={i} className="star checkedStar"></span>);
-                rating--;
-            } else {
-                stars.push(<span key={i} className="star"></span>);
-            }
-        }
+    const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false);
+    const [reviews, setReviews] = useState([]);
+    const [stars, setStars] = useState([]);
     
-        return <div className="rating">{stars}</div>;
-    };
+    useEffect(() => {
+    
+        const fetchData = async () => {
+          setReviews([]);
+          try {
+            // console.log(post_id);
+            const response = await fetch(`http://localhost:3001/api/reviews/service/${data._id}`)
+            .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
+          .then((reviewData) => { setReviews([...reviewData]); /*getUser(data, setUser, userReviewer) ;*/  }); 
+          
+          } catch (error) {
+            console.log('Error in fetching reviews:', error);
+          }
+
+        };
+
+        fetchData();
+
+        
+      }, [data]);
+
+      console.log(reviews)
+
+
+    const displayReview = () => {
+        setReviewPopUpOpen(true);
+        
+    }
+
+    let averageRating = 0
+    if (reviews.length > 0) {
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      averageRating = Math.round(totalRating / reviews.length);
+    }
+
+
+
+    // const getRating = (rating) => {
+    //     setStars([]);
+    //     for (let i = 0; i < 5; i++) {
+    //         if (rating > 0) {
+    //             stars.push(<span key={i} className="star checkedStar"></span>);
+    //             rating--;
+    //         } else {
+    //             stars.push(<span key={i} className="star"></span>);
+    //         }
+    //     }
+    
+    //     return <div className="rating">{stars}</div>;
+    // };
 
 
     useEffect(() => {
@@ -104,18 +145,26 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                     <button className = 'chat' onClick={startChat}></button>
                 </div>
 
-                    {/* here will come the code for the review */}
-                    {/* here will come the code for the review */}
                 <div className = 'rating'>
-                    {getRating(data.rating)}
-                    <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
-                    <button className = 'reviewPop' onClick={displayReview}>{ `${data.reviews.length} review`}</button>
+                    
+                    <div className="review-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span key={star}
+                        style={{ fontSize: '25px', color: star <= averageRating ? 'gold' : 'gray' }}>
+                        ★
+                      </span>
+                    ))}
+                    </div>
+
+                    <button className = 'reviewPop' onClick={ displayReview  }>{ `${reviews.length} review`}</button>
                 </div>
                 <div className = 'bookmark'>
                     <button className = 'bookmarkButton checkBookmark'></button>
                 </div>
             </div>
                 <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateModalIsOpen={updateIsOpen} data={data} user={currUser} setChats={setChats} chats={chats}/>
+                <ReviewPopUp reviews={reviews} setReviews = {setReviews} post_id={data._id} user={currUser} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
+    
             </div>
         )
     }

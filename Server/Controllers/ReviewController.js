@@ -108,13 +108,35 @@ const getReviewsByService = async (req, res) => {
     }
 }
 
+const getReviewsByUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if(!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message : 'Invalid user ID' });
+        }
+
+        const reviews = await Review.find({ reviewer : userId });
+
+        if(!reviews || reviews.length === 0) {
+            return res.status(404).json({ message : 'Reviewer not found' });
+        }
+
+        res.status(200).json(reviews);
+    } catch (err) {
+        console.error('Error getting reviews by user ID', err);
+        res.status(500).json({ message : 'Internal server error' });
+    }
+}
+
 
 const controller = {
     createReview,
     deleteReview,
     editReview, 
     getReview,
-    getReviewsByService
+    getReviewsByService,
+    getReviewsByUser
 };
 
 module.exports = controller;

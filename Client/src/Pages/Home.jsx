@@ -102,7 +102,8 @@ export default function Home() {
     };
 
     fetchData();
-
+    //printed result, reviews are empty
+    // console.log(results);
     return () => {
       // Cleanup function to handle component unmounting
       setResults([]);
@@ -324,8 +325,8 @@ export default function Home() {
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.id} className = 'resultItemContainer'>
-                        <SearchResult data={result} displayChatModal={displayChatModal} setChatData={setChatData} currUser={user} setChats={setChats} chats={chats} displayReview={handleReviewOpenPopUp}/>
-                        <ReviewPopUp post_id={result._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
+                        <SearchResult data={result} displayChatModal={displayChatModal} setChatData={setChatData} currUser={user} setChats={setChats} chats={chats} />
+                        {/* <ReviewPopUp post_id={result._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/> */}
                     </div>
                    
                 )):

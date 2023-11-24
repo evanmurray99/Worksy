@@ -8,10 +8,16 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 999;
+    overflow: auto;
     /* It covers the entire screen with a semi-transparent background. */
     justify-content: center;
     align-items: center;
     /* Center the content. */
+  }
+
+  .body {
+    
+    min-height: 100vh ;
   }
   
   .review-pop-up.open {
@@ -24,6 +30,8 @@
     padding: 20px;
     border-radius: 5px;
     width: 400px;
+    height: 75%;
+    overflow: auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     position: relative;
     /* Styles for the pop-up content.*/
