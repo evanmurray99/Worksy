@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import ReviewListView from '../Components/ReviewListView';
 
 import PostListView from '../Components/PostListView';
 import AccountForm from '../Components/AccountForm';
@@ -29,12 +30,33 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
+function reviewsToElement(Reviews, user, updateReview) {
+	let numReviews = Reviews.length;
+	let reviewList = [];
+
+	for (var i = 0; i < numReviews; i++) {
+		reviewList.push(
+			<ReviewListView
+				reviews={Reviews[i]}
+				key={Reviews[i]._id}
+				user={user}
+				// deleteReviews={deleteReviews}
+				updateReviews={updateReview}
+				Reviews={Reviews}
+			/>
+		); // pass key to children
+	}
+	return reviewList;
+}
+
+
 export default function MyContent({}) {
 	const [modalIsOpen, updateModalIsOpen] = useState(false);
 	const [user, setUser] = useState();
 	const [token, setToken] = useState(Cookies.get('token'));
 	const [services, setServices] = useState();
 	const [categoryList, setCategories] = useState([]);
+	const [reviews, setReviews] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -51,6 +73,7 @@ export default function MyContent({}) {
 			})
 			.then((data) => {
 				setUser(data.user);
+				getReviews(data.user);
 				getServices(data.user);
 			})
 			.catch((e) => console.log(e.message));
@@ -144,13 +167,36 @@ export default function MyContent({}) {
 				else throw new Error('Error in getService');
 			})
 			.then((data) => {
-				console.log('from getServices', data);
+				// console.log('from getServices', data);
 				setServices(data);
 			})
 			.catch((e) => console.log(e.message));
 	};
 
+	const getReviews = (user) => {
+		const url = 'http://localhost:3001/api/reviews/user/' + user._id;
+		fetch(url, {
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json',
+			},
+		})
+			.then((response) => {
+				if (response.status === 200) return response.json();
+				else throw new Error('Error in getService');
+			})
+			.then((data) => {
+				console.log('from getServices', data);
+				setReviews(data);
+				console.log(reviews);
+			})
+			.catch((e) => console.log(e.message));
+	};
+
 	let postList = services ? postToElement(services, user, setServices, categoryList, services) : null;
+
+	let reviewList = reviews ? reviewsToElement(reviews, user, setReviews) : null;
+
 
 	const dynamicButtons = (
 		<React.Fragment>
@@ -199,6 +245,7 @@ export default function MyContent({}) {
 						hasBackdrop={false}
 					/>
 					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
+					<Accordion title="Your Reviews" content={reviewList} hasBackdrop={true}/>
 				</>
 			) : null}
 		</React.Fragment>
