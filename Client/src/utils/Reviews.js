@@ -26,4 +26,29 @@ const deleteReview = (id) => {
 		});
 };
 
-export {deleteReview};
+const editReview = (id, requestBody) => {
+	const apiUrl = `http://127.0.0.1:3001/api/reviews/${id}`;
+
+	return axios
+		.put(apiUrl, requestBody)
+		.then((response) => {
+			if (response.status === 200) {
+				return { success: true, error: null };
+			} else {
+				return {
+					success: false,
+					error: `Failed to edit Review. Error: ${response.status}`,
+				};
+			}
+		})
+		.catch((error) => {
+			return {
+				success: false,
+				error: `Failed to edit Review: ${
+					error.response ? error.response.data.message : error.message
+				}`,
+			};
+		});
+};
+
+export {editReview, deleteReview};

@@ -2,12 +2,45 @@ import React, { useEffect, useState } from 'react';
 import PopUpModal from './PopUpModal';
 import ViewPostContent from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
-import { deleteReview } from '../utils/Reviews';
+import { deleteReview, editReview } from '../utils/Reviews';
 import '../Styles/PostListView.css';
+
+export function validateForm(revText, rating, reviewId, setMessage, setReviews, reviews) {
+	var message = "";
+	var result = "error";
+
+	if (revText !== '')
+	{
+		editReview(reviewId, {text:revText, rating: rating});
+
+		setReviews(reviews => reviews.map(currReview => {
+			if(currReview._id === reviewId)
+			{
+				return {...currReview, text: revText, rating: rating};
+			}
+			else
+			{
+				return currReview;
+			}
+		}));
+
+		message += "Review was successfully updated.\n";
+		result = "success"
+	}
+	else
+	{
+		message += "All reviews need to have a comment.\n"
+		result = "error"
+	}
+
+	setMessage(<p className={result}>{message}</p>);
+}
 
 export default function ReviewListView({ review, user, updateReviews, allReviews}) {
 	const [rating, setRating] = useState(review.rating);
     const [service, setService] = useState([]);
+	const [revText, setRevText] = useState(review.text);
+	const [message, setMessage] = useState(<p></p>);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,6 +62,12 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 	let descript = service.description;
 
 	const handleRatingChange = (selectedRating) => { setRating(selectedRating) }
+
+	var handleSubmit = (event) =>
+	{
+		event.preventDefault();
+		validateForm(revText, rating, review._id, setMessage, updateReviews, allReviews);
+	}
 
     console.log(review.service);
 	const editSubmitButton = (
@@ -92,7 +131,11 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 					<p id="description">{descript}</p>
 				</div>
 
-				<div className="floatRight updateReview">
+				<form 
+					className="floatRight updateReview" 
+					action=""
+					onSubmit={handleSubmit}>
+
 					<div className="review-stars">
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span key={star} onClick={() => handleRatingChange(star)}
@@ -101,15 +144,24 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
                             </span>
                         ))}
                     </div>
-					<textarea defaultValue={review.text} className="fixAlign whiteBackDrop" rows="5" cols="50"/>
+					<textarea 
+						defaultValue={revText} 
+						className="fixAlign whiteBackDrop" 
+						onChange={(e) => setRevText(e.target.value)}
+						rows="5" 
+						cols="50" 
+						required
+					/>
+					
+					{message}
 					<button
 						id="updateReview"
 						className = "updateButton"
-						onClick={() => setEditModalIsOpen(true)}
+						// onClick={() => setEditModalIsOpen(true)}
 					>
 						Update
 					</button>
-				</div>
+				</form>
 			</div>
 
 			

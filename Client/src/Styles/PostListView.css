@@ -133,4 +133,14 @@ p
     padding: 5px;
     width: 100%;
 }
+
+.success
+{
+    color: blue;
+}
+
+.error
+{
+    color: red;
+}
 }
