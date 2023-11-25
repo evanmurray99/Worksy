@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PopUpModal from './PopUpModal';
 import ViewPostContent from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
+import { deleteReview } from '../utils/Reviews';
 import '../Styles/PostListView.css';
 
 export default function ReviewListView({ review, user, updateReviews, allReviews}) {
 	const [rating, setRating] = useState(review.rating);
-
     const [service, setService] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,7 +23,7 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 
             fetchData();
             
-    }, []);
+    }, [allReviews]);
 
 	let title = service.title;
 	let descript = service.description;
@@ -36,16 +37,16 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 
 	const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-	function checkReviewId(review)
+	function checkReviewId(currReview)
 	{
-		return review._id != allReviews._id;
+		return review._id != currReview._id;
 	}
 
 	const deleteContent = (
 		<React.Fragment>
 			<div id="container">
 				<span id="deleteTextFormat">
-					This action will delete your Review permanentanly and cannot be undone.
+					This action will delete your review permanentanly and cannot be undone.
 				</span>
 				<button
 					id="cancelButton"
@@ -59,10 +60,10 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 					className="floatRight"
 					onClick={async (e) => {
 						e.preventDefault();
-						// deleteService(post._id);
-						var reviewId = review._id;
-						
+
+						deleteReview(review._id);
 						updateReviews(allReviews => allReviews.filter(checkReviewId));
+
 						setDeleteModalIsOpen(false);
 					}}
 				>
@@ -84,7 +85,7 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 
 				<div
 					className="mainReviewContent"
-					onClick={() => setViewModalIsOpen(true)}
+					// onClick={() => setViewModalIsOpen(true)}
 				>
 					
 					<h3 id="reviewTitle">{title}</h3>
@@ -111,13 +112,13 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 				</div>
 			</div>
 
-			{/*
+			
 			<PopUpModal
-				title={'Are you sure you want to delete ' + title + '?'}
+				title={'Are you sure you want to delete this review?'}
 				isOpen={deleteModalIsOpen}
 				updateIsOpen={setDeleteModalIsOpen}
 				content={deleteContent}
-			/> */}
+			/>
 		</React.Fragment>
 	);
 }

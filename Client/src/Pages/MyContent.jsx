@@ -193,7 +193,6 @@ export default function MyContent({}) {
 	};
 
 	let postList = services ? postToElement(services, user, setServices, categoryList, services) : null;
-
 	let reviewList = reviews ? reviewsToElement(reviews, user, setReviews) : null;
 
 

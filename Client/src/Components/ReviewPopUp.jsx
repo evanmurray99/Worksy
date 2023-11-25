@@ -115,8 +115,8 @@ fetchUserData();
     }
 
     console.log(userReviewer[0]);
-    const firstNName = userReviewer.map(innerArray => innerArray[0].reviewObject.firstName);
-    console.log(firstNName);
+    const firstName = userReviewer.map(innerArray => innerArray.reviewObject.firstName);
+    console.log(firstName);
   }
   return (
 
