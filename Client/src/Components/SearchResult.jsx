@@ -28,16 +28,13 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
         };
 
         fetchData();
-
         
       }, [data]);
 
       console.log(reviews)
 
-
     const displayReview = () => {
         setReviewPopUpOpen(true);
-        
     }
 
     let averageRating = 0
@@ -45,8 +42,6 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
       const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
       averageRating = Math.round(totalRating / reviews.length);
     }
-
-
 
     // const getRating = (rating) => {
     //     setStars([]);
@@ -163,8 +158,7 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                 </div>
             </div>
                 <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateModalIsOpen={updateIsOpen} data={data} user={currUser} setChats={setChats} chats={chats}/>
-                <ReviewPopUp reviews={reviews} setReviews = {setReviews} post_id={data._id} user={currUser} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/>
-    
+                <ReviewPopUp reviews={reviews} setReviews = {setReviews} post_id={data._id} user={currUser} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen} showForm={true}/>
             </div>
         )
     }

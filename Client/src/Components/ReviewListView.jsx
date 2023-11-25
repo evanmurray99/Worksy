@@ -115,15 +115,15 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 	return (
 		<React.Fragment>
 			<div className="postBackground">
-			<button
-					className="floatLeft delete leftCornerRounded"
+				<button
+					className="floatLeft delete leftCornerRounded buttonWidth"
 					onClick={() => setDeleteModalIsOpen(true)}
 				>
 					<i className="fa fa-trash-o" />
 				</button>
 
 				<div
-					className="mainReviewContent"
+					className="mainPostContent"
 					// onClick={() => setViewModalIsOpen(true)}
 				>
 					

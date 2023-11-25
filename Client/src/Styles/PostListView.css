@@ -16,7 +16,6 @@
 .postBackground button
 {
     padding: 0;
-    width:10%;
 }
 
 #updateReview
@@ -50,13 +49,7 @@ textarea.whiteBackDrop
 
 .mainPostContent
 {
-    display:flex;
-    width:80%
-}
-
-.mainReviewContent
-{
-    width:100%
+    width:80%;
 }
 
 h3
@@ -71,14 +64,15 @@ p
 
 #edit
 {
-    border-radius: 15px 0px 0px 15px;
+    border-radius: 0px 15px 15px 0px;
     background-color: #55BDCB;
 }
 
 .delete
 {
-    border-radius: 0px 15px 15px 0px;
+    border-radius: 15px 0px 0px 15px;
     background-color: #DC6060;
+    width:10%;
 }
 
 .delete.leftCornerRounded
@@ -142,5 +136,15 @@ p
 .error
 {
     color: red;
+}
+
+input:not([type='file']).transparentBackDrop
+{
+    background-color: transparent;
+}
+
+.buttonWidth
+{
+    width: 10%;
 }
 }

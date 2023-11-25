@@ -338,7 +338,7 @@ export default function Services() {
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.service.id} className = 'resultItemContainer'>
                     {/* added variables  */}
-                      <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} displayReview={handleReviewOpenPopUp}/>                    
+                      <SearchResult currUser={user} data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} displayReview={handleReviewOpenPopUp}/>                    
                       {/* <ReviewPopUp post_id={result.service._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/> */}
                     </div>
                    

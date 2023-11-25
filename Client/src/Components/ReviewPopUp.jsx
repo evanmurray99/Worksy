@@ -2,42 +2,21 @@ import React, { useState, useEffect } from 'react';
 import '../Styles/ReviewPopUp.css';
 import { useNavigate } from 'react-router-dom'
 
-export default function ReviewPopUp({ reviews, setReviews, post_id, user, isOpen, closePopUp }) {
+export default function ReviewPopUp({ reviews, setReviews, post_id, user, isOpen, closePopUp, showForm}) {
 
-  // this is the array of the reviews
-  // const [reviews, setReviews] = useState([]);
   // this is the state of the user for rating
   const [rating, setRating] = useState(0);
   // this is the state of the user for comment
   const [comment, setComment] = useState('');
   // this is the state of the user made review
   const [userReviewer, setUser] = useState([]);
-  const reviewNames = [];
   const navigate = useNavigate();
-  // GET review using post_id
-  // update the the state of reviews
-  // useEffect(() => {
-    
-  //   const fetchData = async () => {
-  //     setReviews([]);
-  //     try {
-  //       // console.log(post_id);
-  //       const response = await fetch(`http://localhost:3001/api/reviews/service/${post_id}`)
-  //       .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
-  //     .then((data) => { setReviews([...data]); /*getUser(data, setUser, userReviewer) ;*/  }); 
-        
-
-  //     } catch (error) {
-  //       console.log('Error in fetching reviews:', error);
-  //     }
-      
-
-  //   };
-
-    
-
-  //   fetchData();
-  // }, []);
+  let buttonClasses = "close-button"
+  
+  if(showForm === false)
+  {
+    buttonClasses += " w-full"
+  }
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,9 +37,7 @@ export default function ReviewPopUp({ reviews, setReviews, post_id, user, isOpen
     console.log('Error in fetching users:', error);
   }
   
-};
-
-   
+};   
 
 fetchUserData();
 
@@ -77,7 +54,6 @@ fetchUserData();
   }
 
   const handleRatingChange = (selectedRating) => { setRating(selectedRating) }
-  // console.log(reviews);
   const handleSubmitedReview = async (event) => {
     
     try {
@@ -108,8 +84,7 @@ fetchUserData();
 
       setComment('')
       setRating(0)
-
-      
+    
     } catch (error) {
       console.log('An error occured while creating new review.',error);
     }
@@ -120,10 +95,9 @@ fetchUserData();
   }
   return (
 
-    <div className={`review-pop-up ${isOpen ? 'open' : ''}`}>
+    <div className={`review-pop-up ${isOpen ? 'open' : ''}`} onClick={() => closePopUp(false)}>
       { user ?   
-        <div className="pop-up-content">
-
+        <div className="pop-up-content" onClick={(event) => event.stopPropagation()}>
 
           <div className="reviews-container">
             <h2 className="pop-up-title">Reviews</h2>
@@ -133,15 +107,12 @@ fetchUserData();
           <div className='review-list-container'>
             <div className="review-list">
 
-            {/* {console.log(userReviewer.map((userReviewer,index) => ( userReviewer[index])))  } */}
-
             {userReviewer.map((userReviewer, index ) => (  
               
               <div key={index} className="review-item">
                   <p className="review-text">{userReviewer.reviewDataKey.text}</p>
-                  {/* console.log(userReviewer.reviewDataKey.text )  */}
+
                   <div className="review-star-container">
-                    {/* userReviewer[2].firstName have the name of the users of the review */}
                     <p className="review-user">By: {userReviewer.reviewObject.firstName}</p> 
                   </div>  
 
@@ -156,34 +127,10 @@ fetchUserData();
               </div>    
             
               ))}
-
-
-
-              {/* {console.log(userReviewer[0])} */}
-              {/* {reviews.map((review, index) => (
-
-                <div key={index} className="review-item">
-                  <p className="review-text">{review.text}</p>
-
-                  <div className="review-star-container">
-                    {/* userReviewer[2].firstName have the name of the users of the review 
-                    <p className="review-user">By: {userReviewer.firstName}</p> 
-                    <div className="review-stars">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span key={star}
-                          style={{ fontSize: '25px', color: star <= review.rating ? 'gold' : 'gray' }}>
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))} */}
-            </div>
-            
+            </div>            
           </div>
 
-          <div className="review-form">
+          {showForm === true ? <div className="review-form">
             <div className="comment-container">
               
               <label htmlFor="review-comment">Comment:</label>
@@ -199,12 +146,12 @@ fetchUserData();
             </div>
 
             <textarea name="" id="comment" cols="50" rows="4" value={comment} placeholder='Write your reivew here...' onChange={(e) => setComment(e.target.value)}></textarea>
-          </div>
+          </div>:<></>}
 
           <div className="buttons-container">
 
-            <button className="close-button" onClick={() => closePopUp(false)}>Close</button>
-            <button className="submit-button" onClick={handleSubmitedReview}>Submit</button>
+            <button className={buttonClasses} onClick={() => closePopUp(false)}>Close</button>
+            {showForm === true ? <button className="submit-button" onClick={handleSubmitedReview}>Submit</button>: <></>}
 
           </div>
 
@@ -229,9 +176,7 @@ fetchUserData();
           </div>
         </div>  
         </div>          
-       
-    } 
+      } 
     </div>
-  
   );
 }
