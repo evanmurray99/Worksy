@@ -30,19 +30,19 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	return postList;
 }
 
-function reviewsToElement(Reviews, user, updateReview) {
-	let numReviews = Reviews.length;
+function reviewsToElement(reviews, user, updateReview) {
+	let numReviews = reviews.length;
 	let reviewList = [];
 
 	for (var i = 0; i < numReviews; i++) {
 		reviewList.push(
 			<ReviewListView
-				reviews={Reviews[i]}
-				key={Reviews[i]._id}
+				review={reviews[i]}
+				key={reviews[i]._id}
 				user={user}
 				// deleteReviews={deleteReviews}
 				updateReviews={updateReview}
-				Reviews={Reviews}
+				allReviews={reviews}
 			/>
 		); // pass key to children
 	}
@@ -167,7 +167,6 @@ export default function MyContent({}) {
 				else throw new Error('Error in getService');
 			})
 			.then((data) => {
-				// console.log('from getServices', data);
 				setServices(data);
 			})
 			.catch((e) => console.log(e.message));

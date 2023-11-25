@@ -4,13 +4,14 @@ import ViewPostContent from './ViewPostContent';
 import ChangePostForm from './ChangePostForm';
 import '../Styles/PostListView.css';
 
-export default function ReviewListView({ reviews, keys, user, updateReview, Reviews}) {
+export default function ReviewListView({ review, user, updateReviews, allReviews}) {
+	const [rating, setRating] = useState(review.rating);
 
     const [service, setService] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/services/${reviews.service}`)
+                const response = await fetch(`http://localhost:3001/api/services/${review.service}`)
                 .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
             .then((reviewData) => { setService(reviewData); /*getUser(data, setUser, userReviewer) ;*/  }); 
             
@@ -23,23 +24,22 @@ export default function ReviewListView({ reviews, keys, user, updateReview, Revi
             
     }, []);
 
-
-    
-
 	let title = service.title;
-    console.log(reviews.service);
+	let descript = service.description;
+
+	const handleRatingChange = (selectedRating) => { setRating(selectedRating) }
+
+    console.log(review.service);
 	const editSubmitButton = (
 		<input type="submit" id="createButton" value="Update" />
 	);
 
-	const [updateModalIsOpen, setEditModalIsOpen] = useState(false);
-	// const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
 	const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-	// function checkServiceId(services)
-	// {
-	// 	return services._id != post._id;
-	// }
+	function checkReviewId(review)
+	{
+		return review._id != allReviews._id;
+	}
 
 	const deleteContent = (
 		<React.Fragment>
@@ -60,20 +60,9 @@ export default function ReviewListView({ reviews, keys, user, updateReview, Revi
 					onClick={async (e) => {
 						e.preventDefault();
 						// deleteService(post._id);
-						// var categories = post.categories;
-						var reviewId = reviews._id;
-
-						//This needs to be commented back in when the api to remove a service from a user is setup.
-						// const serviceUser = await fetch('http://localhost:3001/api/users/'+user._id+"/remove-service/"+serviceId, {
-						// 	method: 'DELETE',
-						// });
-							
-						// const userData = await serviceUser.json();
-						// console.log(userData.message);
+						var reviewId = review._id;
 						
-						
-
-						updateServices(services => services.filter(checkServiceId));
+						updateReviews(allReviews => allReviews.filter(checkReviewId));
 						setDeleteModalIsOpen(false);
 					}}
 				>
@@ -86,54 +75,43 @@ export default function ReviewListView({ reviews, keys, user, updateReview, Revi
 	return (
 		<React.Fragment>
 			<div className="postBackground">
-				<button
-					className="floatLeft"
-					id="edit"
-					onClick={() => setEditModalIsOpen(true)}
-				>
-					<i className="fa fa-pencil" />
-				</button>
-
-				{/*add onclick to view post info*/}
-				<div
-					className="mainPostContent"
-					onClick={() => setViewModalIsOpen(true)}
-				>
-					{/* <img src={post.pinImg} /> */}
-					<div id="description">
-						<h3>{title}</h3>
-						<p>{reviews.text}</p>
-                        <div className="review-stars">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span key={star}
-                            style={{ fontSize: '25px', color: star <= reviews.rating ? 'gold' : 'gray' }}>
-                            ★
-                            </span>
-                        ))}
-                    </div>
-					</div>
-				</div>
-
-				<button
-					className="floatRight delete"
+			<button
+					className="floatLeft delete leftCornerRounded"
 					onClick={() => setDeleteModalIsOpen(true)}
 				>
 					<i className="fa fa-trash-o" />
 				</button>
+
+				<div
+					className="mainReviewContent"
+					onClick={() => setViewModalIsOpen(true)}
+				>
+					
+					<h3 id="reviewTitle">{title}</h3>
+					<p id="description">{descript}</p>
+				</div>
+
+				<div className="floatRight updateReview">
+					<div className="review-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span key={star} onClick={() => handleRatingChange(star)}
+                            style={{ fontSize: '25px', color: star <= rating ? 'gold' : 'gray' }}>
+                            ★
+                            </span>
+                        ))}
+                    </div>
+					<textarea defaultValue={review.text} className="fixAlign whiteBackDrop" rows="5" cols="50"/>
+					<button
+						id="updateReview"
+						className = "updateButton"
+						onClick={() => setEditModalIsOpen(true)}
+					>
+						Update
+					</button>
+				</div>
 			</div>
 
-			{/* <PopUpModal
-				title="Edit post"
-				isOpen={updateModalIsOpen}
-				updateIsOpen={setEditModalIsOpen}
-				content={<ChangePostForm post={post} categoryList={categoryList} services={services} updateIsOpen={setEditModalIsOpen}/>}
-			/>
-			<PopUpModal
-				title={title}
-				isOpen={viewModalIsOpen}
-				updateIsOpen={setViewModalIsOpen}
-				content={<ViewPostContent post={post} user={user}/>}
-			/>
+			{/*
 			<PopUpModal
 				title={'Are you sure you want to delete ' + title + '?'}
 				isOpen={deleteModalIsOpen}

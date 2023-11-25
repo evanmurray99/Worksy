@@ -1,8 +1,8 @@
-/* div.mainPostContent img
-{
-    width: 40%;
-    max-width: 400px;
-} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
 
 .postBackground
 {
@@ -19,10 +19,44 @@
     width:10%;
 }
 
+#updateReview
+{
+    width: 100%;
+    background-color: #55BDCB;
+    margin-top: 10px;
+}
+
+.updateReview
+{
+    background-color: #6AEDC6;
+    padding: 10px;
+}
+
+textarea
+{
+    background-color:#D9D9D9;
+    border-radius: 15px;
+}
+
+textarea.fixAlign
+{
+    padding: 5px;
+}
+
+textarea.whiteBackDrop
+{
+    background-color:white;
+}
+
 .mainPostContent
 {
     display:flex;
     width:80%
+}
+
+.mainReviewContent
+{
+    width:100%
 }
 
 h3
@@ -47,10 +81,23 @@ p
     background-color: #DC6060;
 }
 
+.delete.leftCornerRounded
+{
+    border-radius: 15px 0px 0px 15px;
+}
+
+.belowFloats
+{
+    clear:both;
+    display:block;
+    margin: auto;
+}
+
 #description
 {
-    margin: 5px;
     width: 100%;
+    padding: 5px;
+    text-align: left;
 }
 
 .postBackground i
@@ -78,4 +125,12 @@ p
 {
     margin-bottom: 10px;
     display: block;
+}
+
+#reviewTitle
+{
+    background-color: #55BDCB;
+    padding: 5px;
+    width: 100%;
+}
 }
