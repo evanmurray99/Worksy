@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Search.css'
-import ReviewPopUp from './ReviewPopUp';
 import NewChatModal from './NewChatModal';
+import ReviewPopUp from './ReviewPopUp';
 import {useNavigate} from 'react-router-dom'
-export default function SearchResult({data, displayChatModal, chatData, updateModalIsOpen, setChatData, currUser, setChats, chats}){
+export default function SearchResult({data, displayChatModal, updateModalIsOpen, setChatData, currUser, loggedInUser}){
     
     const [user, setUser] = useState(null);
     const [modalIsOpen, updateIsOpen] = useState(false);
@@ -73,41 +73,14 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
             // Perform any necessary cleanup here, such as cancelling the ongoing fetch.
         };
     }, []);
-    
-    const navigate = useNavigate()
 
     const startChat = ()=>{
-        var len = chats.length
-        var noChat = true
-
-        for(var i = 0; i < len; i ++)
-        {
-            if(chats[i].service === data._id)
-            {
-                noChat = false;
-            }
-        }
-
-        console.log(data.seller)
-        console.log(user._id)
-        if(currUser._id !== data.seller)
-        {
-            if(noChat === true)
-            {
-                console.log(data)
-                updateIsOpen(true)
-                displayChatModal()
-            }
-            else
-            {
-                navigate('/chat')
-            }
-        }
+        setChatData(data)
+        displayChatModal()
     }
     
     if(user && data){
     return(
-        
         <div className='servicePost'>
             <div className = 'serviceInfo'>
                 <div className = 'serviceTitle'>
@@ -134,7 +107,16 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                     {user && user._id ? `${user.firstName} ${user.lastName[0]}` :
                     ``
                     }
-                    <button className = 'chat' onClick={startChat}></button>
+                    { loggedInUser ?
+                        (user && ( user._id !== loggedInUser._id )?
+                            <button className = 'chat' onClick={startChat}></button>
+                            :
+                            <></>
+                        ):(<button className = 'chat' onClick={startChat}></button>)
+                        
+                        
+                    }
+                    
                 </div>
 
                 <div className = 'rating'>
@@ -154,9 +136,10 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
                     <button className = 'bookmarkButton checkBookmark'></button>
                 </div>
             </div>
-                <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateModalIsOpen={updateIsOpen} data={data} user={currUser} setChats={setChats} chats={chats}/>
                 <ReviewPopUp reviews={reviews} setReviews = {setReviews} post_id={data._id} user={currUser} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen} showForm={true}/>
             </div>
-        )
-    }
+            
+        
+    )
+                }
 }

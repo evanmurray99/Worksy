@@ -14,7 +14,7 @@ function postToElement(posts, user, updateServices, categoryList, services) {
 	console.log(user)
 	let numPosts = posts.length;
 	let postList = [];
-
+	
 	for (var i = 0; i < numPosts; i++) {
 		postList.push(
 			<PostListView
@@ -206,13 +206,8 @@ export default function MyContent({}) {
 				</Link>
 			</button>
 			<button className="leftAlign">
-				<Link className="navLinks" to="/services/category=/query=">
+				<Link className="navLinks" to="/services/category=">
 					Services
-				</Link>
-			</button>
-			<button className="leftAlign">
-				<Link className="navLinks" to="/chat">
-					Chat
 				</Link>
 			</button>
 			{user && user.isStudent === true ? 

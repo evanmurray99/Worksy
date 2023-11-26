@@ -1,17 +1,17 @@
 import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
+// import {useNavigate} from 'react-router-dom'
 import '../Styles/NavBar.css'
-export default function SearchBar({}){
+export default function SearchBar({setQuery, query}){
     
-    const [query, setQuery] = useState('')
-    const navigate = useNavigate();
+    // const [query, setQuery] = useState('')
+    // const navigate = useNavigate();
 
-    const routeToResult = () => {
-        if(query.trim()!==''){
-            navigate(`/services/category=/query=${query}`);
-        }
+    // const routeToResult = () => {
+    //     if(query.trim()!==''){
+    //         navigate(`/services/category=`);
+    //     }
         
-    }
+    // }
     const generateQuery = () => {
       
       if (query.trim() !== '') {
@@ -34,7 +34,7 @@ export default function SearchBar({}){
 		if(event.key === "Enter")
 		{
             setQuery(event.target.value)
-			routeToResult(event);
+			// routeToResult(event);
 		}
 	}
 
@@ -44,13 +44,13 @@ export default function SearchBar({}){
                 className='searchField'
                 type='text'
                 placeholder='Enter keywords here'
-                onChange={(e)=>{
-                    setQuery(e.target.value)
-                }}
+                // onChange={(e)=>{
+                //     setQuery(e.target.value)
+                // }}
                 onKeyDown={handleEnter}                
             >
             </input>
-            <button className='searchButton' onClick={routeToResult} id="search">
+            <button className='searchButton' onClick={(e)=>{setQuery(e.target.value)}} id="search">
                 Search
             </button>
         </div> 

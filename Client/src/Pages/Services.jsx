@@ -2,55 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
 import SearchBar from '../Components/SearchBar.jsx';
+import Cookies from 'js-cookie';
 import NewChatModal from '../Components/NewChatModal';
 import ReviewPopUp from '../Components/ReviewPopUp';
 import SearchResult from '../Components/SearchResult.jsx';
-import Cookies from 'js-cookie';
 import '../Styles/Search.css'
 
-const getChats = (user, setChats) => {
-  if(user !== undefined)
-  {
-    setChats([])
 
-    const url = 'http://localhost:3001/api/chats/seller/' + user._id;
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) return response.json();
-        else throw new Error('Error in getChat');
-      })
-      .then((data) => {
-        setChats([...data]);
-      })
-      .catch((e) => console.log(e.message));
-
-      const buyer = 'http://localhost:3001/api/chats/buyer/' + user._id;
-      fetch(buyer, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) return response.json();
-          else throw new Error('Error in getChat');
-        })
-        .then((data) => {
-          setChats(prevChats => [...prevChats, ...data]);
-        })
-        .catch((e) => console.log(e.message));
-  }
-};
-
-export default function Services() {
-  const[token, setToken] = useState(Cookies.get('token'))
-  const[user, setUser] = useState();
-  const[chats, setChats] = useState();
+export default function Home() {
 
   const orderMap = {
     '1' : 'Relevance',
@@ -60,16 +19,18 @@ export default function Services() {
     '5' : 'Price - Low to high'
   }
   
-  const { query } = useParams();
+  const [ query, setQuery] = useState('');
   const { category } = useParams();
   const [results, setResults] = useState([]);
   const [filteredCategories , setFilteredCategories ] = useState({})
   const [filteredResult, setFilteredResults] = useState([]) 
   const [filterMax, setFilterMax] = useState(0)
+  const [loggedInUser,setLoggedInUser] = useState()
   const [maxPrice, setMaxPrice] = useState(0)
   const [order, setOrder] = useState('1');
   const [maxPage, setMaxPage] = useState(0)
   const [page, setPage] = useState(0)
+  const [token, setToken] = useState(Cookies.get('token'));
   const [modalIsOpen, updateModalIsOpen] = useState(false)
   const [chatData, setChatData] = useState(null)
 
@@ -77,29 +38,33 @@ export default function Services() {
   const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false)
 
   const perPage = 10;
+  console.log(query)
 
   useEffect(() => {
-		const url = 'http://localhost:3001/api/users/' + token + '/auth';
-		// do a check token before request
-		fetch(url, {
-			method: 'GET',
-		})
-			.then((response) => { 
-				if (response.status === 200) return response.json();
-			})
-			.then((data) => {
-				setUser(data.user);
-				getChats(data.user, setChats);
-			})
-			.catch((e) => console.log(e.message));
-  }, []);
+    console.log('update content');
+    const token = Cookies.get('token');
+    const url = 'http://localhost:3001/api/users/' + token + '/auth';
+    // do a check token before request
+    fetch(url, {
+        method: 'GET',
+    })
+        .then((response) => {
+            if (response.status === 200) return response.json();
+            
+        })
+        .then((data) => {
+            setLoggedInUser(data.user);
+        })
+        .catch((e) => console.log(e.message));
+
+}, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        var url = `http://localhost:3001/api/services/search/${query.replace('query=', '')}`
+        var url = `http://localhost:3001/api/services/search/${query}`
 
-        if(query === 'query=')
+        if(query === '')
         {
           url = "http://localhost:3001/api/services/"
         }
@@ -107,7 +72,7 @@ export default function Services() {
         const response = await fetch(url);
         var data = await response.json();
 
-        if(query === 'query=')
+        if(query === '')
         {
           data = data.map((currData) => {return {service:currData, score:0}})
         }
@@ -151,12 +116,13 @@ export default function Services() {
           setFilteredCategories((prevCategories) => {
             const categoryExists = prevCategories[currCategory];
             var inputtedCategory = category.replace('category=', '');
+            console.log(prevCategories[currCategory])
 
             return {
               ...prevCategories,
               [currCategory]: {
                 count: categoryExists ? categoryExists.count + 1 : 1,
-                checked: inputtedCategory === currCategory || inputtedCategory === "" ? true: false,
+                checked: (inputtedCategory === currCategory || inputtedCategory === "") ? true: false,
               },
             };
           });
@@ -168,7 +134,9 @@ export default function Services() {
     } catch (error) {
       console.error('Error iterating over results', error);
     }
-  }, [results, category]);
+  }, [results]);
+
+
 
   useEffect(() => {
     setFilteredResults([])
@@ -253,28 +221,28 @@ export default function Services() {
 
   let links = (
     <>
-      <button className="leftAlign">
-        <Link className="navLinks" to="/">
-          Home
-        </Link>
-      </button>
-      <button className="leftAlign">
-        <Link className="navLinks" to="/content">
-          My Content
-        </Link>
-      </button>
-      <button className="leftAlign">
-          <Link className="navLinks" to="/chat">
-            Chat
-          </Link>
-      </button>
+    <button className="leftAlign">
+				<Link className="navLinks" to="/">
+					Home
+				</Link>
+			</button>
+    <button className="leftAlign">
+      <Link className="navLinks" to="/content">
+        My Content
+      </Link>
+    </button>
     </>
   );
 
   return (
     <React.Fragment>
-      <NavBar leftButtons={links} setToken={setToken} token={token}/>
-      {results.length !== 0 || Object.keys(filteredCategories).length !== 0 ?  
+      <NavBar leftButtons={links} 
+      setToken={setToken}
+      token={token}
+      user={loggedInUser}
+      />
+      
+      {results.length !== 0  || Object.keys(filteredCategories).length !== 0 ?  
       
       <div className='resultContainer'>
             <div className='filterContainer'>
@@ -345,14 +313,12 @@ export default function Services() {
             <div className='contentContain'>
             
             <div className = 'searchResults'>
-            <SearchBar></SearchBar> 
+            <SearchBar setQuery={setQuery} query={query}></SearchBar> 
                 
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.service.id} className = 'resultItemContainer'>
-                    {/* added variables  */}
-                      <SearchResult currUser={user} data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} displayReview={handleReviewOpenPopUp}/>                    
-                      {/* <ReviewPopUp post_id={result.service._id} user={user} isOpen ={isReviewPopUpOpen} closePopUp={setReviewPopUpOpen}/> */}
+                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} loggedInUser={loggedInUser} currUser={loggedInUser} displayReview={handleReviewOpenPopUp}/>
                     </div>
                    
                 )):
@@ -438,7 +404,8 @@ export default function Services() {
             
             <div className = 'searchResults'>
                 <div className = "noResults">
-                    {`Oops! No results found`}
+                    {`Oops! No results found for`}
+                     <div className = "failedQuery">{`"${query.replace('query=','')}"`}</div>
                 </div>
             </div> 
             <div className = 'pageToggle'>
@@ -456,7 +423,7 @@ export default function Services() {
             </div>  
           </div>
       }
-      {/* <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} data={chatData} user={user}/> */}
+        <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} PageData={chatData} />
     </React.Fragment>
   );
 }
