@@ -57,6 +57,8 @@ div.modal .modalClose
 {
     border-radius: 15px 0px 0px 0px;
     background-color: #DC6060;
+    width: 40px;
+    font-weight: bolder;
 }
 
 .noUser{

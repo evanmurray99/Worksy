@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { deleteService } from '../utils/Services';
 
 function postToElement(posts, user, updateServices, categoryList, services) {
+	console.log(user)
 	let numPosts = posts.length;
 	let postList = [];
 
@@ -89,6 +90,7 @@ export default function MyContent({}) {
 			})
 			.catch((e) => console.log(e.message));
 	}, [token]);
+	// console.log(user)
 
 	const updateUser = (firstName, lastName, email, password, bio) => {
 		console.log(firstName, lastName, email, bio);
@@ -208,9 +210,12 @@ export default function MyContent({}) {
 					Chat
 				</Link>
 			</button>
-			<button className="leftAlign" onClick={() => updateModalIsOpen(true)}>
-				Create Post
-			</button>
+			{user && user.isStudent === true ? 
+				<button className="leftAlign font-bold" onClick={() => updateModalIsOpen(true)}>
+					Create Post
+				</button>: 
+				<></>
+			}
 		</React.Fragment>
 	);
 
@@ -242,7 +247,10 @@ export default function MyContent({}) {
 						}
 						hasBackdrop={false}
 					/>
-					<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>
+					{user.isStudent === true ? 
+						<Accordion title="Your Posts" content={postList} hasBackdrop={true}/>:
+						<></>
+					}
 					<Accordion title="Your Reviews" content={reviewList} hasBackdrop={true}/>
 				</>
 			) : null}

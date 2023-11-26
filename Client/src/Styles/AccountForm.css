@@ -18,6 +18,20 @@
     {
         color: red;
     }
+
+    .success
+    {
+        color: blue;
+    }
+
+    #updateButton
+    {
+        width: 100%;
+        background-color: #55BDCB;
+        margin-top: 10px;
+        padding: 10px;
+        font-weight: bold;
+    }
 }
 
 .background
@@ -65,11 +79,4 @@ input:not([type='file'])
 .rightWidth
 {
     width: 47%;
-}
-
-.updateButton
-{
-    width: 100%;
-    background-color: #55BDCB;
-    margin-top: 10px;
 }

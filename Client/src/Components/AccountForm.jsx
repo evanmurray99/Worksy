@@ -7,12 +7,14 @@ const isValidEmail = (email) => {
 };
 
 export function validateForm(firstName, lastName, email, password, newPass, confirmPass, bio, updateUser, setError) {
-	var errorMsg = "";
+	var message = "";
+	var result = "";
 	if (firstName !== '' && lastName !== '' && email !== '')
 	{
 		//check if email is valid before sending to backend
 		if (!isValidEmail(email)) {
-			errorMsg += "You must provide a valid email.\n"
+			result = "error";
+			message += "You must provide a valid email.\n"
 			return;
 		}
 
@@ -22,36 +24,44 @@ export function validateForm(firstName, lastName, email, password, newPass, conf
 			if (newPass === confirmPass) 
 			{ 
 				updateUser(firstName, lastName, email, newPass, bio)
+				message += "Account information was successfully updated."
+				result = "success";
 			}
 			else
 			{
-				errorMsg += "New Password is not the same as Confirm Password.\n"
+				message += "New Password is not the same as Confirm Password.\n"
+				result = "error";
 			}
 		}
 		else
 		{
 			updateUser(firstName, lastName, email, password, bio)
+			message += "Account information was successfully updated."
+			result = "success";
 		}
 	}
 	else
 	{
 		if(firstName === '')
 		{
-			errorMsg += "Your account needs to have a first name.\n"
+			message += "Your account needs to have a first name.\n"
+			result = "error";
 		}
 		
 		if (lastName === '')
 		{
-			errorMsg += "Your account needs to have a last name.\n"
+			message += "Your account needs to have a last name.\n"
+			result = "error";
 		}
 		
 		if (email === '')
 		{
-			errorMsg += "Your account needs to have an email.\n"
+			message += "Your account needs to have an email.\n"
+			result = "error";
 		}
 	}
 
-	setError(<p className="error">{errorMsg}</p>);
+	setError(<p className={result}>{message}</p>);
 }
 
 export default function AccountForm(props) {
@@ -145,7 +155,7 @@ export default function AccountForm(props) {
 
 				{/*in button we need to add a put request to update the user info through onClick=updateUserInfo()*/}
 				{error}
-				<button className="updateButton belowFloats">
+				<button id="updateButton" className="belowFloats">
 					Update
 				</button>
 			</form>
