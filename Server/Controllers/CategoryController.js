@@ -42,17 +42,34 @@ const addCategory = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
   const getCategories = async (req, res) => {
-    try 
-    {
-      const categories = await Category.find({});
+    try {
+        
+        const categories = await Category.find({}, 'name');
+
+       
+        const categoryNames = categories.map((category) => category.name);
 
         // Return the list of category names as a JSON response
-        res.status(200).json(categories);
+        res.status(200).json(categoryNames);
     } catch (error) {
         console.error('Error fetching category names:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
+};
+
+const getCategoriesAndServices = async (req, res) => {
+  try {
+      
+      const categories = await Category.find({});
+
+      // Return the list of category names as a JSON response
+      res.status(200).json(categories);
+  } catch (error) {
+      console.error('Error fetching category names:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 const getServices = async (req, res) => {
@@ -134,4 +151,5 @@ const getServices = async (req, res) => {
     deleteCategory : deleteCategories,
     getCategories : getCategories,
     getServices : getServices,
+    getCategoriesAndServices :getCategoriesAndServices,
   };

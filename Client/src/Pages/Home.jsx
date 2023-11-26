@@ -47,7 +47,7 @@ export default function Home() {
 			.then((data) => {setUser(data.user);})
 			.catch((e) => console.log(e.message));
 
-      fetch('http://localhost:3001/api/categories/', {method: 'GET',})
+      fetch('http://localhost:3001/api/categories/services/', {method: 'GET',})
         .then((response) => {if(response.status === 200) return response.json();})
         .then((data) => {setCategories([...data])})
         .catch((e) => console.log(e.message))
