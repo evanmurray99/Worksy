@@ -8,7 +8,7 @@ export default function SearchBar({}){
 
     const routeToResult = () => {
         if(query.trim()!==''){
-            navigate(`/services/query=${query}`);
+            navigate(`/services/category=/query=${query}`);
         }
         
     }
@@ -50,7 +50,7 @@ export default function SearchBar({}){
                 onKeyDown={handleEnter}                
             >
             </input>
-            <button className='searchButton' onClick={routeToResult}>
+            <button className='searchButton' onClick={routeToResult} id="search">
                 Search
             </button>
         </div> 

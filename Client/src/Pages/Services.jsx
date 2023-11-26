@@ -60,6 +60,7 @@ export default function Services() {
   }
   
   const { query } = useParams();
+  const { category } = useParams();
   const [results, setResults] = useState([]);
   const [filteredCategories , setFilteredCategories ] = useState({})
   const [filteredResult, setFilteredResults] = useState([]) 
@@ -90,14 +91,25 @@ export default function Services() {
 				getChats(data.user, setChats);
 			})
 			.catch((e) => console.log(e.message));
-      // console.log(chats)
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/services/search/${query.replace('query=', '')}`);
-        const data = await response.json();
+        var url = `http://localhost:3001/api/services/search/${query.replace('query=', '')}`
+
+        if(query === 'query=')
+        {
+          url = "http://localhost:3001/api/services/"
+        }
+
+        const response = await fetch(url);
+        var data = await response.json();
+
+        if(query === 'query=')
+        {
+          data = data.map((currData) => {return {service:currData, score:0}})
+        }
   
         setResults(data);
         resetFilters();
@@ -117,7 +129,6 @@ export default function Services() {
   const resetFilters = () => {
     setFilteredCategories({});
     setMaxPrice(0);
-    
   };
 
   useEffect(() => {
@@ -134,15 +145,17 @@ export default function Services() {
           updatedMaxPrice = result.service.price;
         }
 
-        result.service.categories.forEach((category) => {
+        result.service.categories.forEach((currCategory) => {
+
           setFilteredCategories((prevCategories) => {
-            const categoryExists = prevCategories[category];
+            const categoryExists = prevCategories[currCategory];
+            var inputtedCategory = category.replace('category=', '');
 
             return {
               ...prevCategories,
-              [category]: {
+              [currCategory]: {
                 count: categoryExists ? categoryExists.count + 1 : 1,
-                checked: true,
+                checked: inputtedCategory === currCategory || inputtedCategory === "" ? true: false,
               },
             };
           });
@@ -154,7 +167,7 @@ export default function Services() {
     } catch (error) {
       console.error('Error iterating over results', error);
     }
-  }, [results]);
+  }, [results, category]);
 
   useEffect(() => {
     setFilteredResults([])
@@ -176,6 +189,7 @@ export default function Services() {
   
     let filteredResults = [];
     const checkedCategories = [];
+
     Object.keys(filteredCategories).forEach((category) => {
       if (filteredCategories[category].checked) {
         checkedCategories.push(category);
@@ -194,7 +208,6 @@ export default function Services() {
         }
       }
     });
-    console.log(filteredResults)
     
     filteredResults.sort(sortMap[order]);
     setFilteredResults(filteredResults)
@@ -202,7 +215,6 @@ export default function Services() {
   }, [filteredCategories, order, filterMax]);
   
   const toggleCategory = (key) => {
-    console.log('here')
     setFilteredCategories((prevCategories) => {
         
       if (prevCategories[key]) {
@@ -344,8 +356,7 @@ export default function Services() {
                    
                 )):
                 <div className = "noResults">
-                    {`Oops! No results found for`}
-                     <div className = "failedQuery">{`"${query.replace('query=','')}"`}</div>
+                    {`Oops! No results found`}
                 </div>
                 }
             </div> 
@@ -426,8 +437,7 @@ export default function Services() {
             
             <div className = 'searchResults'>
                 <div className = "noResults">
-                    {`Oops! No results found for`}
-                     <div className = "failedQuery">{`"${query.replace('query=','')}"`}</div>
+                    {`Oops! No results found`}
                 </div>
             </div> 
             <div className = 'pageToggle'>
@@ -447,6 +457,5 @@ export default function Services() {
       }
       {/* <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} data={chatData} user={user}/> */}
     </React.Fragment>
-
   );
 }

@@ -1,3 +1,11 @@
+.backgroundBlue
+{
+  background-color: #55BDCB;
+  white-space: pre-line;
+  overflow:auto;
+
+}
+
 .resultContainer{
     margin: 30px;
     height: 80%;

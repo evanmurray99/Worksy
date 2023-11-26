@@ -85,7 +85,7 @@ export default function MyContent({}) {
 				return response.json();
 			})
 			.then((data) => {
-				setCategories(data);
+				setCategories(data.map((currCategory) => {return currCategory.name}));
 			})
 			.catch((e) => console.log(e.message));
 	}, [token]);

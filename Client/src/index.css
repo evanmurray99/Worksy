@@ -62,11 +62,6 @@ button:focus-visible {
   }
 }
 
-/* #root
-{
-    background-color: transparent;
-} */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,9 +1,17 @@
 .navLinks {
     color: black;
+    font-weight: bold;
 }
 
 nav button {
     background-color: #6AEDC6;
+    padding: 8px;
+}
+
+nav button#search
+{
+    padding: 3px;
+    font-weight: bold;
 }
 
 .leftAlign {
@@ -17,7 +25,7 @@ nav button {
 }
 
 #worksy {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 nav {

@@ -43,15 +43,12 @@ const addCategory = async (req, res) => {
     }
   };
   const getCategories = async (req, res) => {
-    try {
-        
-        const categories = await Category.find({}, 'name');
-
-       
-        const categoryNames = categories.map((category) => category.name);
+    try 
+    {
+      const categories = await Category.find({});
 
         // Return the list of category names as a JSON response
-        res.status(200).json(categoryNames);
+        res.status(200).json(categories);
     } catch (error) {
         console.error('Error fetching category names:', error);
         res.status(500).json({ message: 'Internal server error' });

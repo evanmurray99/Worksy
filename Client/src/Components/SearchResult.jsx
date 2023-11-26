@@ -16,7 +16,6 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
         const fetchData = async () => {
           setReviews([]);
           try {
-            // console.log(post_id);
             const response = await fetch(`http://localhost:3001/api/reviews/service/${data._id}`)
             .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
           .then((reviewData) => { setReviews([...reviewData]); /*getUser(data, setUser, userReviewer) ;*/  }); 
@@ -30,8 +29,6 @@ export default function SearchResult({data, displayChatModal, chatData, updateMo
         fetchData();
         
       }, [data]);
-
-      console.log(reviews)
 
     const displayReview = () => {
         setReviewPopUpOpen(true);
