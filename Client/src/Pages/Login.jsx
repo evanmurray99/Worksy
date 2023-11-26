@@ -51,10 +51,10 @@ export default function Login() {
 	}
 
 	return (
-		<>
-			<div className="rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px] ">
+		<div className="justify-center items-center flex h-full">
+			<div className="flex justify-center items-center rounded-xl bg-white p-8 shadow-xl w-[400px] max-w-[1500px]">
 				<form
-					className=" bg-white p-4 my-10 max-w-[400px] w-full mx-auto"
+					className=" bg-white w-full mx-auto"
 					onSubmit={handleLogin}
 					onKeyDown={handleEnter}
 				>
@@ -103,6 +103,6 @@ export default function Login() {
 					{error !== '' ? <div className="text-red-400">{error}</div> : null}
 				</form>
 			</div>
-		</>
+		</div>
 	);
 }

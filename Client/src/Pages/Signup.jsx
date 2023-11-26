@@ -83,7 +83,8 @@ export default function Signup() {
 
 	return (
 		<>
-			<div className="flex flex-col items-center rounded-lg bg-white p-8 shadow-xl mx-28 my-[300px]">
+			<div className="justify-center items-center flex h-full">
+			<div className="flex flex-col items-center rounded-xl p-20 shadow-xl">
 				<p className="uppercase text-2xl font-bold hidden sm:block ">
 					Are you a student or do you hire creatives?
 				</p>
@@ -98,7 +99,7 @@ export default function Signup() {
 					</div>
 				</div>
 				<form
-					className="bg-white p-4 my-10 max-w-[500px] w-full mx-auto"
+					className="bg-white max-w-[500px] w-full mx-auto"
 					onSubmit={handleSubmit}
 					onKeyDown={handleEnter}
 				>
@@ -200,6 +201,7 @@ export default function Signup() {
 						Already have account? Sign in
 					</Link>
 				</form>
+			</div>
 			</div>
 		</>
 	);
