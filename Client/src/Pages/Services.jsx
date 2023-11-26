@@ -78,7 +78,10 @@ export default function Home() {
         }
   
         setResults(data);
-        resetFilters();
+        // if(query === '')
+        // {
+          resetFilters();
+        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -93,7 +96,29 @@ export default function Home() {
   }, [query]);
 
   const resetFilters = () => {
+    if(query === '')
+    {
     setFilteredCategories({});
+    }
+    else
+    {
+      var tempArr = {}
+      results.forEach((result) => {
+        result.service.categories.forEach((currCategory) => {
+          setFilteredCategories((prevCategories) => {
+            return {
+              ...prevCategories,
+              [currCategory]:
+              {
+                ...prevCategories[currCategory],
+                count: 0
+              }
+            }
+          })
+        })
+      })
+    }
+
     setMaxPrice(0);
   };
 
@@ -118,6 +143,8 @@ export default function Home() {
             var inputtedCategory = category.replace('category=', '');
             console.log(prevCategories[currCategory])
 
+            if(query ==='')
+            {
             return {
               ...prevCategories,
               [currCategory]: {
@@ -125,6 +152,19 @@ export default function Home() {
                 checked: (inputtedCategory === currCategory || inputtedCategory === "") ? true: false,
               },
             };
+          }
+          else
+          {
+            // console.log(checkedCategories)
+              return {
+                ...prevCategories,
+                [currCategory]:{
+                  ...prevCategories[currCategory],
+                  count: categoryExists ? categoryExists.count + 1 : 1,
+                  // checked: prevCategories[currCategory].checked
+                }
+              }
+          }
           });
         });
       });
