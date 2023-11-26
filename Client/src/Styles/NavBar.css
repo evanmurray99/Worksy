@@ -43,15 +43,6 @@ nav {
     padding : 0.5rem;
 }
 
-.searchContainer {
-    display: flex;
-    flex-direction: row;
-    border-radius: 15px;
-    padding : 5px;
-    background:lightblue;
-    border: 1px solid grey;
-}
-
 input.searchField textarea{
     background-color: lightblue;
     background: lightblue;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
+import SearchBar from '../Components/SearchBar.jsx';
 import NewChatModal from '../Components/NewChatModal';
 import ReviewPopUp from '../Components/ReviewPopUp';
 import SearchResult from '../Components/SearchResult.jsx';
@@ -75,7 +76,7 @@ export default function Services() {
 // states for set review and open and close pop up
   const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false)
 
-  const perPage = 3;
+  const perPage = 10;
 
   useEffect(() => {
 		const url = 'http://localhost:3001/api/users/' + token + '/auth';
@@ -211,7 +212,7 @@ export default function Services() {
     
     filteredResults.sort(sortMap[order]);
     setFilteredResults(filteredResults)
-    setMaxPage(Math.floor(filteredResults.length/perPage))
+    setMaxPage(Math.ceil(filteredResults.length/perPage))
   }, [filteredCategories, order, filterMax]);
   
   const toggleCategory = (key) => {
@@ -273,7 +274,6 @@ export default function Services() {
   return (
     <React.Fragment>
       <NavBar leftButtons={links} setToken={setToken} token={token}/>
-      
       {results.length !== 0 || Object.keys(filteredCategories).length !== 0 ?  
       
       <div className='resultContainer'>
@@ -345,6 +345,7 @@ export default function Services() {
             <div className='contentContain'>
             
             <div className = 'searchResults'>
+            <SearchBar></SearchBar> 
                 
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
@@ -359,32 +360,32 @@ export default function Services() {
                     {`Oops! No results found`}
                 </div>
                 }
-            </div> 
-            <div className = 'pageToggle'>
+                <div className = 'pageToggle'>
 
-                {`Showing items ${Math.min(filteredResult.length, (page*perPage)+1)} to ${Math.min(filteredResult.length,(page*perPage) + perPage)} of ${filteredResult.length}`}
-                <div className='pageNavigator'>
-                    {`Page`}
-                    {page > 0 ?
-                    <button className = 'navigateButton' onClick={()=>movePage(-1)}>{`<`}</button>
-                    :
-                    <></>
-                    }
-                    <div className='page'>
-                    {page+1}
-                    </div>
-                    {page+1 < maxPage ?
-                    <button className = 'navigateButton' onClick={()=>movePage(1)}>{`>`} </button>
-                    :
-                    <></>
-                    }
-                    {`of ${Math.max(page+1,maxPage)}`}
-                    
-                </div>
-                </div>
-                 
-            </div>
-                    
+{`Showing items ${Math.min(filteredResult.length, (page*perPage)+1)} to ${Math.min(filteredResult.length,(page*perPage) + perPage)} of ${filteredResult.length}`}
+<div className='pageNavigator'>
+    {`Page`}
+    {page > 0 ?
+    <button className = 'navigateButton' onClick={()=>movePage(-1)}>{`<`}</button>
+    :
+    <></>
+    }
+    <div className='page'>
+    {page+1}
+    </div>
+    {page+1 < maxPage ?
+    <button className = 'navigateButton' onClick={()=>movePage(1)}>{`>`} </button>
+    :
+    <></>
+    }
+    {`of ${Math.max(page+1,maxPage)}`}
+    
+</div>
+</div>
+ 
+</div>
+
+            </div>         
             </div>
       :
       <div className='resultContainer'>

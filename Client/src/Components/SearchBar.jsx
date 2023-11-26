@@ -39,7 +39,7 @@ export default function SearchBar({}){
 	}
 
     return (
-        <div className="searchContainer leftAlign">
+        <div className="searchContainer">
             <input
                 className='searchField'
                 type='text'

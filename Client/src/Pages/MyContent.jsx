@@ -206,6 +206,11 @@ export default function MyContent({}) {
 				</Link>
 			</button>
 			<button className="leftAlign">
+				<Link className="navLinks" to="/services/category=/query=">
+					Services
+				</Link>
+			</button>
+			<button className="leftAlign">
 				<Link className="navLinks" to="/chat">
 					Chat
 				</Link>
