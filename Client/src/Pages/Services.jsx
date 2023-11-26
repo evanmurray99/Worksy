@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../Components/NavBar';
+import SearchBar from '../Components/SearchBar.jsx';
 import Cookies from 'js-cookie';
 import NewChatModal from '../Components/NewChatModal';
+import ReviewPopUp from '../Components/ReviewPopUp';
 import SearchResult from '../Components/SearchResult.jsx';
 import '../Styles/Search.css'
 
@@ -17,7 +19,8 @@ export default function Home() {
     '5' : 'Price - Low to high'
   }
   
-  const { query } = useParams();
+  const [ query, setQuery] = useState('');
+  const { category } = useParams();
   const [results, setResults] = useState([]);
   const [filteredCategories , setFilteredCategories ] = useState({})
   const [filteredResult, setFilteredResults] = useState([]) 
@@ -31,7 +34,11 @@ export default function Home() {
   const [modalIsOpen, updateModalIsOpen] = useState(false)
   const [chatData, setChatData] = useState(null)
 
-  const perPage = 3;
+// states for set review and open and close pop up
+  const [isReviewPopUpOpen, setReviewPopUpOpen] = useState(false)
+
+  const perPage = 10;
+  console.log(query)
 
   useEffect(() => {
     console.log('update content');
@@ -55,11 +62,26 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/services/search/${query.replace('query=', '')}`);
-        const data = await response.json();
+        var url = `http://localhost:3001/api/services/search/${query}`
+
+        if(query === '')
+        {
+          url = "http://localhost:3001/api/services/"
+        }
+
+        const response = await fetch(url);
+        var data = await response.json();
+
+        if(query === '')
+        {
+          data = data.map((currData) => {return {service:currData, score:0}})
+        }
   
         setResults(data);
-        resetFilters();
+        // if(query === '')
+        // {
+          resetFilters();
+        // }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -74,9 +96,30 @@ export default function Home() {
   }, [query]);
 
   const resetFilters = () => {
+    if(query === '')
+    {
     setFilteredCategories({});
+    }
+    else
+    {
+      var tempArr = {}
+      results.forEach((result) => {
+        result.service.categories.forEach((currCategory) => {
+          setFilteredCategories((prevCategories) => {
+            return {
+              ...prevCategories,
+              [currCategory]:
+              {
+                ...prevCategories[currCategory],
+                count: 0
+              }
+            }
+          })
+        })
+      })
+    }
+
     setMaxPrice(0);
-    
   };
 
   useEffect(() => {
@@ -93,17 +136,35 @@ export default function Home() {
           updatedMaxPrice = result.service.price;
         }
 
-        result.service.categories.forEach((category) => {
-          setFilteredCategories((prevCategories) => {
-            const categoryExists = prevCategories[category];
+        result.service.categories.forEach((currCategory) => {
 
+          setFilteredCategories((prevCategories) => {
+            const categoryExists = prevCategories[currCategory];
+            var inputtedCategory = category.replace('category=', '');
+            console.log(prevCategories[currCategory])
+
+            if(query ==='')
+            {
             return {
               ...prevCategories,
-              [category]: {
+              [currCategory]: {
                 count: categoryExists ? categoryExists.count + 1 : 1,
-                checked: true,
+                checked: (inputtedCategory === currCategory || inputtedCategory === "") ? true: false,
               },
             };
+          }
+          else
+          {
+            // console.log(checkedCategories)
+              return {
+                ...prevCategories,
+                [currCategory]:{
+                  ...prevCategories[currCategory],
+                  count: categoryExists ? categoryExists.count + 1 : 1,
+                  // checked: prevCategories[currCategory].checked
+                }
+              }
+          }
           });
         });
       });
@@ -114,6 +175,8 @@ export default function Home() {
       console.error('Error iterating over results', error);
     }
   }, [results]);
+
+
 
   useEffect(() => {
     setFilteredResults([])
@@ -135,6 +198,7 @@ export default function Home() {
   
     let filteredResults = [];
     const checkedCategories = [];
+
     Object.keys(filteredCategories).forEach((category) => {
       if (filteredCategories[category].checked) {
         checkedCategories.push(category);
@@ -156,11 +220,10 @@ export default function Home() {
     
     filteredResults.sort(sortMap[order]);
     setFilteredResults(filteredResults)
-    setMaxPage(Math.floor(filteredResults.length/perPage))
+    setMaxPage(Math.ceil(filteredResults.length/perPage))
   }, [filteredCategories, order, filterMax]);
   
   const toggleCategory = (key) => {
-    console.log('here')
     setFilteredCategories((prevCategories) => {
         
       if (prevCategories[key]) {
@@ -177,7 +240,9 @@ export default function Home() {
       return prevCategories;
     });
   };
-
+// pop up state
+  const handleReviewOpenPopUp = () => { setReviewPopUpOpen(true) };
+  
   const displayChatModal = () =>{
      updateModalIsOpen(true)
 
@@ -195,11 +260,18 @@ export default function Home() {
 
 
   let links = (
+    <>
+    <button className="leftAlign">
+				<Link className="navLinks" to="/">
+					Home
+				</Link>
+			</button>
     <button className="leftAlign">
       <Link className="navLinks" to="/content">
         My Content
       </Link>
     </button>
+    </>
   );
 
   return (
@@ -281,51 +353,117 @@ export default function Home() {
             <div className='contentContain'>
             
             <div className = 'searchResults'>
+            <SearchBar setQuery={setQuery} query={query}></SearchBar> 
                 
                 {filteredResult.length !== 0 ? 
                 filteredResult.slice(page*perPage, Math.min((page*perPage) + perPage,  filteredResult.length ) ).map((result) => (
                     <div key = {result.service.id} className = 'resultItemContainer'>
-                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} loggedInUser={loggedInUser}/>
+                        <SearchResult data={result.service} displayChatModal={displayChatModal} setChatData={setChatData} loggedInUser={loggedInUser} currUser={loggedInUser} displayReview={handleReviewOpenPopUp}/>
                     </div>
                    
                 )):
                 <div className = "noResults">
+                    {`Oops! No results found`}
+                </div>
+                }
+                <div className = 'pageToggle'>
+
+{`Showing items ${Math.min(filteredResult.length, (page*perPage)+1)} to ${Math.min(filteredResult.length,(page*perPage) + perPage)} of ${filteredResult.length}`}
+<div className='pageNavigator'>
+    {`Page`}
+    {page > 0 ?
+    <button className = 'navigateButton' onClick={()=>movePage(-1)}>{`<`}</button>
+    :
+    <></>
+    }
+    <div className='page'>
+    {page+1}
+    </div>
+    {page+1 < maxPage ?
+    <button className = 'navigateButton' onClick={()=>movePage(1)}>{`>`} </button>
+    :
+    <></>
+    }
+    {`of ${Math.max(page+1,maxPage)}`}
+    
+</div>
+</div>
+ 
+</div>
+
+            </div>         
+            </div>
+      :
+      <div className='resultContainer'>
+            <div className='filterContainer'>
+                <div className='filterSection'>
+                    <div className='filterTitle'>
+                        Order by
+                    </div>
+                    <div className="radioContainer">
+                    {Object.keys(orderMap).map((k) => (
+                        <label key={k} className="radioLabel">
+                        <input
+                            type="radio"
+                            name="order"
+                            value={orderMap[k]}
+                            checked={order === k}
+                            onChange={() => setOrder(k)}
+                        />
+                        {orderMap[k]}
+                        </label>
+                    ))}
+                    </div>
+                </div>
+                <div className='filterSection'>
+                    <div className='filterTitle'>
+                        Price
+                    </div>
+                    <div className='filterTitle'>
+                    <div className='priceInfo'>
+                    <div className='sliderValue'>Free</div> 
+                    <div className='sliderContainer'>
+                    <output className='valueLabel'  style={{marginLeft: `${(filterMax/maxPrice)*100}%`}} htmlFor="price">{`CAD $${filterMax}`}</output> 
+                    <input
+                        type='range'
+                        name="price"
+                        min='0'
+                        max={`${maxPrice}`}
+                        step={`${(maxPrice/5)}`}
+                        value={`${filterMax}`}
+                        onChange={(e)=>setFilterMax(e.target.value)}
+                        className='priceSlider'/> 
+                        </div>
+                        
+                        <div className='sliderValue'>{maxPrice}</div>         
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='contentContain'>
+            
+            <div className = 'searchResults'>
+                <div className = "noResults">
                     {`Oops! No results found for`}
                      <div className = "failedQuery">{`"${query.replace('query=','')}"`}</div>
                 </div>
-                }
             </div> 
             <div className = 'pageToggle'>
 
                 {`Showing items ${Math.min(filteredResult.length, (page*perPage)+1)} to ${Math.min(filteredResult.length,(page*perPage) + perPage)} of ${filteredResult.length}`}
                 <div className='pageNavigator'>
                     {`Page`}
-                    {page > 0 ?
-                    <button className = 'navigateButton' onClick={()=>movePage(-1)}>{`<`}</button>
-                    :
-                    <></>
-                    }
                     <div className='page'>
                     {page+1}
                     </div>
-                    {page+1 < maxPage ?
-                    <button className = 'navigateButton' onClick={()=>movePage(1)}>{`>`} </button>
-                    :
-                    <></>
-                    }
                     {`of ${Math.max(page+1,maxPage)}`}
                     
                 </div>
-                </div>
-                 
-            </div>
-                    
-            </div>
-      :
-      <></>
+              </div>   
+            </div>  
+          </div>
       }
-      <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} PageData={chatData} />
+        <NewChatModal title="Start New Chat" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} PageData={chatData} />
     </React.Fragment>
-
   );
 }

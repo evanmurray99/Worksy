@@ -4,10 +4,12 @@ const request = require('supertest');
 const db = require('../Config/db')
 const app = require('../app'); 
 require("./User.test")
+require("./Service.test")
 
 describe('REVIEW API TEST', function() {
     let id;
     let user_id;
+    let service_id;
     before((done) => {
         db.connectDB()
         .then(() => {
@@ -45,10 +47,41 @@ describe('REVIEW API TEST', function() {
         });
     });
 
+    it('Add service for created user and review', (done) => { 
+      const newService = {
+          seller : user_id,
+          description : "test description",
+          title : "test title",
+          price: 100,
+          categories : ["test category"]
+      };
 
+      request(app)
+      .post('/api/services')
+      .send(newService)
+      .set('Accept', 'application/json')
+      .end((err, response) => {
+          if (err) {
+              return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(201);
+          expect(response.body).to.have.property('title', 'test title');
+          expect(response.body).to.have.property('description', 'test description');
+          expect(response.body).to.have.property('price', 100);
+          expect(response.body).to.have.property('seller', user_id); 
+
+          service_id = response.body._id;
+
+          done(); // Signal that the test case is complete
+      });   
+  });
+
+            
     it('Create a review with the created used', (done) => {
         const newReview = {
             reviewer: user_id,
+            service: service_id,
             rating: 5,
             text: 'This is a test review'
         };
@@ -65,6 +98,7 @@ describe('REVIEW API TEST', function() {
             expect(response.status).to.equal(201);
             expect(response.body).to.have.property('reviewer', user_id);
             expect(response.body).to.have.property('rating', 5);
+            expect(response.body).to.have.property('service', service_id);
             expect(response.body).to.have.property('text', 'This is a test review');
             expect(response.body).to.have.property('updated');
 
@@ -86,10 +120,49 @@ describe('REVIEW API TEST', function() {
           expect(response.status).to.equal(200);
           expect(response.body).to.have.property('reviewer', user_id);
           expect(response.body).to.have.property('rating', 5);
+          expect(response.body).to.have.property('service', service_id);
           expect(response.body).to.have.property('text', 'This is a test review');
           expect(response.body).to.have.property('updated');
   
           done(); // Signal that the test case is complete
+        });
+    });
+
+    it('Get reviews by service ID', (done) => {
+        request(app)
+        .get(`/api/reviews/service/${service_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
+        
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('array').with.lengthOf(1);
+          expect(response.body[0]).to.have.property('reviewer', user_id);
+          expect(response.body[0]).to.have.property('rating', 5);
+          expect(response.body[0]).to.have.property('service', service_id);
+          expect(response.body[0]).to.have.property('text', 'This is a test review');
+          expect(response.body[0]).to.have.property('updated');
+        
+          done(); // Signal that the test case is complete
+        });
+    });
+
+    it('Get reviews by service ID with invalid id', (done) => {
+        request(app)
+        .get('/api/reviews/service/123')
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message', 'Invalid service ID');
+
+          done(); // Signal that the test case is complete
+
         });
     });
 
@@ -180,7 +253,37 @@ describe('REVIEW API TEST', function() {
         });
     });
 
+    it ('Get a deleted review by service ID', (done) => {
+        request(app)
+        .get(`/api/reviews/service/${service_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
 
+          expect(response.status).to.equal(404);
+          expect(response.body).to.have.property('message', 'Reviews not found');
+          
+          done(); // Signal that the test case is complete
+        });
+    });
+
+    it('Delete service', (done) => {
+        request(app)
+        .delete(`/api/services/${service_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
+          
+          expect(response.status).to.equal(200);
+          expect(response.body).to.have.property('message', 'Service deleted successfully');
+
+          done(); // Signal that the test case is complete
+        });
+    });
 
     it('Delete user', (done) => {
         // Send a DELETE request to delete the user by ID
@@ -330,6 +433,24 @@ describe('REVIEW API TEST', function() {
         .put(`/api/reviews/${id}`)
         .send(updatedReview)
         .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+              return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body).to.have.property('message', 'Internal server error');
+
+            done(); // Signal that the test case is complete
+        });
+    });
+
+    it('Try to get reviews by service ID after db is closed - should throw and catch 500 error', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/reviews/service/${service_id}`)
+        .set('Accept', 'application/json')
+
         .end((err, response) => {
             if (err) {
               return done(err); // Signal that the test case failed with an error

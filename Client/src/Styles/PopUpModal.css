@@ -38,6 +38,7 @@ div.backDrop .chatModal
     border-radius: 15px 0px 0px 0px;
     display:flex;
 }
+
 .modalTitle
 {
     padding: 0px 10px 0px 0px;
@@ -56,6 +57,8 @@ div.modal .modalClose
 {
     border-radius: 15px 0px 0px 0px;
     background-color: #DC6060;
+    width: 40px;
+    font-weight: bolder;
 }
 
 .noUser{
@@ -65,17 +68,18 @@ div.modal .modalClose
     justify-content: center;
     align-items: center;
 }
+
 .noUserText{
     padding: 15px;
     font-size: 20px;
     color: gray;
     font-weight: bold;
 }
+
 .loginButton{
     padding: 5px;
     background-color: #55BDCB;
     color: black;
-
 }
 
 .newChat{
@@ -85,6 +89,7 @@ div.modal .modalClose
     justify-content: center;
     align-items: center;
 }
+
 .newMessage{
     width: 100%;
     min-height: 100px;

@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 const createReview = async (req, res) => {
     try {
-        const { reviewer, rating, text } = req.body;
-        const newReview = new Review({ reviewer, rating, text });
+        const { reviewer, service, rating, text } = req.body;
+        const newReview = new Review({ reviewer, service, rating, text });
 
         await newReview.save();
 
@@ -87,6 +87,47 @@ const getReview = async (req, res) => {
     }
 }
 
+const getReviewsByService = async (req, res) => {
+    try {
+        const serviceId = req.params.id;
+
+        if(!serviceId || !mongoose.Types.ObjectId.isValid(serviceId)) {
+            return res.status(400).json({ message : 'Invalid service ID' });
+        }
+
+        const reviews = await Review.find({ service : serviceId });
+
+        if(!reviews || reviews.length === 0) {
+            return res.status(404).json({ message : 'Reviews not found' });
+        }
+
+        res.status(200).json(reviews);
+    } catch (err) {
+        console.error('Error getting reviews by service ID', err);
+        res.status(500).json({ message : 'Internal server error' });
+    }
+}
+
+const getReviewsByUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if(!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message : 'Invalid user ID' });
+        }
+
+        const reviews = await Review.find({ reviewer : userId });
+
+        if(!reviews || reviews.length === 0) {
+            return res.status(404).json({ message : 'Reviewer not found' });
+        }
+
+        res.status(200).json(reviews);
+    } catch (err) {
+        console.error('Error getting reviews by user ID', err);
+        res.status(500).json({ message : 'Internal server error' });
+    }
+}
 
 
 const controller = {
@@ -94,6 +135,8 @@ const controller = {
     deleteReview,
     editReview, 
     getReview,
+    getReviewsByService,
+    getReviewsByUser
 };
 
 module.exports = controller;

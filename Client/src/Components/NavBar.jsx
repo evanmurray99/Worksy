@@ -28,7 +28,6 @@ export default function NavBar ({leftButtons, modalIsOpen, updateModalIsOpen, us
                 <Link id="worksy" className="navLinks leftAlign" to="/">Worksy</Link>
                 {leftButtons}
                 <button className="rightAlign"><Link className="navLinks" onClick={logout} to="/login">{logText}</Link></button>
-                <SearchBar></SearchBar>
             </nav>
             
             <PopUpModal title="Create new post" isOpen={modalIsOpen} updateIsOpen={updateModalIsOpen} content={<ChangePostForm post={post} user={user} updateIsOpen={updateModalIsOpen} updateServices={updateServices} categoryList={categoryList}/>}/>

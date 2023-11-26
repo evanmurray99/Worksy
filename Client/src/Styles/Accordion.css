@@ -26,6 +26,7 @@
     padding: 10px;
     overflow: auto;
     border-radius: 15px;
+    font-weight:bold;
 }
 
 .contentContainer
