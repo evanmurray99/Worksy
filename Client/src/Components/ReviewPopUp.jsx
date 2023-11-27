@@ -4,11 +4,8 @@ import { useNavigate } from 'react-router-dom'
 
 export default function ReviewPopUp({ reviews, setReviews, post_id, user, isOpen, closePopUp, showForm}) {
 
-  // this is the state of the user for rating
   const [rating, setRating] = useState(0);
-  // this is the state of the user for comment
   const [comment, setComment] = useState('');
-  // this is the state of the user made review
   const [userReviewer, setUser] = useState([]);
   const navigate = useNavigate();
   let buttonClasses = "close-button"
@@ -57,7 +54,6 @@ fetchUserData();
   const handleSubmitedReview = async (event) => {
     
     try {
-        // Send POST request to create a new review
         console.log(user._id);
         const response = await fetch('http://localhost:3001/api/reviews', {
         method: 'POST',
@@ -65,7 +61,6 @@ fetchUserData();
         },
           
           body: JSON.stringify({
-            ///someting is wrong here, this is service id
             service: post_id,
             reviewer: user._id,
             rating: rating,
@@ -78,7 +73,6 @@ fetchUserData();
         return;
       }
 
-      // Get the newly created review data
       const newReviewData = await response.json();
       setReviews([...reviews, newReviewData])
 
@@ -94,7 +88,6 @@ fetchUserData();
     console.log(firstName);
   }
   return (
-
     <div className={`review-pop-up ${isOpen ? 'open' : ''}`} onClick={() => closePopUp(false)}>
       { user ?   
         <div className="pop-up-content" onClick={(event) => event.stopPropagation()}>
