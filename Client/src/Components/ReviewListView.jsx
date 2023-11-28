@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PopUpModal from './PopUpModal';
-import ViewPostContent from './ViewPostContent';
-import ChangePostForm from './ChangePostForm';
 import { deleteReview, editReview } from '../utils/Reviews';
 import '../Styles/PostListView.css';
 
@@ -46,9 +44,8 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
         const fetchData = async () => {
             try {
                 const response = await fetch(`http://localhost:3001/api/services/${review.service}`)
-                .then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
-            .then((reviewData) => { setService(reviewData); /*getUser(data, setUser, userReviewer) ;*/  }); 
-            
+				.then((response) => { if(response.ok) { return response.json(); } else { console.log('Error in fetching reviews:', response.status); }} )
+                .then((reviewData) => { if (reviewData !== undefined ){setService(reviewData);}  }); 
             } catch (error) {
                 console.log('Error in fetching reviews:', error);
             }
@@ -69,7 +66,7 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 		validateForm(revText, rating, review._id, setMessage, updateReviews, allReviews);
 	}
 
-    console.log(review.service);
+
 	const editSubmitButton = (
 		<input type="submit" id="createButton" value="Update" />
 	);
@@ -124,10 +121,10 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 
 				<div
 					className="mainPostContent"
-					// onClick={() => setViewModalIsOpen(true)}
 				>
 					
 					<h3 id="reviewTitle">{title}</h3>
+					 
 					<p id="description">{descript}</p>
 				</div>
 
@@ -157,7 +154,6 @@ export default function ReviewListView({ review, user, updateReviews, allReviews
 					<button
 						id="updateReview"
 						className = "updateButton"
-						// onClick={() => setEditModalIsOpen(true)}
 					>
 						Update
 					</button>
