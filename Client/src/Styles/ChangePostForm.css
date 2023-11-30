@@ -1,26 +1,22 @@
-.changeRight, .changeLeft
-{
-    width:45%;
+.changeRight,
+.changeLeft {
+  width: 45%;
 }
 
-textarea
-{
-    width: 99%;
+textarea {
+  width: 99%;
 }
 
-select
-{
-    width: 100%;
+select {
+  width: 100%;
 }
 
-#createForm
-{
-    margin: 0px 10px 10px 10px;
+#createForm {
+  margin: 0px 10px 10px 10px;
 }
 
-#createButton
-{
-    width: 100%;
-    background-color: #6EFFF6;
-    margin-top: 5px;
+#createButton {
+  width: 100%;
+  background-color: #6efff6;
+  margin-top: 5px;
 }

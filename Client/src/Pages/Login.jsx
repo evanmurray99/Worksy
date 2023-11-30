@@ -1,15 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 // Function to handle user login
 export const logIn = async (email, password) => {
   try {
     console.log("login");
-    const url = 'http://localhost:3001/api/users/login';
+    const url = "http://localhost:3001/api/users/login";
     const body = {
       email: email,
       password: password,
@@ -19,32 +19,32 @@ export const logIn = async (email, password) => {
       .then((response) => response.data)
       .catch((e) => e.response.data);
   } catch (e) {
-    console.log('Error occurred', e.message);
+    console.log("Error occurred", e.message);
   }
 };
 
 // Login component
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // Function to handle login submission
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     const data = await logIn(email, password);
 
     try {
       console.log(data.token);
       if (data.token) {
-        Cookies.set('token', data.token);
+        Cookies.set("token", data.token);
         console.log(data.token);
-        navigate('/');
+        navigate("/");
       } else if (data.message) setError(data.message);
     } catch (e) {
-      setError('Server error');
+      setError("Server error");
     }
   };
 
@@ -57,7 +57,9 @@ export default function Login() {
 
   return (
     <div className="justify-center items-center flex overflow-y-none flex-col">
-      <div className="justify-center items-center flex h-full overflow-y-none flex-col py-20 font-bold text-4xl italic font-sans">worksy</div>
+      <div className="justify-center items-center flex h-full overflow-y-none flex-col py-20 font-bold text-4xl italic font-sans">
+        worksy
+      </div>
       <div className="flex justify-center items-center rounded-xl bg-white p-8 shadow-xl w-[400px] max-w-[1500px]">
         <form
           className=" bg-white w-full mx-auto"
@@ -73,13 +75,13 @@ export default function Login() {
             <input
               className="border p-2 focus:outline-gray-400 "
               type="email"
-			  required={true}
+              required={true}
               id="email"
               value={email}
               placeholder="Email"
               onChange={(e) => {
                 setEmail(e.target.value);
-                setError('');
+                setError("");
               }}
             />
           </div>
@@ -89,12 +91,12 @@ export default function Login() {
               className="border p-2 focus:outline-gray-400 "
               type="password"
               id="password"
-			  required={true}
+              required={true}
               value={password}
               placeholder="Password"
               onChange={(e) => {
                 setPassword(e.target.value);
-                setError('');
+                setError("");
               }}
             />
           </div>
@@ -107,7 +109,11 @@ export default function Login() {
           >
             Create an account
           </Link>
-          {error !== '' ? <div className="text-white w-full bg-red-700 px-1 py-1 flex justify-center text-center bold rounded-lg">{error}</div> : null}
+          {error !== "" ? (
+            <div className="text-white w-full bg-red-700 px-1 py-1 flex justify-center text-center bold rounded-lg">
+              {error}
+            </div>
+          ) : null}
         </form>
       </div>
     </div>

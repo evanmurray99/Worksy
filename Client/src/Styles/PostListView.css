@@ -3,148 +3,122 @@
 @tailwind utilities;
 
 @layer components {
-
-.postBackground
-{
+  .postBackground {
     background-color: white;
     border-radius: 15px;
     margin: 10px;
     overflow: auto;
-    display:flex;
-}
+    display: flex;
+  }
 
-.postBackground button
-{
+  .postBackground button {
     padding: 0;
-}
+  }
 
-#updateReview
-{
+  #updateReview {
     width: 100%;
-    background-color: #55BDCB;
+    background-color: #55bdcb;
     margin-top: 10px;
-}
+  }
 
-.updateReview
-{
-    background-color: #6AEDC6;
+  .updateReview {
+    background-color: #6aedc6;
     padding: 10px;
-}
+  }
 
-textarea
-{
-    background-color:#D9D9D9;
+  textarea {
+    background-color: #d9d9d9;
     border-radius: 15px;
-}
+  }
 
-textarea.fixAlign
-{
+  textarea.fixAlign {
     padding: 5px;
-}
+  }
 
-textarea.whiteBackDrop
-{
-    background-color:white;
-}
+  textarea.whiteBackDrop {
+    background-color: white;
+  }
 
-.mainPostContent
-{
-    width:80%;
-}
+  .mainPostContent {
+    width: 80%;
+  }
 
-h3
-{
+  h3 {
     margin: 10px;
-}
+  }
 
-p
-{
+  p {
     text-align: center;
-}
+  }
 
-#edit
-{
+  #edit {
     border-radius: 0px 15px 15px 0px;
-    background-color: #55BDCB;
-}
+    background-color: #55bdcb;
+  }
 
-.delete
-{
+  .delete {
     border-radius: 15px 0px 0px 15px;
-    background-color: #DC6060;
-    width:10%;
-}
+    background-color: #dc6060;
+    width: 10%;
+  }
 
-.delete.leftCornerRounded
-{
+  .delete.leftCornerRounded {
     border-radius: 15px 0px 0px 15px;
-}
+  }
 
-.belowFloats
-{
-    clear:both;
-    display:block;
+  .belowFloats {
+    clear: both;
+    display: block;
     margin: auto;
-}
+  }
 
-#description
-{
+  #description {
     width: 100%;
     padding: 5px;
     text-align: left;
-}
+  }
 
-.postBackground i
-{
+  .postBackground i {
     font-size: 30px;
-}
+  }
 
-#cancelButton
-{
-    background-color: #D9D9D9;
-}
+  #cancelButton {
+    background-color: #d9d9d9;
+  }
 
-#deleteButton
-{
-    background-color: #DC6060;
-}
+  #deleteButton {
+    background-color: #dc6060;
+  }
 
-#container
-{
+  #container {
     padding: 10px;
     overflow: auto;
-}
+  }
 
-#deleteTextFormat
-{
+  #deleteTextFormat {
     margin-bottom: 10px;
     display: block;
-}
+  }
 
-#reviewTitle
-{
-    background-color: #55BDCB;
+  #reviewTitle {
+    background-color: #55bdcb;
     padding: 5px;
     width: 100%;
-}
+  }
 
-.success
-{
+  .success {
     color: blue;
-}
+  }
 
-.error
-{
+  .error {
     color: red;
-}
+  }
 
-input:not([type='file']).transparentBackDrop
-{
+  input:not([type="file"]).transparentBackDrop {
     background-color: transparent;
-}
+  }
 
-.buttonWidth
-{
+  .buttonWidth {
     width: 10%;
-}
+  }
 }

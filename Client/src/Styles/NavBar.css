@@ -1,49 +1,48 @@
 .navLinks {
-    color: black;
-    font-weight: bold;
+  color: black;
+  font-weight: bold;
 }
 
 nav button {
-    background-color: #6AEDC6;
-    padding: 8px;
+  background-color: #6aedc6;
+  padding: 8px;
 }
 
-nav button#search
-{
-    padding: 3px;
-    font-weight: bold;
+nav button#search {
+  padding: 3px;
+  font-weight: bold;
 }
 
 .leftAlign {
-    float: left;
-    margin-left: 15px;
+  float: left;
+  margin-left: 15px;
 }
 
 .rightAlign {
-    float: right;
-    margin-right: 15px;
+  float: right;
+  margin-right: 15px;
 }
 
 #worksy {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 nav {
-    position: sticky;
-    background-color: #55BDCB;
-    width: 100%;
-    overflow: auto;
-    padding: 0.75rem 0rem;
+  position: sticky;
+  background-color: #55bdcb;
+  width: 100%;
+  overflow: auto;
+  padding: 0.75rem 0rem;
 }
-.userIcon{
-    border: 1px solid black;
-    background-color: white;
-    color: black;
-    border-radius: 50%;
-    padding : 0.5rem;
+.userIcon {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  padding: 0.5rem;
 }
 
-input.searchField textarea{
-    background-color: lightblue;
-    background: lightblue;
+input.searchField textarea {
+  background-color: lightblue;
+  background: lightblue;
 }
