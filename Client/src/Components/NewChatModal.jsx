@@ -112,9 +112,9 @@ export default function NewChatModal({
               )
             );
           } else {
-            sendMessage(
+            
               initializeChat(loggedInUser._id, PageData.seller, PageData._id)
-            );
+            
           }
         })
         .catch((e) => console.log(e.message));

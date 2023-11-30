@@ -95,6 +95,15 @@ export default function ReviewPopUp({
     );
     console.log(firstName);
   };
+
+  const handleKeyboardEvent = (event) => {
+    if (event.key === 'ArrowUp' && rating < 5) {
+      setRating(rating + 1);
+    } else if (event.key === 'ArrowDown' && rating > 0) {
+      setRating(rating - 1);
+    }
+  };
+
   return (
     <div
       className={`review-pop-up ${isOpen ? "open" : ""}`}
@@ -154,6 +163,7 @@ export default function ReviewPopUp({
                     <span
                       key={star}
                       onClick={() => handleRatingChange(star)}
+                      onKeyDown={handleKeyboardEvent}
                       style={{
                         fontSize: "25px",
                         cursor: "pointer",
