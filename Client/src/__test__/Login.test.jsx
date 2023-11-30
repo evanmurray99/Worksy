@@ -77,7 +77,7 @@ describe('Login page test', () => {
 			console.log('data', data);
 		});
 
-		const error = screen.getByText(/User not found/i);
+		const error = screen.getByText('User not found');
 		expect(error).toBeInTheDocument();
 	});
 
@@ -97,7 +97,7 @@ describe('Login page test', () => {
 			console.log('data', data);
 		});
 		
-		const error = screen.getByText(/Server error/i);
+		const error = screen.getByText('Server error');
 		expect(error).toBeInTheDocument();
 	});
 });
