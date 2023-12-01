@@ -1,13 +1,16 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
-import Login, { logIn } from '../Pages/Login';
+import Login from '../Pages/Login';
 import { act } from 'react-dom/test-utils';
 
 vi.mock('axios');
 
 describe('Login page test', () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
 	it('login page should render', () => {
 		render(<Login />, { wrapper: MemoryRouter });
 	});
@@ -34,9 +37,9 @@ describe('Login page test', () => {
 
 	it('valid login should return a token', async () => {
 		render(<Login />, { wrapper: MemoryRouter });
-		axios.post.mockResolvedValue({
-			data: { token: 'abc' },
-		});
+		// axios.post.mockResolvedValue({
+		// 	data: { token: 'abc' },
+		// });
 
 		const body = {
 			email: 'johnD@myumanitoba.ca',
@@ -51,11 +54,6 @@ describe('Login page test', () => {
 		const button = screen.getByRole('button');
 		fireEvent.click(button);
 
-		await act(async () => {
-			const data = await logIn(email, password);
-			console.log('data', data);
-		});
-
 		expect(axios.post).toHaveBeenCalledWith(
 			'http://localhost:3001/api/users/login',
 			body
@@ -68,17 +66,17 @@ describe('Login page test', () => {
 			response: { data: { message: 'User not found' } },
 		});
 
+		const email = screen.getByPlaceholderText('Email');
+		const password = screen.getByPlaceholderText('Password');
+
+		fireEvent.change(email, { target: { value: 'johnD@myumanitoba.ca' } });
+		fireEvent.change(password, { target: { value: 'admin' } });
 		const button = screen.getByRole('button');
 		fireEvent.click(button);
 
-		let data;
-		await act(async () => {
-			data = await logIn('john', 'admin');
-			console.log('data', data);
+		await waitFor(() => {
+			expect(screen.getByText('User not found')).toBeInTheDocument();
 		});
-
-		const error = screen.getByText(/User not found/i);
-		expect(error).toBeInTheDocument();
 	});
 
 	it('server error should display', async () => {
@@ -88,16 +86,29 @@ describe('Login page test', () => {
 			oops: '',
 		});
 
-		const button = screen.getByRole('button');
-		fireEvent.click(button);
+		const email = screen.getByPlaceholderText('Email');
+		const password = screen.getByPlaceholderText('Password');
 
-		let data;
-		await act(async () => {
-			data = await logIn('john', 'admin');
-			console.log('data', data);
+		fireEvent.change(email, {
+			target: { value: 'johnWillNoResponse@myumanitoba.ca' },
 		});
-		
-		const error = screen.getByText(/Server error/i);
+		fireEvent.change(password, { target: { value: 'admin' } });
+		const button = screen.getByRole('button');
+		await act(async () => {
+			fireEvent.click(button);
+		});
+
+		const body = {
+			email: 'johnWillNoResponse@myumanitoba.ca',
+			password: 'admin',
+		};
+
+		expect(axios.post).toHaveBeenCalledWith(
+			'http://localhost:3001/api/users/login',
+			body
+		);
+
+		const error = screen.getByText('Server error');
 		expect(error).toBeInTheDocument();
 	});
 });
