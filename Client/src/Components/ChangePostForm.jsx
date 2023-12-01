@@ -215,8 +215,7 @@ export default function ChangePostForm({
         categories,
         updateServices,
         updateIsOpen,
-        setError,
-        error
+        setError
       );
     } else {
       editServices(

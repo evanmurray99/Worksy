@@ -38,8 +38,8 @@
 }
 
 .chatList {
-  min-width: 40%;
-  max-width: 40%;
+   min-width: 300px;
+   max-width: 300px;
   margin: 5px;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -50,8 +50,8 @@
   flex-direction: column;
 }
 .selectedChat {
-  min-width: 40%;
-  max-width: 40%;
+  min-width: 300px;
+  max-width: 300px;
   background-color: white;
   margin: 5px;
   border: 1px solid black;

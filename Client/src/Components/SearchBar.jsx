@@ -13,7 +13,7 @@ export default function SearchBar() {
 
   const handleEnter = (event) => {
     if (event.key === "Enter") {
-      routeToResult(query);
+      routeToResult();
     }
   };
 
@@ -31,7 +31,7 @@ export default function SearchBar() {
       <button
         className="searchButton"
         onClick={() => {
-          routeToResult(query);
+          routeToResult();
         }}
         id="search"
       >

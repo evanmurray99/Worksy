@@ -61,7 +61,7 @@ export default function Home() {
       try {
         var url = `http://localhost:3001/api/services/search/${query}`;
 
-        if (searchQuery === "") {
+        if (searchQuery === ""  ) {
           url = "http://localhost:3001/api/services/";
         }
 
@@ -158,7 +158,7 @@ export default function Home() {
 
       setMaxPrice(updatedMaxPrice);
       setFilterMax(updatedMaxPrice);
-      console.log(filteredCategories);
+  
     } catch (error) {
       console.error("Error iterating over results", error);
     }
@@ -195,7 +195,8 @@ export default function Home() {
 
     results.forEach((result) => {
       if (result.service.price <= filterMax) {
-        if (
+       
+          if(
           result.service.categories.some((category) =>
             checkedCategories.includes(category)
           ) &&
@@ -203,11 +204,13 @@ export default function Home() {
         ) {
           filteredResults.push(result);
         }
+        
       }
     });
 
     filteredResults.sort(sortMap[order]);
     setFilteredResults(filteredResults);
+    console.log(filteredResults)
     setMaxPage(Math.ceil(filteredResults.length / perPage));
   }, [filteredCategories, order, filterMax]);
 

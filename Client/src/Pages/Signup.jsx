@@ -105,6 +105,7 @@ export default function Signup() {
                   : ""
               }`}
               onClick={() => setIsStudent(true)}
+              onKeyDown={() => setIsStudent(true)}
             >
               <div>Student</div>
               <img src={studentImg} className="object-contain h-24 w-24"></img>
@@ -117,6 +118,7 @@ export default function Signup() {
                   : ""
               }`}
               onClick={() => setIsStudent(false)}
+              onKeyDown={() => setIsStudent(false)}
             >
               <div>Client</div>
               <img src={hireImg} className="object-contain h-24 w-24" />

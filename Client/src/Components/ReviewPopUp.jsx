@@ -108,11 +108,13 @@ export default function ReviewPopUp({
     <div
       className={`review-pop-up ${isOpen ? "open" : ""}`}
       onClick={() => closePopUp(false)}
+      onKeyDown={() => closePopUp(false)}
     >
       {user ? (
         <div
           className="pop-up-content"
           onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
         >
           <div className="reviews-container">
             <h2 className="pop-up-title">Reviews</h2>
@@ -163,7 +165,7 @@ export default function ReviewPopUp({
                     <span
                       key={star}
                       onClick={() => handleRatingChange(star)}
-                      onKeyDown={handleKeyboardEvent}
+                      onKeyDown={() => handleRatingChange(star)}
                       style={{
                         fontSize: "25px",
                         cursor: "pointer",

@@ -3,10 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import NavBar from "../Components/NavBar";
 import CategoryButton from "../Components/CategoryButton";
 import SearchBar from "../Components/SearchBar";
-// import {Link} from 'react-router-dom'
 import ChatComponent from "../Components/ChatComponent";
 import Cookies from "js-cookie";
-import "../Styles/Search.css";
 import "../Styles/Home.css";
 
 const createCategories = (categories) => {
@@ -29,14 +27,12 @@ export default function Home() {
   const [token, setToken] = useState(Cookies.get("token"));
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState("");
+  const CATEGORY_WIDTH = 200;
   const [width, changeWidth] = useState(window.innerWidth);
-  const CATEGORY_WIDTH = 300;
 
   useEffect(() => {
     window.addEventListener("resize", () => changeWidth(window.innerWidth));
-  }),
-    [];
-  console.log(width);
+  }), [];
 
   useEffect(() => {
     console.log("update content");
@@ -63,9 +59,7 @@ export default function Home() {
   }, []);
 
   var categoryList = createCategories(categories);
-  var categoryWidth = [width - (width % CATEGORY_WIDTH)];
-  console.log(width);
-  console.log(width % CATEGORY_WIDTH);
+
 
   let links = (
     <>
@@ -84,12 +78,13 @@ export default function Home() {
   console.log(categoryList);
 
   return (
-    <div className="w-full h-full overflow-hidden">
+    <div className="homepage">
       <NavBar leftButtons={links} setToken={setToken} token={token} />
       <div className="homeSearch backgroundBlue">
+        <span className="searchText">Find your next freelance service here.</span>
         <SearchBar setQuery={setQuery} query={query}></SearchBar>
       </div>
-      <div className="categoryContainer">
+      <div className="category-Container" >
         <div className="categoryAccordion">{categoryList}</div>
       </div>
       {user ? <ChatComponent loggedInUser={user} /> : <></>}

@@ -161,6 +161,7 @@ export default function ReviewListView({
               <span
                 key={star}
                 onClick={() => handleRatingChange(star)}
+				onKeyDown={() => handleRatingChange(star)}
                 style={{
                   fontSize: "25px",
                   color: star <= rating ? "gold" : "gray",
