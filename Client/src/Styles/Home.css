@@ -1,0 +1,36 @@
+.homepage{
+    height:90VH;
+}
+
+.categoryAccordion{
+    display: grid;
+    width:100%;
+    grid-template-columns: repeat(8, 1fr);
+    align-items: center;
+    overflow-y : scroll;
+    overflow-x: hidden;
+    background: transparent;
+    border: none;
+}
+.category-Container {
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    overflow-x: hidden;
+    background: transparent;
+    border: none;
+}
+.homeSearch{
+    max-height: 30%;
+    min-height: 30%;
+    padding: 20px;
+    text-align: center ;
+    overflow : hidden
+}
+
+.searchText{
+    
+    font-weight: bold;
+    color : black;
+    font-size: 30px;
+}

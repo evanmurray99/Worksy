@@ -20,14 +20,12 @@ describe('Signup page test', () => {
         const email = screen.getByPlaceholderText('Email');
         const password = screen.getByPlaceholderText('Password');
         const confirmPassword = screen.getByPlaceholderText('Confirm password');
-        const isStudent = screen.getByPlaceholderText('Is student');
 
         expect(firstName).toBeInTheDocument();
         expect(lastName).toBeInTheDocument();
         expect(email).toBeInTheDocument();
         expect(password).toBeInTheDocument();
         expect(confirmPassword).toBeInTheDocument();
-        expect(isStudent).toBeInTheDocument();
 	});
 
     it('Create new account', async () => {
@@ -48,11 +46,13 @@ describe('Signup page test', () => {
         const lastName = screen.getByPlaceholderText('Last name');
         const email = screen.getByPlaceholderText('Email');
         const password = screen.getByPlaceholderText('Password');
+        const client = document.getElementById('client');
 
         fireEvent.change(firstName, { target: { value: 'John' } });
         fireEvent.change(lastName, { target: { value: 'Doe' } });
         fireEvent.change(email, { target: { value: '123@123.com' } });
         fireEvent.change(password, { target: { value: '123' } });
+        fireEvent.click(client)
 
         await act(async () => {
             const data = await signUp(firstName, lastName, email, false, password);

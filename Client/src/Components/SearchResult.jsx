@@ -40,19 +40,7 @@ export default function SearchResult({data, displayChatModal, updateModalIsOpen,
       averageRating = Math.round(totalRating / reviews.length);
     }
 
-    // const getRating = (rating) => {
-    //     setStars([]);
-    //     for (let i = 0; i < 5; i++) {
-    //         if (rating > 0) {
-    //             stars.push(<span key={i} className="star checkedStar"></span>);
-    //             rating--;
-    //         } else {
-    //             stars.push(<span key={i} className="star"></span>);
-    //         }
-    //     }
-    
-    //     return <div className="rating">{stars}</div>;
-    // };
+
 
 
     useEffect(() => {

@@ -15,8 +15,9 @@
 
 .resultContainer{
     margin: 30px;
-    height: 80%;
+    max-height: 80vh;
     display: flex;
+    overflow-y: hidden;
     flex-direction: row;
     justify-content: center;
 }
@@ -35,6 +36,8 @@
 .filterSection{
     border-bottom: 1px solid lightgrey;
     margin-top: 10px;
+    overflow-y: scroll;
+    max-height: 30vh;
 }
 .contentContain {
     width: 100%;
@@ -42,19 +45,21 @@
     margin-left: 0px;
     border-left: 1px solid gray;
     padding-left: 30px;
-    height: max-content;
-  
+    max-height: 80vh;
     background : white;
     background-color: white;
+    justify-content: space-between;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
 }
 .searchResults{
-    height: 90%;
+    max-height: 90%;
+    width: 90%;
+    overflow-y:scroll;
     
 }
 .pageToggle{
-    border-top: 1px solid lightgrey;
     padding: 5px;
     margin-top: 15px;
     display: flex;
@@ -151,6 +156,7 @@ div{
     margin-right:5px;
     text-align: center;
     align-items: center;
+    height: 30px;
     justify-content: center;
     border-radius: 5px;
     border : 1px solid grey;
@@ -159,18 +165,21 @@ div{
 .pageNavigator {
     margin-left: 50px;
     display: flex;
+    justify-content: space-between;
     flex-direction: row;
 }
 .navigateButton{
     margin-left: 5px;
     margin-right: 5px;
     width: 20px;
+    height: 30px;
     border: 1px solid black;
 }
 .resultItemContainer{
     /* height: 32%; */
     max-height: 500px;
     margin-top: 30px;
+    width: 99%;
     margin-bottom: 30px;
 }
 .noResults{
@@ -214,13 +223,13 @@ div{
     max-height: 45%;
     min-height: 20%;
     display: flex;
-    /* flex-direction: row; */
+    flex-direction: row;
     padding-top:10px;
     align-items: center;
     border-bottom-left-radius: 15px;
     /* overflow-wrap: anywhere; */
     flex-wrap: wrap;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 .category{
     background-color: #6AEDC6;
@@ -349,4 +358,8 @@ div{
   width: 100%;
   background:#55BDCB;
   border: 1px solid grey;
+}
+.pageInfo{
+  display: flex;
+  flex-direction: row;
 }

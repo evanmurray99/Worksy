@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react'
 import '../Styles/Chat.css'
 import io from 'socket.io-client';
+import HOST from '../utils/ServerUtils'
 import ChatListItem from './ChatListItem'
 import MessageList from './MessageList'
 
 
-const socket = io('http://localhost:3002')
+const socket = io("http://localhost:3002")
 
 
 export default function ChatComponent({loggedInUser}){
