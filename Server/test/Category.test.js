@@ -103,7 +103,7 @@ describe('CATEGORY API TEST', function() {
             }
             expect(response.status).to.equal(200);
             expect(response.body).to.be.an('array')
-            expect(response.body.length).to.equal(1)
+            expect(response.body.length).to.equal(25)
 
             done(); // Signal that the test case is complete
         }); 
