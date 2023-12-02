@@ -107,15 +107,9 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Integration Tests:
 
-1. **Test Service Creation**: Verify that a service can be successfully created by sending a POST request to the "/api/services" endpoint. Check that the service is stored in the database.
+1. **Test Get Services by Categories**: Create Services and associate them with Categories. Then confirm that a user can find all services for a specific category.
 
-2. **Test Service Update**: Create a service and then send a PUT request to update its details. Confirm that the updated information is reflected in the service's data.
-
-3. **Test Service Deletion**: Create a service and then send a DELETE request to remove it. Ensure that the service is no longer retrievable from the database.
-
-4. **Test Adding Service to User**: Create a user and a service. Send a PUT request to associate the service with the user. Verify that the user's list of services is updated.
-
-5. **Test Invalid Service Update**: Attempt to update a service with an invalid service ID. Confirm that the API responds with an error message and the service remains unchanged.
+2. **Test Get Reviews by Service**: Create a Service, User and Reviews then confirm that you can get all reviews that correspond to a specific service.
 
 #### Acceptance Tests:
 
@@ -225,33 +219,16 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Integration Tests:
 
-1. **User Registration and Authentication Flow:**
-   - Test the entire user registration process, including creating a new user account.
-   - Simulate user input, registration form submission, and validation checks.
-   - Verify that the user's information is correctly stored in the database.
-   - Test the user login process and ensure authenticated access to protected resources.
+1. **User can Get Services by UserId:**
+   - Test creating users and Services.
+   - Confirm that the created users and services are stored correctly in the database.
+   - Test getting services by UserId.
+   - Confirm that the services returned are all services created by that user and that there are no services that were created by another user returned.
 
-2. **User Profile Update:**
-   - Simulate a user updating their profile information, such as name, email, or profile picture.
+2. **Users can change password and Authentication will still function:**
+   - Simulate a user updating their password.
    - Test that changes are correctly saved in the user document.
    - Verify that the updated data is accurately reflected when retrieving the user's profile.
-
-3. **User Permissions and Access Control:**
-   - Test role-based access control for users with different roles (e.g., admin, regular user).
-   - Ensure that users with appropriate roles can access certain features or data while others cannot.
-   - Verify that unauthorized users are restricted from accessing protected resources.
-
-4. **User Document Relationships:**
-   - If the user document is related to other documents (e.g., posts, comments), test those relationships.
-   - Create users, have them post content, and verify that the content is correctly associated with the user's document.
-
-5. **User-to-User Interactions:**
-   - If your system supports user-to-user interactions (e.g., messaging), test these interactions.
-   - Create interactions between users and verify that the user documents are updated accordingly.
-
-6. **User Search and Listing:**
-    - If your system has user search or listing functionality, test the retrieval of user data.
-    - Ensure that users can search for and view other users' profiles.
 
 
 #### Acceptance Tests:
@@ -377,49 +354,23 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 ### Integration Test: 
 
-1. **Test Service Creation in Category**:
-    - Create a user and a category.
-    - Send a POST request to create a service associated with the created category.
-    - Verify that the service is successfully created and associated with the specified category.
+1. **Test Search by Multiple Categories**:
+    - Create users and services.
+    - Setup the association between services and categories.
+    - Send a query for multiple categories.
+    - Confirm that the returned services consist of all services that contain that Category.
 
-2. **Test Service Creation in Category**:
-    - Create a user and a category.
-    - Send a POST request to create a service associated with the created category.
-    - Verify that the service is successfully created and associated with the specified category.
+2. **Test Search by a Combination of Keywords and Categories**:
+    - Create users and services.
+    - Setup the association between services and categories.
+    - Send a query for both keywords and categories simultaneously.
+    - Confirm that the returned services consist of all services that contain at least one of the provided categories or keywords.
 
-2. **Test Service Search by Keywords**:
-    - Create multiple services with distinct names and descriptions.
-    - Initiate a search using specific keywords related to one of the services.
-    - Confirm that the search results include the targeted service and exclude unrelated ones.
-3. **Test Service Category Association**:
-    - Create a service and associate it with a specific category.
-    - Retrieve the service and verify that it is correctly associated with the chosen category.
-4. **Test Category Listing of Services**:
-    - Create multiple services, each associated with different categories.
-    - Access the category section from the navigation menu.
-    - For each category, verify that the displayed services match the ones associated with that category.
-5. **Test Service Removal from Category**:
-    - Create a service associated with a category.
-    - Send a DELETE request to disassociate the service from the category.
-    - Confirm that the service is no longer associated with the category.
-6. **Test Invalid Category Association**:
-    - Attempt to associate a service with a non-existent category.
-    - Expect a response with a status of 404 and an appropriate error message.
-7. **Test Service Deletion with Category Cleanup**:
-    - Create a service associated with a category.
-    - Delete the service, triggering a cleanup of associations in the related category.
-    - Verify that the category no longer has associations with the deleted service.
-8. **Test Category Listing After Deletion**:
-    - Create multiple services associated with different categories.
-    - Delete one of the categories.
-    - Confirm that the deleted category no longer appears in the category listing.
-9. **Test Category Deletion with Associated Services**:
-    - Create a category and associate services with it.
-    - Attempt to delete the category.
-    - Expect a response with a status of 400 or another appropriate error code, indicating that the category has associated services.
-10. **Test Category Search with Invalid Name**:
-    - Attempt to search for a category with an invalid name.
-    - Expect a response with a status of 404 and an appropriate error message.
+3. **Test Search by Multiple Keywords**:
+    - Create users and services.
+    - Setup the association between services and categories.
+    - Send a query containing multiple keywords.
+    - Confirm that the returned services consist of all services that contain at least one of the provided keywords.
 
 
 #### Acceptance Tests:
@@ -508,22 +459,19 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Integration Tests:
 
-1. **Authenticated User Sends and Receives Messages**:
-    - Simulate two authenticated users interacting with the chat feature.
-    - User A sends messages to User B, and User B receives and responds.
-    - Verify that the chat history is correctly updated for both users.
-2. **Message Validation and Formatting in Chat**:
-    - Send a variety of messages with different formats and content.
-    - Verify that the messages are correctly validated and formatted in the chat history.
-3. **User Status Updates in Chat**:
-    - Simulate users logging in and out.
-    - Verify that the chat feature correctly updates and displays the online/offline status of users.
-4. **Multiple Users Engage in Chat**:
-    - Simulate multiple users engaging in a group chat.
-    - Verify that messages from different users are correctly displayed in the chat history.
-5. **Message Deletion in Chat**:
-    - Simulate users deleting their messages.
-    - Verify that deleted messages are appropriately removed from the chat history.
+1. **User can Join Multiple Chats**:
+    - Create users, services and chats.
+    - confirm that the same user can create multiple chats without any issues.
+2. **Confirm that Users can Send Messages, Receive Messages and View Their Message History**:
+    - Create users, services and chats.
+    - Send messages and confirm their reciept by the other user. 
+    - Confirm you can get all messages sent within a chat.
+    - Verify that the messages are stored correctly in the chat history.
+3. **Confirm that Users can Delete Chats**:
+    - Create a service, users and chats.
+    - Confirm that both buyers and sellers can delete a chat.
+    - Confirm that upon deletion users can no longer use the chatroom.
+
 
 #### Acceptance Tests:
 
@@ -598,36 +546,18 @@ In addition, you will see the comments and ratings of all reviews connected to t
     - Ensure that the retrieved list of reviews is accurate.
 
 #### Intregration Tests:
-1. **Test Review Creation and Retrieval**:
+1. **Confirm Users can Leave Multiple Reviews of Single Service**:
+    - Create a user, a product or service, and multiple reviews for that item.
+    - Send requests to create and retrieve the reviews.
+    - Verify that the created reviews are accurately retrieved and associated with the correct user and item.
+2. **Confirm Users can Leave Reviews on Multiple Services**:
     - Create a user, a product or service, and a review for that item.
-    - Send requests to create and retrieve the review.
-    - Verify that the created review is accurately retrieved and associated with the correct user and item.
-2. **Test Review Editing and Retrieval**:
-    - Create a user, a product or service, and a review for that item.
-    - Send requests to edit and retrieve the review.
-    - Verify that the edited review is accurately retrieved and associated with the correct user and item.
-3. **Test Review Deletion and Retrieval**:
-    - Create a user, a product or service, and a review for that item.
-    - Send requests to delete and retrieve the review.
-    - Verify that the deleted review is no longer retrievable and that the system correctly handles review deletion.
-4. **Test Review Validation and Rating Range**:
-    - Attempt to create reviews with invalid ratings (below and above the valid range).
-    - Verify that the system returns appropriate error messages or status codes for rating validation.
-5. **Test Review Title and Text Length Constraints**:
-    - Attempt to create reviews with titles and text exceeding the character limits.
-    - Verify that the system enforces length constraints and returns meaningful error messages.
-6. **Test Review Ownership Verification**:
-    - Create a user, a product or service, and a review for that item.
-    - Send a request to check if the user owns the review.
-    - Verify that the system correctly identifies the owner of the review.
-7. **Test Duplicate Review Prevention**:
-    - Create a user, a product or service, and a review for that item.
-    - Attempt to create a duplicate review for the same item by the same user.
-    - Verify that the system prevents the creation of duplicate reviews.
-8. **Test User Review History Retrieval**:
-    - Create a user and multiple reviews for different products or services.
-    - Send a request to retrieve the user's review history.
-    - Verify that the retrieved list of reviews accurately represents the user's review history.    
+    - Send requests to create and retrieve reviews for multiple services.
+    - Verify that the reviews are accurately retrieved and associated with the correct users and items.
+3. **Confirm User can Retrieve all of Their Reviews**:
+    - Create a user, a product or service, and reviews for that item.
+    - Send requests to retrieve all reviews created by the user.
+    - Verify that the returned reviews contain the correct amount of reviews with the correct information and user id. 
 
 #### Acceptance Tests:
 
@@ -670,10 +600,10 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 ## 2.2	Test Completeness
 
-Testing will be complete when:  
-- 80% test coverage
+Testing will be complete once we have reached:  
+- 75% test coverage
 - All automated and manual test cases are executed successfully
-- 100% test coverage for the backend 
+- 85% test coverage for the backend 
 
 
 
