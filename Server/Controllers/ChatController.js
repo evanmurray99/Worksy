@@ -3,8 +3,6 @@ const User = require('../Models/User');
 const Message = require('../Models/Message');
 const mongoose = require("mongoose");
 
-
-
 // Create a new chat 
 const createChat = async (req, res) => {
     try {
@@ -29,7 +27,6 @@ const createChat = async (req, res) => {
         
     }
 };
-
 
 // GET /chats by Id
 const getChat = async (req, res) => {
@@ -73,7 +70,6 @@ const getMessages = async (req, res) => {
     }
 };
 
-
 // GET /chats by seller id
 //returns all chats where this user is a seller
 const getChatsBySeller = async (req, res) => {
@@ -102,7 +98,6 @@ const getChatsBySeller = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
 
 // GET /chats by buyer id
 //returns all chats where this user is a buyer

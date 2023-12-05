@@ -14,7 +14,6 @@ const generateToken = (user) => {
   return jwt.sign(payload, secretKey, { expiresIn: '1h' }); 
 };
 
-
 const getUser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -126,7 +125,6 @@ const editUser = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 
 const deleteUserById = async (req, res) => {
   try {
@@ -259,8 +257,6 @@ const getServices = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
-
 
 const errorMap = {
   '11000' : 'User with this email already exists'

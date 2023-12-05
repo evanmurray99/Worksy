@@ -129,7 +129,6 @@ const getReviewsByUser = async (req, res) => {
     }
 }
 
-
 const controller = {
     createReview,
     deleteReview,
