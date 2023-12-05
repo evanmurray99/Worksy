@@ -2,6 +2,8 @@ const Service = require('../Models/Service');
 const mongoose = require("mongoose");
 const Category = require("../Models/Category");
 
+// Function to add a new category to the database
+// Required body in the request should contain the following fields: name
 const addCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -20,6 +22,7 @@ const addCategory = async (req, res) => {
 };
   
 // Function to add a service to a category
+// Required parameters in the request are the name of the category and the id of the service to be added
 const addService = async (req, res) => {
   try {
     const { name, service } = req.params;
@@ -43,6 +46,8 @@ const addService = async (req, res) => {
   }
 };
 
+// Function to get all categories
+// Required parameter in the request is the name of the category to be fetched
 const getCategories = async (req, res) => {
   try {
       
@@ -59,6 +64,7 @@ const getCategories = async (req, res) => {
   }
 };
 
+// Function to get all categories and services
 const getCategoriesAndServices = async (req, res) => {
   try {
       
@@ -72,6 +78,8 @@ const getCategoriesAndServices = async (req, res) => {
   }
 };
 
+// Function to get all services in a category
+// Required parameter in the request is the name of the category to get services for
 const getServices = async (req, res) => {
   try {
     const categoryName = req.params.name;
@@ -92,7 +100,8 @@ const getServices = async (req, res) => {
   }
 };
 
-
+// Function to remove a service from a category
+// Required parameters in the request are the name of the category and the id of the service to be removed
 const removeService = async (req, res) => {
   try {
     const { name, service } = req.params;
@@ -123,6 +132,8 @@ const removeService = async (req, res) => {
   }
 };
 
+// Function to delete a category
+// Required body in the request should contain the following fields: name
 const deleteCategories = async (req, res) => {
   try {
     const { name } = req.body;
@@ -140,9 +151,6 @@ const deleteCategories = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-  
-
-
   
 module.exports = {
   addCategory : addCategory,

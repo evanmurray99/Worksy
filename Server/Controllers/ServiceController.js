@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 // GET /services by Id
+// Required parameter in the request is the serviceId of the service to be fetched
 const getService = async (req, res) => {
     try {
         const serviceId = req.params.id;
@@ -21,6 +22,7 @@ const getService = async (req, res) => {
 };
 
 // POST /services - create a new service
+// Required parameters in the request are the seller, description, title, price, created, updated, categories, rating, and reviews of the service to be created
 const createService = async (req, res) => {
   try {
       const { seller, description,title, price, created, updated , categories} = req.body;
@@ -52,6 +54,7 @@ const createService = async (req, res) => {
 };
 
 // DELETE /services/:id - delete a service by its id
+// Required parameter in the request is the serviceId of the service to be deleted
 const deleteService = async (req, res ) => {
   try {
       const serviceId = req.params.id;
@@ -73,6 +76,8 @@ const deleteService = async (req, res ) => {
   }
 };
 
+// PUT /services/:id - edit a service by its id
+// Required parameter in the request is the serviceId of the service to be edited
 const editService = async (req, res) => {
   try {
     const serviceId = req.params.id;
@@ -106,6 +111,8 @@ const editService = async (req, res) => {
 
 };
 
+// GET /services/search/:query - search for services by keyword
+// Required parameter in the request is the query to search for
 const searchServices = async (req, res) => {
   const query = req.params.query;
   const queryList = query.trim().split(' ').map(keyword => keyword.toLowerCase());
@@ -160,6 +167,8 @@ const searchServices = async (req, res) => {
   }
 };
 
+// GET /services - get all services
+// No required parameters in the request
 const getAllServices = async (req, res) => {
   try 
   {
@@ -171,7 +180,6 @@ const getAllServices = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-  
 
 const controller = {
     getService,
