@@ -144,7 +144,7 @@ export default function PostListView({
           </div>
         </div>
         <div className="floatRight updateReview">
-          <div className="servicePrice">{`CAD $${150}`}</div>
+          <div className="servicePrice">{`CAD $${post.price}`}</div>
           <div className="review-stars">
             {[1, 2, 3, 4, 5].map((star) => (
               <span
