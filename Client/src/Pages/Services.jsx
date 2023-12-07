@@ -212,7 +212,7 @@ export default function Home() {
     setFilteredResults(filteredResults);
     console.log(filteredResults)
     setMaxPage(Math.ceil(filteredResults.length / perPage));
-  }, [filteredCategories, order, filterMax]);
+  }, [filteredCategories, order, filterMax,filteredResult]);
 
   const toggleCategory = (key) => {
     setFilteredCategories((prevCategories) => {

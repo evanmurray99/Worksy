@@ -1,2 +1,2 @@
-const HOST = 10;
+const HOST = 'localhost';
 export default HOST;

@@ -60,7 +60,7 @@ export default function SearchResult({data, displayChatModal, updateModalIsOpen,
         return () => {
             // Perform any necessary cleanup here, such as cancelling the ongoing fetch.
         };
-    }, []);
+    }, [data]);
 
     const startChat = ()=>{
         setChatData(data)
