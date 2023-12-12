@@ -4,7 +4,7 @@ const request = require('supertest');
 const db = require('../Config/db')
 const app = require('../app'); 
 const e = require('express');
-//require("./User.test")
+require("./User.test")
 
 
 describe('CHAT API TEST', function() {
@@ -725,6 +725,22 @@ describe('CHAT API TEST', function() {
     it('Delete chat after db is closed - should throw and catch 500 error', (done) => {
         request(app)
         .delete(`/api/chats/${id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(); 
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body).to.have.property('message', 'Internal server error');
+
+            done(); 
+        });
+    });
+
+    it('Get messages by chat id after db is closed - should throw and catch 500 error', (done) => {
+        request(app)
+        .get(`/api/chats/messages/${id}`)
         .set('Accept', 'application/json')
         .end((err, response) => {
             if (err) {
