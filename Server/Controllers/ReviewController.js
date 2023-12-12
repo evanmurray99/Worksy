@@ -2,6 +2,8 @@ const Review = require('../Models/Review');
 const User = require('../Models/User');
 const mongoose = require('mongoose');
 
+// Function to create a new review
+// Required body in the request should contain the following fields: reviewer, service, rating, text
 const createReview = async (req, res) => {
     try {
         const { reviewer, service, rating, text } = req.body;
@@ -17,6 +19,8 @@ const createReview = async (req, res) => {
     }
 };
 
+// Function to delete a review by its id
+// Required parameter in the request is the reviewId of the review to be deleted
 const deleteReview = async (req, res) => {
     try {
         const reviewId = req.params.id;
@@ -38,6 +42,9 @@ const deleteReview = async (req, res) => {
     }
 };
 
+// Function to edit a review by its id
+// Required parameter in the request is the reviewId of the review to be edited
+// Required body in the request should contain the following fields: rating, text
 const editReview = async (req, res) => {
     try {
         const reviewId = req.params.id;
@@ -66,6 +73,8 @@ const editReview = async (req, res) => {
     }
 };
 
+// Function to get a review by its id
+// Required parameter in the request is the reviewId of the review to be fetched
 const getReview = async (req, res) => {
     try {
         const reviewId = req.params.id;
@@ -87,6 +96,8 @@ const getReview = async (req, res) => {
     }
 }
 
+// Function to get all reviews for a service
+// Required parameter in the request is the serviceId of the service to get reviews for
 const getReviewsByService = async (req, res) => {
     try {
         const serviceId = req.params.id;
@@ -108,6 +119,8 @@ const getReviewsByService = async (req, res) => {
     }
 }
 
+// Function to get all reviews by a user
+// Required parameter in the request is the userId of the user to get reviews for
 const getReviewsByUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -128,7 +141,6 @@ const getReviewsByUser = async (req, res) => {
         res.status(500).json({ message : 'Internal server error' });
     }
 }
-
 
 const controller = {
     createReview,

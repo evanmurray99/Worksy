@@ -3,8 +3,8 @@ const expect = chai.expect;
 const request = require('supertest');
 const db = require('../Config/db')
 const app = require('../app'); 
-require("./User.test")
-require("./Service.test")
+//require("./User.test")
+//require("./Service.test")
 
 describe('REVIEW API TEST', function() {
     let id;
@@ -166,6 +166,22 @@ describe('REVIEW API TEST', function() {
         });
     });
 
+    it ('Get a reviews by user with invalid id', (done) => {
+        request(app)
+        .get('/api/reviews/user/123')
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message', 'Invalid user ID');
+
+          done(); // Signal that the test case is complete
+        });
+    });
+
     it('Edit review', (done) => {
         const updatedReview = {
             rating: 4,
@@ -265,6 +281,22 @@ describe('REVIEW API TEST', function() {
           expect(response.status).to.equal(404);
           expect(response.body).to.have.property('message', 'Reviews not found');
           
+          done(); // Signal that the test case is complete
+        });
+    });
+
+    it ('Get a deleted review by user ID', (done) => {
+        request(app)
+        .get(`/api/reviews/user/${user_id}`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+          if (err) {
+            return done(err); // Signal that the test case failed with an error
+          }
+
+          expect(response.status).to.equal(404);
+          expect(response.body).to.have.property('message', 'Reviewer not found');
+
           done(); // Signal that the test case is complete
         });
     });
@@ -468,6 +500,24 @@ describe('REVIEW API TEST', function() {
         request(app)
         .delete(`/api/reviews/${id}`)
         .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+              return done(err); // Signal that the test case failed with an error
+            }
+
+            expect(response.status).to.equal(500);
+            expect(response.body).to.have.property('message', 'Internal server error');
+
+            done(); // Signal that the test case is complete
+        });
+    });
+
+    it('Try to get reviews by user ID after db is closed - should throw and catch 500 error', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/reviews/user/${user_id}`)
+        .set('Accept', 'application/json')
+
         .end((err, response) => {
             if (err) {
               return done(err); // Signal that the test case failed with an error

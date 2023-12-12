@@ -198,6 +198,23 @@ describe('CATEGORY API TEST', function() {
       
     });
 
+    it ('Get all categories and services', (done) => {
+        request(app)
+        .get(`/api/categories/services`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err); // Signal that the test case failed with an error
+            }
+            expect(response.status).to.equal(200);
+            expect(response.body).to.be.an('array')
+            expect(response.body.length).to.equal(25)
+
+            done(); // Signal that the test case is complete
+        });
+    });
+
+
 
 
     it('Get services for non-existent Category', (done) => { 
@@ -425,6 +442,21 @@ describe('CATEGORY API TEST', function() {
         }); 
     });
 
+    it('Trying to get all categories and services when db is closed - should catch and throw 500 error', (done) => {
+        db.closeDB()
+        request(app)
+        .get(`/api/categories/services`)
+        .set('Accept', 'application/json')
+        .end((err, response) => {
+            if (err) {
+                return done(err);
+            }
+            expect(response.status).to.equal(500);
+            expect(response.body.message).to.equal('Internal server error')
+
+            done();
+        });
+    });
     
 
     it('Trying to delete created category when db is closed - should catch and throw 500 error', (done) => { 
