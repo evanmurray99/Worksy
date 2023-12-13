@@ -1,38 +1,32 @@
-#resizeImg
-{
-    max-width: 100%;
+#resizeImg {
+  max-width: 100%;
 }
 
-.viewTextSize
-{
-    font-size: larger;
-    margin: 0px 10px 10px 10px;
+.viewTextSize {
+  font-size: larger;
+  margin: 0px 10px 10px 10px;
 }
 
-.categoryContainer
-{
-    background-color: #D9D9D9;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    padding: 5px;
-    margin: 0px 5px;
+.categoryContainer {
+  background-color: #d9d9d9;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  padding: 5px;
+  margin: 0px 5px;
 }
 
-.flexContainer
-{
-    margin: 5px;
-    display: flex;
+.flexContainer {
+  margin: 5px;
+  display: flex;
 }
 
-.inlineContent
-{
-    clear:both;
-    display:flex;
-    margin: auto;
+.inlineContent {
+  clear: both;
+  display: flex;
+  margin: auto;
 }
 
-#centerVertically
-{
-    margin: auto 0px;
+#centerVertically {
+  margin: auto 0px;
 }

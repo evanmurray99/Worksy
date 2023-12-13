@@ -1,52 +1,166 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.chatContainer {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 10px;
+  min-height: 60px;
+  min-width: 60px;
+}
 
-@layer components {
-    .chatTitle
-    {
-        /* height: 175px; */
-        white-space: nowrap;
-        width: 100%;
-        padding: 5px;
-        padding-left: 10px;
-        font-weight: bold;
-        background-color: #55BDCB;
-        color: white;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-    }
+.chatPopup {
+  width: 60px;
+  height: 60px;
+  border: none; /* You can change the background color to your preference */
+  margin-left: 10px;
+  margin-top: 5px;
+  outline: none;
+  margin-bottom: 5px;
+  cursor: pointer;
+  background-size: contain;
+  background-image: url("../assets/chatPopup-icon.png");
+  background-position: center; /* Center the background image */
+  transition: background-color 0.3s ease;
+}
 
-    .message
-    {
-        width: 50%;
-        border-radius: 15px;
-        padding: 10px;
-        margin: 10px;
-    }
+.popup {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: absolute;
+  right: 10px;
+  bottom: 90px;
+  min-height: 50%;
+  min-width: 40%;
+  max-height: 50%;
+  max-width: 40%;
+}
 
-    .otherUser
-    {
-        background-color: #d9d9d9;
-    }
+.chatList {
+   min-width: 300px;
+   max-width: 300px;
+  margin: 5px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border-radius: 15px;
+  background: white;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.selectedChat {
+  min-width: 300px;
+  max-width: 300px;
+  background-color: white;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 15px;
+}
+.chatTitle {
+  min-height: 10%;
+  background-color: #55bdcb;
+  padding: 5px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.chatListItems {
+  display: flex;
+  flex-direction: column;
+  min-height: 80%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.chatListEnd {
+  min-height: 10%;
+  background-color: #55bdcb;
+  padding: 5px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+.chatListItem {
+  height: 50px;
+  margin: 5px;
+  border-bottom: 1px solid darkgrey;
+}
+.selected {
+  height: 50px;
+  margin: 5px;
+  border-bottom: 1px solid darkgrey;
+  background-color: darkgrey;
+}
+.chatItem {
+  display: flex;
+  flex-direction: column;
+}
+.chatUser {
+  font-size: 12px;
+}
+.chatService {
+  font-size: 12px;
+}
+.noMessage {
+  height: 100%;
+  display: flex;
+  color: darkgray;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+}
+.sendButton {
+  margin-left: 5px;
+  background-color: #6aedc6;
+}
+.messageList {
+  background: white;
+  min-height: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+}
+.messageBox {
+  padding: 5px;
+  height: 100%;
+}
+.messageActions {
+  display: flex;
+}
+.message-list {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
 
-    .currentUser
-    {
-        background-color: #55BDCB;
-    }
+.right-message,
+.left-message {
+  max-width: 70%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
 
-    #chatBox
-    {
-        margin: 10px;
-        width: calc(100% - 20px);
-    }
+.right-message {
+  align-self: flex-end;
+  background-color: #add8e6;
+  /* Light grey for sender's messages */
+}
 
-    #createMsg
-    {
-        margin-right: 10px;
-        margin-left: 10px;
-        margin-bottom: 10px;
-        width: calc(100% - 20px);
-        background-color: #55BDCB;
-    }
+.left-message {
+  align-self: flex-start;
+  background-color: lightgray;
+  /* Light blue for other participant's messages */
+}
+
+/* Hover effect for the button */
+.chatPopup:hover {
+  width: 75x;
+  height: 75px; /* Change the hover background color */
+}
+
+button:focus {
+  outline: none;
 }

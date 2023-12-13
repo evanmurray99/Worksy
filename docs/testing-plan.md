@@ -6,8 +6,8 @@ ChangeLog
 |---------|--------------|------|----------------------|
 | 1.0.0   | Oct, 19 2023 | Evan | Initial Testing Plan |
 | 2.0.0   | Nov, 16 2023 |Diljot|Acceptance, Regression|
-|         |              |      |                      |
-|         |              |      |                      |
+| 3.0.0   | Dec, 12 2023 | Evan |    Final testing plan|
+
 
 # 1.	Introduction
 
@@ -61,622 +61,1026 @@ In addition, you will see the comments and ratings of all reviews connected to t
 
 #### Unit Tests:
 
-1. **Create a user**:
-   - This test creates a new user by sending a POST request to the "/api/users" endpoint.
-   - It expects a response with an HTTP status code of 201 (indicating a successful creation).
-   - Validates the response body for specific properties, such as the user's first name and last name.
-   - Stores the user's ID from the response for later tests.
+1. **Create a user**
+   - Description: Creates a new user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'firstName', 'lastName', 'email', 'password', and 'isStudent'.
 
-2. **Add service for created user**:
-   - This test adds a service for the user created in the previous test by sending a POST request to the "/api/services" endpoint.
-   - It expects a response with an HTTP status code of 201 (indicating a successful creation).
-   - Validates the response body for specific properties of the created service.
-   - Stores the service ID from the response for later tests.
+2. **Add service for created user**
+   - Description: Adds a new service for the created user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'title', 'description', 'price', 'seller', and 'categories'.
 
-3. **Edit service**:
-   - This test updates the service information by sending a PUT request to the "/api/services/:id" endpoint.
-   - It expects a response with an HTTP status code of 200 (indicating success).
-   - Validates the response message, which should indicate that the service was updated successfully.
+3. **Search for service**
+   - Description: Searches for services based on a keyword.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an array.
+     - The first result in the array should have a 'score' property equal to 3.
 
-4. **Edit invalid service**:
-   - This test attempts to edit a service with an invalid service ID.
-   - Sends a PUT request to the "/api/services/:id" endpoint with an ID that doesn't exist.
-   - Expects a response with an HTTP status code of 400 (Bad Request) and a specific error message.
+4. **Get service by ID**
+   - Description: Retrieves a service by its ID.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have properties 'title', 'description', 'price', 'seller', 'categories', 'rating', and 'reviews'.
 
-5. **Delete Invalid service**:
-   - Attempts to delete a service with an invalid service ID by sending a DELETE request to the "/api/services/:id" endpoint.
-   - Expects a response with an HTTP status code of 400 (Bad Request) and a specific error message indicating an invalid service ID.
+5. **Edit service**
+   - Description: Edits an existing service.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have property 'message' equal to 'Service updated successfully'.
 
-6. **Delete created service**:
-   - Deletes a service that was created earlier by sending a DELETE request to the "/api/services/:id" endpoint.
-   - Expects a response with an HTTP status code of 200 (indicating success).
+6. **Get all services**
+   - Description: Retrieves all services.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an array.
+     - The first service in the array should have a 'title' property equal to 'changed title'.
 
-7. **Get invalid service**:
-   - Tries to retrieve a service with an invalid service ID by sending a GET request to the "/api/services/:id" endpoint.
-   - Expects a response with an HTTP status code of 404 (Not Found) and a specific error message indicating that the service was not found.
+7. **Edit service with invalid ID**
+   - Description: Attempts to edit a service with an invalid ID.
+   - Assertions:
+     - Status code should be 400 (Bad Request).
+     - Response body should have property 'message' equal to 'Invalid service ID'.
 
-8. **Delete Already deleted service**:
-   - Attempts to delete a service that has already been deleted.
-   - Sends a DELETE request to the "/api/services/:id" endpoint with the ID of the previously deleted service.
-   - Expects a response with an HTTP status code of 404 (Not Found) and a specific error message indicating that the service was not found.
+8. **Delete service with invalid ID**
+   - Description: Attempts to delete a service with an invalid ID.
+   - Assertions:
+     - Status code should be 400 (Bad Request).
+     - Response body should have property 'message' equal to 'Invalid service ID'.
 
-9. **Delete user**:
-   - Deletes the user created earlier by sending a DELETE request to the "/api/users/:id" endpoint.
-   - Expects an HTTP status code of either 200 (if the user is found and deleted) or 404 (if the user is not found).
-   - Validates the response message, which should indicate a successful user deletion.
+9. **Delete created service**
+   - Description: Deletes the service created earlier.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an object.
+     - The response body should have a property 'message' equal to 'Service deleted successfully'.
+
+10. **Get invalid service**
+    - Description: Attempts to retrieve a deleted service.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Service not found'.
+
+11. **Delete already deleted service**
+    - Description: Attempts to delete an already deleted service.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Service not found'.
+
+12. **Edit already deleted service**
+    - Description: Attempts to edit an already deleted service.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+
+13. **Delete user**
+    - Description: Deletes the created user.
+    - Assertions:
+      - Status code should be either 200 (OK) or 404 (Not Found) depending on whether the user is found or not.
+      - If the user is found (200), response body should have property 'message' equal to 'User deleted successfully'.
+      - If the user is not found (404), it's still a successful deletion.
+
+14. **Try to get a service when the database is closed**
+    - Description: Attempts to retrieve a service after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+
+15. **Try to add a service for created user when the database is closed**
+    - Description: Attempts to add a service for the created user after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+
+16. **Try to delete created service when the database is closed**
+    - Description: Attempts to delete the created service after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+
+17. **Try to search for service when the database is closed**
+    - Description: Attempts to search for services after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+
+18. **Try to edit created service when the database is closed**
+    - Description: Attempts to edit the created service after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+
+19. **Try to get all services when the database is closed**
+    - Description: Attempts to retrieve all services after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
 
 #### Integration Tests:
 
-1. **Test Service Creation**: Verify that a service can be successfully created by sending a POST request to the "/api/services" endpoint. Check that the service is stored in the database.
+1. **User can find all services for a category**
+   - Description: Tests the ability of a user to find all services associated with a specific category.
+   - Assertions:
+     - Deletes the service with no categories and expects a 404 status when trying to disassociate it from the "Fashion" category.
+     - Iterates through all categories and retrieves services for each category, checking if the returned services include the expected categories and count.
 
-2. **Test Service Update**: Create a service and then send a PUT request to update its details. Confirm that the updated information is reflected in the service's data.
+2. **User can find all reviews by service**
+   - Description: Tests the ability of a user to find all reviews associated with a specific service.
+   - Assertions:
+     - Creates multiple users and reviews for different services.
+     - Retrieves all reviews for each service and checks if the returned reviews match the expected reviews, including user IDs, ratings, and comments.
+     - Deletes the second user and all created reviews.
 
-3. **Test Service Deletion**: Create a service and then send a DELETE request to remove it. Ensure that the service is no longer retrievable from the database.
-
-4. **Test Adding Service to User**: Create a user and a service. Send a PUT request to associate the service with the user. Verify that the user's list of services is updated.
-
-5. **Test Invalid Service Update**: Attempt to update a service with an invalid service ID. Confirm that the API responds with an error message and the service remains unchanged.
-
-#### Acceptance Tests:
-
-1. **As a User, I want to be able to edit my service information**:
-    - Log in as a user, navigate to the service management section, and edit the details of a created service
-    - Confirm that the changes are reflected in the system, and the updated service information is displayed.
-
-2. **As a User, I want to see a list of services in a specific category**:    
-    - Log in as a user, navigate to the service listing page, and select a specific category.
-    -     * Confirm that the displayed services belong only to the selected category.
-
-3. **As a User, I want to delete a service I created**:  
-    - Log in as a user, navigate to the service management section, and delete a service.
-    - Confirm that the service is no longer present in the user's list of services and the overall service listing.
-
-4. **As a User, I want to view detailed information about a service:**:    
-    - Log in as a user, navigate to the service details page, and select a specific service.
-    - Confirm that detailed information about the service is displayed, including description, availability, and associated user.
-
-#### Regression Tests: 
-
-1. **Test Service Creation**:
-    - Verify that creating a service through the "/api/services" endpoint works as expected.
-    - Ensure that the service is stored in the database, and the response indicates successful creation.
-2. **Test Service Update**:
-    - Create a service and update its details by sending a PUT request through API.
-    - Confirm that the updated information is correctly reflected in the service's data.
-3. **Test Service Delete**:
-    - Create a service and then delete it by sending a DELETE request through API.
-    - Ensure that the service is no longer retrievable from the database.
-4. **Test Adding Service to User**:
-    - Create a user and a service, then associate the service with the user by sending a PUT request.
-    - Verify that the user's list of services is updated.
-
-
-### Feature 2: Account 
+### Feature 2: Account
 
 #### Unit Tests:
 
-1. **Create a user**:
-   - Sends a POST request to create a new user with specified user data.
-   - Expects a response with an HTTP status code 201 (Created) and validates the response body.
-   - Stores the user's ID for later tests.
+1. **Create a user**
+   - Description: Tests the creation of a user by sending a POST request to the '/api/users' endpoint.
+   - Assertions:
+     - Expects the HTTP response status to be 201 (Created).
+     - Expects the response body to have the 'firstName' property set to 'Test'.
 
-2. **Get created user**:
-   - Sends a GET request to retrieve the user created in the previous test using the stored user ID.
-   - Expects a response with an HTTP status code 200 (OK) and validates the response body.
+2. **Get created user**
+   - Description: Tests the retrieval of a user by sending a GET request to the '/api/users/:id' endpoint.
+   - Assertions:
+     - Expects the HTTP response status to be 200 (OK).
+     - Expects the response body to be an object.
 
-3. **Update user Bio**:
-   - Sends a PUT request to update the bio of the previously created user using the stored user ID.
-   - Expects a response with an HTTP status code 200 (OK) and validates the response body.
+3. **Update user Bio**
+   - Description: Tests the update of user bio by sending a PUT request to the '/api/users/:id/update-bio' endpoint.
+   - Assertions:
+     - Expects the HTTP response status to be 200 (OK).
+     - Expects the response body to be an object with a 'bio' property set to 'User Bio updated'.
 
-4. **Update user**:
-   - Sends a PUT request to update user information (first name, last name, email, and password) using the stored user ID.
-   - Expects a response with an HTTP status code 200 (OK) and validates the response message.
+4. **Update user bio with invalid id**
+   - Description: Tests updating user bio with an invalid user ID.
+   - Assertions:
+     - Expects the HTTP response status to be 400 (Bad Request).
+     - Expects the response body to have a 'message' property set to 'Invalid user ID'.
 
-5. **Testing login**:
-   - Sends a POST request to perform a user login using the user's email and password.
-   - Expects a response with an HTTP status code 200 (OK) and retrieves a user authentication token from the response.
+5. **Update user**
+   - Description: Tests updating user information by sending a PUT request to the '/api/users/:id/update-user' endpoint.
+   - Assertions:
+     - Expects the HTTP response status to be 200 (OK).
+     - Expects the response body to have a 'message' property set to 'User updated successfully'.
 
-6. **Testing login for non-existent user**:
-   - Similar to the previous test but uses invalid credentials for a user that does not exist.
-   - Expects a response with an HTTP status code 404 (Not Found).
+6. **Testing login**
+   - Description: Tests user login by sending a POST request to the '/api/users/login' endpoint.
+   - Assertions:
+     - Expects the HTTP response status to be 200 (OK).
+     - Expects the response body to have a 'token' property.
 
-7. **Testing login with invalid password**:
-   - Similar to the login test but uses an incorrect password for an existing user.
-   - Expects a response with an HTTP status code 401 (Unauthorized).
+7. **Testing login for non-existent user**
+   - Description: Tests login for a non-existent user.
+   - Assertions:
+     - Expects the HTTP response status to be 404 (Not Found).
+     - Expects the response body to have a 'message' property set to 'User not found'.
 
-8. **Testing get user with invalid token**:
-   - Sends a GET request to retrieve user data using an invalid token.
-   - Expects a response with an HTTP status code 500 (Internal Server Error).
+8. **Testing login with invalid password**
+   - Description: Tests login with an invalid password.
+   - Assertions:
+     - Expects the HTTP response status to be 401 (Unauthorized).
+     - Expects the response body to have a 'message' property set to 'Invalid password'.
 
-9. **Testing get user by token**:
-   - Sends a GET request to retrieve user data using a valid authentication token.
-   - Expects a response with an HTTP status code 200 (OK) and validates the user's data.
+9. **Testing get user with invalid token**
+   - Description: Tests retrieving a user with an invalid token.
+   - Assertions:
+     - Expects the HTTP response status to be 500 (Internal Server Error).
+     - Expects the response body to have a 'success' property set to false.
 
-10. **Create a service for user**:
-    - Sends a POST request to create a service associated with a user.
-    - Expects a response with an HTTP status code 201 (Created) and validates the response body.
-    - Stores the service ID for later tests.
+10. **Testing get user by token**
+    - Description: Tests retrieving a user by a valid token.
+    - Assertions:
+      - Expects the HTTP response status to be 200 (OK).
+      - Expects the response body to have a 'user' property and 'success' property set to true.
 
-11. **Add Service to User**:
-    - Sends a PUT request to associate the previously created service with the user.
-    - Expects a response with an HTTP status code 200 (OK).
+11. **Create a service for user**
+    - Description: Tests creating a service for a user by sending a POST request to the '/api/services' endpoint.
+    - Assertions:
+      - Expects the HTTP response status to be 201 (Created).
+      - Expects the response body to have properties like 'title', 'description', 'price', and 'seller'.
 
-12. **Get services by user**:
-    - Sends a GET request to retrieve services associated with the user.
-    - Expects a response with an HTTP status code 200 (OK) and validates the response data.
+12. **Add Service to User**
+    - Description: Tests adding a service to a user by sending a PUT request to the '/api/users/:id/add-service/:service_id' endpoint.
+    - Assertions:
+      - Expects the HTTP response status to be 200 (OK).
+      - Expects the response body to be an object.
 
-13. **Delete created service**:
-    - Sends a DELETE request to delete the service created earlier using the stored service ID.
-    - Expects a response with an HTTP status code 200 (OK).
+13. **Get services by user**
+    - Description: Tests retrieving services for a user by sending a GET request to the '/api/users/services/:id' endpoint.
+    - Assertions:
+      - Expects the HTTP response status to be 200 (OK).
+      - Expects the response body to be an array with a length of 1.
 
-14. **Delete user**:
-    - Sends a DELETE request to delete the user by ID, which may include cleaning up associated services.
-    - Expects either an HTTP status code 200 (OK) or 404 (Not Found) based on whether the user exists.
-    - Validates the response message.
+14. **Delete created service**
+    - Description: Tests deleting a service by sending a DELETE request to the '/api/services/:service_id' endpoint.
+    - Assertions:
+      - Expects the HTTP response status to be 200 (OK).
+      - Expects the response body to be an object.
 
-15. **Update user**:
-    - Repeats the user update test but using the user ID that should not exist after deletion.
-    - Expects a response with an HTTP status code 404 (Not Found).
+15. **Delete user**
+    - Description: Tests deleting a user by sending a DELETE request to the '/api/users/:id' endpoint.
+    - Assertions:
+      - Expects the HTTP response status to be either 200 (OK) or 404 (Not Found).
+      - Expects the response body to have a 'message' property indicating success or failure.
 
-16. **Get services for deleted user**:
-    - Repeats the "Get services by user" test but using the user ID that should not exist after deletion.
-    - Expects a response with an HTTP status code 404 (Not Found).
+16. **Delete already deleted user**
+    - Description: Tests deleting a user that has already been deleted.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
 
+17. **Delete user with invalid id**
+    - Description: Tests deleting a user with an invalid ID.
+    - Assertions:
+      - Expects the HTTP response status to be 400 (Bad Request).
+      - Expects the response body to have a 'message' property set to 'Invalid user ID'.
+
+18. **Update user bio after user has been deleted**
+    - Description: Tests updating user bio after the user has been deleted.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
+
+19. **Update user after it has been deleted**
+    - Description: Tests updating user information after the user has been deleted.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
+
+20. **Get user by token after user has been deleted**
+    - Description: Tests retrieving a user by token after the user has been deleted.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have an 'error' property set to 'Unauthorized User'.
+
+21. **Get services for deleted user**
+    - Description: Tests retrieving services for a deleted user.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
+
+22. **Get already deleted user**
+    - Description: Tests retrieving a user that has already been deleted.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
+
+23. **Add service to deleted user**
+    - Description: Tests adding a service to a deleted user.
+    - Assertions:
+      - Expects the HTTP response status to be 404 (Not Found).
+      - Expects the response body to have a 'message' property set to 'User not found'.
+
+24. **Try to get user after db has been closed**
+    - Description: Tests trying to retrieve a user after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+25. **Try to add service after db has been closed**
+    - Description: Tests trying to add a service after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+26. **Try to create user after db has been closed**
+    - Description: Tests trying to create a user after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+
+27. **Try to edit user after db has been closed**
+    - Description: Tests trying to edit a user after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+28. **Try to delete user after db has been closed**
+    - Description: Tests trying to delete a user after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+29. **Try to update user bio after db has been closed**
+    - Description: Tests trying to update user bio after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+30. **Try to login after db has been closed**
+    - Description: Tests trying to login after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
+
+31. **Try to get services by user after db has been closed**
+    - Description: Tests trying to retrieve services by user after the database has been closed.
+    - Assertions:
+      - Expects the HTTP response status to be 500 (Internal Server Error).
+      - Expects the response body to have a 'message' property set to 'Internal server error'.
 
 #### Integration Tests:
 
-1. **User Registration and Authentication Flow:**
-   - Test the entire user registration process, including creating a new user account.
-   - Simulate user input, registration form submission, and validation checks.
-   - Verify that the user's information is correctly stored in the database.
-   - Test the user login process and ensure authenticated access to protected resources.
+1. **User can get all services that they have created**
+   - Description: Tests that a user can retrieve all services they have created.
+   - Assertions:
+     - Creates two users: `serviceTestUser` and `otherUser`.
+     - Defines a function `createService` to create services associated with a user and adds each service ID to `cleanUpId`.
+     - Creates three services: `expectedService1`, `expectedService2` for `serviceTestUser`, and `hiddenService` for `otherUser`.
+     - Retrieves services associated with `serviceTestUser` and checks if the expected services are present.
+     - Expects the length of `userServices` to be 2.
+     - Checks if the titles and seller IDs of the retrieved services match the expected values.
 
-2. **User Profile Update:**
-   - Simulate a user updating their profile information, such as name, email, or profile picture.
-   - Test that changes are correctly saved in the user document.
-   - Verify that the updated data is accurately reflected when retrieving the user's profile.
+2. **Users can change their password and pass validation**
+   - Description: Tests that users can change their passwords and successfully validate the new password.
+   - Assertions:
+     - Creates a user `nonStudent`.
+     - Changes the password of `nonStudent` using a PUT request to `/api/users/:id/update-user`.
+     - Expects the response status to be 200 and the message to be 'User updated successfully'.
+     - Attempts to log in with the updated password and expects a 200 status and receives a token.
+     - Uses the token to make an authenticated request to `/api/users/:token/auth` and expects a 200 status.
 
-3. **User Permissions and Access Control:**
-   - Test role-based access control for users with different roles (e.g., admin, regular user).
-   - Ensure that users with appropriate roles can access certain features or data while others cannot.
-   - Verify that unauthorized users are restricted from accessing protected resources.
-
-4. **User Document Relationships:**
-   - If the user document is related to other documents (e.g., posts, comments), test those relationships.
-   - Create users, have them post content, and verify that the content is correctly associated with the user's document.
-
-5. **User-to-User Interactions:**
-   - If your system supports user-to-user interactions (e.g., messaging), test these interactions.
-   - Create interactions between users and verify that the user documents are updated accordingly.
-
-6. **User Search and Listing:**
-    - If your system has user search or listing functionality, test the retrieval of user data.
-    - Ensure that users can search for and view other users' profiles.
-
-
-#### Acceptance Tests:
-
-1. **As a user, I want to be able to create an account so I can use the app**:
-    - Navigate from home page to click "signup" button that leads me to the signup page
-    - Fill out name, lastname, email, and both password fields
-    - Select if you are a student or not.
-    - Submit the document by clicking the "create account" button
-    - Return to homepage 
-
-2. **As a user, I want to log in to access my account**:
-    - Navigate from the home page to click the "login" button leading to the login page.
-    - Enter valid login credentials (email and password) and submit the form.
-    - Expect a redirection to the home page, indicating a successful login. 
-3. **As a user, I want to update my profile information**:
-    - Log in using valid credentials and navigate to the profile settings page.
-    - Update profile information, such as name, email, or profile picture.
-    - Confirm that the changes are saved by checking the updated data on the user profile page.
-4. **As a user, I want to view my servicers**:
-    - Log in with valid credentials and navigate to the services section.
-    - Confirm that the displayed services belong to the logged-in user.
-    - Ensure that only the user's services are visible.
-5. **As a user, I want to delete my account**:
-    - Log in with valid credentials and navigate to the account settings page.
-    - Click on the option to delete the account and follow the confirmation process.
-    - Expect a successful deletion and a redirect to the home page.
-
-#### Regression Tests:
-1. **Test User Creation**:
-    - Verify that creating a user through the "/api/users" endpoint works as expected.
-    - Ensure that the user is stored in the database, and the response indicates successful creation.
-
-2. **Test User Update**:
-    - Create a user and update their details by sending a PUT request to "/api/users/:id."
-    - Confirm that the updated information is correctly reflected in the user's data.
-
-3. **Test User Deletion**:
-    - Create a user and then delete it by sending a DELETE request to "/api/users/:id."
-    - Ensure that the user is no longer retrievable from the database.
-
-4. **Test Adding Service to User**:
-    - Create a user and a service, then associate the service with the user by sending a PUT request.
-    - Verify that the user's list of services is updated.
-
-5. **Test Invalid User Update**:
-    - Attempt to update a user with an invalid user ID.
-    - Confirm that the API responds with an error message, and the user remains unchanged.
-    
 ### Feature 3: Search  
 
 #### Unit Tests:
 
 1. **Create a user:**
-   - A new user is created with the first name, last name, email, password, and a student status.
-   - The test sends a POST request to "/api/users" with the user data.
-   - The test expects a successful response (status 201) and verifies that the user data matches the expected values.
+   - Description: Tests the creation of a user through the `/api/users` endpoint.
+   - Assertions: Checks the response status, the existence of specific properties in the response body, and assigns the `user_id` for later use.
 
 2. **Add Category:**
-   - A new category with a name is created.
-   - The test sends a POST request to "/api/categories" with the category data.
-   - The test expects a successful response (status 201) and checks the response message.
+   - Description: Tests the addition of a category through the `/api/categories` endpoint.
+   - Assertions: Checks the response status and the message in the response body.
 
 3. **Add Duplicate Category:**
-   - An attempt is made to add a category with the same name as an existing category.
-   - The test expects a response with a conflict status (status 500).
+   - Description: Tests the addition of a duplicate category to trigger a conflict.
+   - Assertions: Checks the response status for a conflict (status 500).
 
 4. **Get Categories:**
-   - The test retrieves a list of categories by sending a GET request to "/api/categories."
-   - It expects a successful response (status 200) and verifies that the response contains an array with at least one category.
+   - Description: Tests retrieving categories through the `/api/categories` endpoint.
+   - Assertions: Checks the response status, the data type, and the length of the array.
 
 5. **Create Service for Category:**
-   - A new service is created and associated with a specific category.
-   - The test sends a POST request to "/api/services" with the service data and the specified category.
-   - It expects a successful response (status 201) and verifies the service details.
+   - Description: Tests the creation of a service through the `/api/services` endpoint.
+   - Assertions: Checks the response status and the existence of specific properties in the response body.
 
 6. **Add Service to Category:**
-   - The service is added to a category.
-   - The test sends a PUT request to associate the service with the category.
-   - It expects a successful response (status 200) and checks the response message.
+   - Description: Tests adding a service to a category through the `/api/categories/:category/add-service/:serviceId` endpoint.
+   - Assertions: Checks the response status and the message in the response body.
 
 7. **Add Service to non-existent Category:**
-   - An attempt is made to add a service to a category that does not exist.
-   - The test sends a PUT request and expects a response with a status of 404 and an appropriate error message.
+   - Description: Tests adding a service to a non-existent category to trigger a 404 error.
+   - Assertions: Checks the response status and the message in the response body.
 
-8. **Get Services for Category:**
-   - The test retrieves a list of services associated with a specific category.
-   - It sends a GET request to "/api/categories/{categoryName}" and expects a successful response (status 200) with an array of services.
+8. **Get services for Category:**
+   - Description: Tests retrieving services for a category through the `/api/categories/:category` endpoint.
+   - Assertions: Checks the response status, the data type, and the length of the array.
 
-9. **Get Services for non-existent Category:**
-   - An attempt is made to retrieve services for a category that does not exist.
-   - The test sends a GET request and expects a response with a status of 404 and an appropriate error message.
+9. **Get all categories and services:**
+   - Description: Tests retrieving all categories and services through the `/api/categories/services` endpoint.
+   - Assertions: Checks the response status, the data type, and the length of the array.
 
-10. **Remove Service from Category:**
-    - The test attempts to remove a service from a category.
-    - It sends a DELETE request to disassociate the service from the category.
-    - Expects a successful response (status 200) and checks the response message.
+10. **Get services for non-existent Category:**
+    - Description: Tests retrieving services for a non-existent category to trigger a 404 error.
+    - Assertions: Checks the response status and the message in the response body.
 
-11. **Remove non-existent Service from Category:**
-    - An attempt is made to remove a service that does not exist from a category.
-    - The test sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+11. **Remove Service from category:**
+    - Description: Tests removing a service from a category through the `/api/categories/:category/remove-service/:serviceId` endpoint.
+    - Assertions: Checks the response status and the message in the response body.
 
-12. **Remove Service from non-existent Category:**
-    - The test tries to remove a service from a category that does not exist.
-    - It sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+12. **Remove non-existent Service from category:**
+    - Description: Tests removing a non-existent service from a category to trigger a 404 error.
+    - Assertions: Checks the response status and the message in the response body.
 
-13. **Delete Created Category:**
-    - A category with a specific name is deleted.
-    - The test sends a DELETE request to "/api/categories" with the category name.
-    - Expects a successful response (status 200) and checks the response message.
+13. **Remove Service from non-existent Category:**
+    - Description: Tests removing a service from a non-existent category to trigger a 404 error.
+    - Assertions: Checks the response status and the message in the response body.
 
-14. **Delete non-existent Category:**
-    - An attempt is made to delete a category that does not exist.
-    - The test sends a DELETE request and expects a response with a status of 404 and an appropriate error message.
+14. **Delete Created Category:**
+    - Description: Tests deleting a created category through the `/api/categories` endpoint.
+    - Assertions: Checks the response status and the message in the response body.
 
-15. **Delete created service:**
-    - The test attempts to delete a service that was previously created.
-    - It sends a DELETE request to "/api/services/{id}" and expects a successful response (status 200).
+15. **Delete non-existent Category:**
+    - Description: Tests deleting a non-existent category to trigger a 404 error.
+    - Assertions: Checks the response status and the message in the response body.
 
-16. **Delete user:**
-    - The test deletes the user account that was created in the initial test.
-    - It sends a DELETE request to "/api/users/{userId}" and expects a successful response (status 200 or 404).
+16. **Delete created service:**
+    - Description: Tests deleting a created service through the `/api/services/:serviceId` endpoint.
+    - Assertions: Checks the response status and the data type of the response body.
+
+17. **Delete user:**
+    - Description: Tests deleting a user through the `/api/users/:userId` endpoint.
+    - Assertions: Checks the response status, the message in the response body, and handles the case where the user is not found.
+
+18. **Trying to add service to category when db is closed:**
+    - Description: Tests trying to add a service to a category when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status and the message in the response body.
+
+19. **Trying to get category when db is closed:**
+    - Description: Tests trying to get a category when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status and the message in the response body.
+
+20. **Trying to get service when db is closed:**
+    - Description: Tests trying to get a service when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status and the message in the response body.
+
+21. **Trying to remove service from category when db is closed:**
+    - Description: Tests trying to remove a service from a category when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status.
+
+22. **Trying to get all categories and services when db is closed:**
+    - Description: Tests trying to get all categories and services when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status and the message in the response body.
+
+23. **Trying to delete created category when db is closed:**
+    - Description: Tests trying to delete a created category when the database is closed to trigger a 500 error.
+    - Assertions: Checks the response status.
 
 ### Integration Test: 
 
-1. **Test Service Creation in Category**:
-    - Create a user and a category.
-    - Send a POST request to create a service associated with the created category.
-    - Verify that the service is successfully created and associated with the specified category.
+1. **User can find services by multiple categories**
+   - Description: Tests the ability of a user to find services based on multiple categories.
+   - Assertions:
+     - Retrieves services with a category that doesn't exist and expects the result length to be 0.
+     - Retrieves services with categories "Music" and "Business" and expects the result length to be 3.
+     - Retrieves all services and verifies that the correct services are included in the result based on the categories searched.
 
-2. **Test Service Creation in Category**:
-    - Create a user and a category.
-    - Send a POST request to create a service associated with the created category.
-    - Verify that the service is successfully created and associated with the specified category.
+2. **User can find services by a combination of keywords and categories**
+   - Description: Tests the ability of a user to find services based on a combination of keywords and categories.
+   - Assertions:
+     - Retrieves services with keywords "test" and "Business" and expects the result length to be 3.
+     - Retrieves all services and verifies that the correct services are included in the result based on the keywords and categories searched.
 
-2. **Test Service Search by Keywords**:
-    - Create multiple services with distinct names and descriptions.
-    - Initiate a search using specific keywords related to one of the services.
-    - Confirm that the search results include the targeted service and exclude unrelated ones.
-3. **Test Service Category Association**:
-    - Create a service and associate it with a specific category.
-    - Retrieve the service and verify that it is correctly associated with the chosen category.
-4. **Test Category Listing of Services**:
-    - Create multiple services, each associated with different categories.
-    - Access the category section from the navigation menu.
-    - For each category, verify that the displayed services match the ones associated with that category.
-5. **Test Service Removal from Category**:
-    - Create a service associated with a category.
-    - Send a DELETE request to disassociate the service from the category.
-    - Confirm that the service is no longer associated with the category.
-6. **Test Invalid Category Association**:
-    - Attempt to associate a service with a non-existent category.
-    - Expect a response with a status of 404 and an appropriate error message.
-7. **Test Service Deletion with Category Cleanup**:
-    - Create a service associated with a category.
-    - Delete the service, triggering a cleanup of associations in the related category.
-    - Verify that the category no longer has associations with the deleted service.
-8. **Test Category Listing After Deletion**:
-    - Create multiple services associated with different categories.
-    - Delete one of the categories.
-    - Confirm that the deleted category no longer appears in the category listing.
-9. **Test Category Deletion with Associated Services**:
-    - Create a category and associate services with it.
-    - Attempt to delete the category.
-    - Expect a response with a status of 400 or another appropriate error code, indicating that the category has associated services.
-10. **Test Category Search with Invalid Name**:
-    - Attempt to search for a category with an invalid name.
-    - Expect a response with a status of 404 and an appropriate error message.
-
-
-#### Acceptance Tests:
-
-1. **As a user, I want to be able to search for Services**:
-    - Navigate from the home page to the search bar.
-    - Enter specific keywords related to the desired services.
-    - Initiate the search and ensure the results page displays relevant services.
-    - Click on a service to view detailed information.
-    - Verify that the service details match the expected data.
-2. **As a user, I want to explore categories**:  
-    - Access the category section from the navigation menu.
-    - Select a category of interest. A
-    - Confirm that the category page displays relevant services associated with the chosen category.
-    - Click on a service to view detailed information.
-    - Verify that the service details match the expected data.
-3. **Test Service Filtering in Category**:
-    - Access a specific category from the category section.
-    - Verify that the displayed services are only those associated with the selected category.
-    - Click on a service to view detailed information.
-    - Verify that the service details match the expected data.
-4. **Test Service Search with No Results**:
-    - Navigate to the search bar and enter keywords with no matching services.
-    - Confirm that the search results page indicates no matching services found.
-5. **Test Category Navigation from Service**:
-    - Access a service details page.
-    - Click on the associated category to navigate to the category page.
-    - Verify that the displayed services are only those associated with the selected category.
-
-#### Regression Tests:
-1. **Search with Empty Query**:
-    - Attempt to perform a search with an empty query.
-    - Expect a response with a status of 400 (Bad Request) and an appropriate error message.
-2. **Search with Special Characters**:
-    - Attempt to perform a search with special characters in the query.
-    - Verify that the search results are not affected by special characters and return accurate results.
-3. **Attempt to Access Deleted Service**:
-    -Try to access a service that was previously deleted.
-    -Expect a response with a status of 404 (Not Found) and an appropriate error message.    
+3. **User can find services by multiple keywords**
+   - Description: Tests the ability of a user to find services based on multiple keywords.
+   - Assertions:
+     - Retrieves services with a keyword "hippo" that doesn't exist and expects the result length to be 0.
+     - Retrieves services with keywords "Pianist" and "build" and expects the result length to be 3.
+     - Retrieves all services and verifies that the correct services are included in the result based on the keywords searched.
 
 ### Feature 4: Chat
 
 #### Unit Tests:
 
-1. **Test User Authentication**:
-   - Test that only authenticated users can access the chat feature.
-   - Mock the authentication process and verify that unauthenticated users are denied access.
+Here are the tests, descriptions, and assertions for each:
 
-2. **Test Message Sending**:
-   - Test the function responsible for sending messages.
-   - Provide mock data for the sender, receiver, and message content.
-   - Verify that the function sends the message and updates the chat history appropriately.
+1. **Create a seller**
+   - Description: Creates a new seller user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have property 'firstName' equal to 'seller'.
 
-3. **Test Message Receiving**:
-   - Test the function responsible for receiving messages.
-   - Provide mock data for incoming messages.
-   - Verify that the function processes and displays incoming messages correctly.
+2. **Create a buyer**
+   - Description: Creates a new buyer user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have property 'firstName' equal to 'buyer'.
 
-4. **Test Message Validation**:
-   - Test the message validation function.
-   - Provide various types of messages, including valid and invalid ones.
-   - Ensure that the function correctly identifies valid and invalid messages.
+3. **Create Service**
+   - Description: Creates a new service.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'title', 'description', 'price', and 'seller'.
 
-5. **Test Message Formatting**:
-   - Test the function that formats messages for display.
-   - Provide messages with different formatting requirements (e.g., emojis, links, special characters).
-   - Verify that the function formats messages as expected.
+4. **Create a chat**
+   - Description: Creates a new chat.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'seller', 'buyer', and 'service'.
 
-6. **Test Message Storage**:
-   - Test the storage mechanism for chat messages.
-   - Use mock data for messages and users.
-   - Verify that messages are correctly stored, indexed, and retrieved.
+5. **Get chat by id**
+   - Description: Retrieves a chat by its id.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have properties 'seller', 'buyer', and 'service'.
 
-7. **Test User Online/Offline Status**:
-   - Test the function for tracking user online/offline status.
-   - Simulate user login and logout.
-   - Verify that the function updates and reports user status accurately.
+6. **Get chats by seller id**
+   - Description: Retrieves chats by seller id.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an array.
 
-8. **Test Message Deletion**:
-    - Test the function for deleting messages.
-    - Mock the deletion process and verify that messages are removed from the chat history.
+7. **Get chats by buyer id**
+   - Description: Retrieves chats by buyer id.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an array.
 
-9. **Test Error Handling**:
-    - Test how the chat feature handles errors, such as network issues or server errors.
-    - Simulate error conditions and verify that the feature responds appropriately.
+8. **Add message to chat**
+   - Description: Adds a new message to a chat.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have property 'message' equal to 'Message added to chat'.
+
+9. **Get a message by id**
+   - Description: Retrieves a message by its id.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have properties 'sender' and 'body'.
+
+10. **Get a message with invalid id**
+    - Description: Attempts to retrieve a message with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid message ID'.
+
+11. **Add message to chat with invalid chat id**
+    - Description: Attempts to add a message to a chat with an invalid chat id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid chat ID'.
+
+12. **Add message to chat with invalid sender id**
+    - Description: Attempts to add a message to a chat with an invalid sender id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid sender ID'.
+
+13. **Add message to chat with no body**
+    - Description: Attempts to add a message to a chat with no body.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Message body is required'.
+
+14. **Get chat by id after adding message**
+    - Description: Retrieves a chat by its id after adding a message.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should have properties 'seller', 'buyer', 'service', and 'messages'.
+
+15. **Get chat with invalid id**
+    - Description: Attempts to retrieve a chat with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid chat ID'.
+
+16. **Get chats by seller id with invalid id**
+    - Description: Attempts to retrieve chats by seller id with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid seller ID'.
+
+17. **Get chats by buyer id with invalid id**
+    - Description: Attempts to retrieve chats by buyer id with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid buyer ID'.
+
+18. **Delete created chat**
+    - Description: Deletes a created chat.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should be an object.
+
+19. **Delete chat after already deleting chat**
+    - Description: Attempts to delete a chat that has already been deleted.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Chat not found'.
+
+20. **Get chat by seller id after deleting chat**
+    - Description: Attempts to retrieve chats by seller id after deleting a chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Chats not found'.
+
+21. **Get chat by buyer id after deleting chat**
+    - Description: Attempts to retrieve chats by buyer id after deleting a chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Chats not found'.
+
+22. **Get message by id after deleting chat**
+    - Description: Attempts to retrieve a message by its id after deleting a chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Message not found'.
+
+23. **Delete chat with invalid id**
+    - Description: Attempts to delete a chat with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid chat ID'.
+
+24. **Delete created service**
+    - Description: Deletes a created service.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should be an object.
+
+25. **Add message to chat after deleting chat**
+    - Description: Attempts to add a message to a chat after deleting the chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Chat not found'.
+
+26. **Delete created buyer**
+    - Description: Deletes a created buyer user.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should be an object.
+
+27. **Delete created seller**
+    - Description: Deletes a created seller user.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should be an object.
+
+28. **Add message to chat after deleting chat and user**
+    - Description: Attempts to add a message to a chat after deleting the chat and user.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'User not found'.
+
+29. **Get chat by id after deleting**
+    - Description: Attempts to retrieve a chat by its id after
+
+ deleting the chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Chat not found'.
+
+30. **Get chats by seller id after deleting user and chats**
+    - Description: Attempts to retrieve chats by seller id after deleting the user and chats.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'User not found'.
+
+31. **Get chats by buyer id after deleting user and chat**
+    - Description: Attempts to retrieve chats by buyer id after deleting the user and chat.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'User not found'.
+
+32. **Create chat after db is closed - should throw and catch 500 error**
+    - Description: Attempts to create a chat after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+33. **Get chat by id after db is closed - should throw and catch 500 error**
+    - Description: Attempts to retrieve a chat by its id after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+34. **Get chats by seller id after db is closed - should throw and catch 500 error**
+    - Description: Attempts to retrieve chats by seller id after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+35. **Get chats by buyer id after db is closed - should throw and catch 500 error**
+    - Description: Attempts to retrieve chats by buyer id after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+36. **Add message to chat after db is closed - should throw and catch 500 error**
+    - Description: Attempts to add a message to a chat after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+37. **Delete chat after db is closed - should throw and catch 500 error**
+    - Description: Attempts to delete a chat after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+38. **Get messages by chat id after db is closed - should throw and catch 500 error**
+    - Description: Attempts to retrieve messages by chat id after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+39. **Get message by id after db is closed - should throw and catch 500 error**
+    - Description: Attempts to retrieve a message by its id after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
 
 #### Integration Tests:
 
-1. **Authenticated User Sends and Receives Messages**:
-    - Simulate two authenticated users interacting with the chat feature.
-    - User A sends messages to User B, and User B receives and responds.
-    - Verify that the chat history is correctly updated for both users.
-2. **Message Validation and Formatting in Chat**:
-    - Send a variety of messages with different formats and content.
-    - Verify that the messages are correctly validated and formatted in the chat history.
-3. **User Status Updates in Chat**:
-    - Simulate users logging in and out.
-    - Verify that the chat feature correctly updates and displays the online/offline status of users.
-4. **Multiple Users Engage in Chat**:
-    - Simulate multiple users engaging in a group chat.
-    - Verify that messages from different users are correctly displayed in the chat history.
-5. **Message Deletion in Chat**:
-    - Simulate users deleting their messages.
-    - Verify that deleted messages are appropriately removed from the chat history.
+1. **User should be able to join multiple chats**
+   - Description: Tests the ability of a user to join multiple chats and verifies the correctness of chatroom associations.
+   - Assertions:
+     - Expects the HTTP response status for creating chatroom1 to be 201 (Created).
+     - Expects the HTTP response status for creating chatroom2 to be 201 (Created).
+     - Verifies the number of chats for each user (seller and buyers).
+     - Verifies the correctness of the buyer association for the created chatrooms.
 
-#### Acceptance Tests:
+2. **User can send, receive and view the entire message history of a chat**
+   - Description: Tests user's ability to send, receive, and view the entire message history of a chat.
+   - Assertions:
+     - Creates messages and ensures that they are successfully created.
+     - Retrieves all messages for chatroom1 and chatroom2 and verifies the expected number of messages.
+     - Confirms that the sender information is correct for each message.
 
-1. **User Engages in One-on-One Chat**:
-    - As a user, initiate a chat with another user.
-    - Send and receive messages.
-    - Verify that the chat history is correctly updated in real-time.
-2. **User Engages in Group Chat**:
-    - As a user, join a group chat with multiple participants.
-    - Exchange messages in the group.
-    - Verify that all messages are correctly displayed for all participants.
-3. **User Receives Real-Time Notifications**:
-    - As a user, have another user send you a message.
-    - Verify that you receive a real-time notification about the new message.
-
-#### Regression Tests:
-
-1. **Message Storage Integrity**:
-    - Send a series of messages and verify that they are correctly stored in the chat history.
-    - Retrieve the chat history and ensure that all messages are intact.
-2. **Error Handling and Recovery**:
-    - Introduce simulated errors (e.g., network issues) during a chat session.
-    - Verify that the chat feature handles errors gracefully and recovers without data loss.
-3. **User Authentication Persistence**:
-    - Simulate user logouts and logins.
-    - Verify that the chat feature maintains user authentication and continues to track user online/offline status correctly.
-
+3. **User can delete a chat removing it from both users list of chats**
+   - Description: Tests the ability of a user to delete a chat and ensures it is removed from both users' lists of chats.
+   - Assertions:
+     - Deletes chatroom2 and verifies the success of the deletion.
+     - Ensures that the deleted chatroom cannot be retrieved.
+     - Verifies that chatroom1 is still accessible and contains the expected user associations.
+     - Confirms that messages associated with the deleted chatroom cannot be retrieved.
+     - Verifies the correct behavior for accessing the list of chats for sellers and buyers after the deletion.
 
 ### Feature 6: Review 
 
 #### Unit Tests:
 
-1. **Test Review Creation:**
-   - Test that a user can create a review for a product or service.
-   - Ensure the review includes a title, text, a rating, and a reference to the item being reviewed.
-   - Verify that the review is associated with the user who created it.
+Here are the tests, descriptions, and assertions for the provided code:
 
-2. **Test Review Rating Validation:**
-   - Test that the review rating is within a valid range (e.g., between 1 and 5 for a 5-star rating system).
-   - Ensure that an error is thrown or an appropriate response is returned if the rating is out of bounds.
+1. **Create a user**
+   - Description: Creates a new user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'firstName', 'lastName', 'email', 'password', and 'isStudent'.
 
-3. **Test Review Title and Text Length:**
-   - Test that the review title and text have a minimum and maximum character length.
-   - Verify that the system enforces these length constraints and provides meaningful error messages for violations.
+2. **Add service for created user and review**
+   - Description: Adds a new service for the created user.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'seller', 'description', 'title', 'price', and 'categories'.
 
-4. **Test Review Deletion:**
-   - Test that a user can delete their own review.
-   - Ensure that users cannot delete reviews created by others.
-   - Verify that the review is removed from the system upon deletion.
+3. **Create a review with the created user**
+   - Description: Creates a new review for the created user and service.
+   - Assertions:
+     - Status code should be 201 (Created).
+     - Response body should have properties 'reviewer', 'service', 'rating', 'text', and 'updated'.
 
-5. **Test Review Editing:**
-   - Test that a user can edit their own review.
-   - Ensure that users cannot edit reviews created by others.
-   - Verify that the updated review data is saved correctly.
+4. **Get review by ID**
+   - Description: Retrieves a review by its id.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have properties 'reviewer', 'service', 'rating', 'text', and 'updated'.
 
-6. **Test Review Retrieval:**
-   - Test that reviews can be retrieved for a specific product or service.
-   - Ensure that the reviews are sorted by date or rating as required.
-   - Verify that the response includes the review title, text, rating, and user information.
+5. **Get reviews by service ID**
+   - Description: Retrieves reviews by service ID.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should be an array with properties 'reviewer', 'service', 'rating', 'text', and 'updated'.
 
-7. **Test Review Validation:**
-   - Test the validation logic for creating or updating reviews.
-   - Verify that the system prevents duplicate reviews by the same user for the same item.
-   - Test that the system prevents users from reviewing their own products or services.
+6. **Get reviews by service ID with invalid id**
+   - Description: Attempts to retrieve reviews by service ID with an invalid id.
+   - Assertions:
+     - Status code should be 400 (Bad Request).
+     - Response body should have property 'message' equal to 'Invalid service ID'.
 
-8. **Test Review Ownership:**
-   - Test that a user can check if they own a review.
-   - Verify that the system correctly identifies the owner of a review.
+7. **Get reviews by user ID with invalid id**
+   - Description: Attempts to retrieve reviews by user ID with an invalid id.
+   - Assertions:
+     - Status code should be 400 (Bad Request).
+     - Response body should have property 'message' equal to 'Invalid user ID'.
 
-9. **Test User Review History:**
-    - Test that users can retrieve their own review history, including products or services they have reviewed.
-    - Ensure that the retrieved list of reviews is accurate.
+8. **Edit review**
+   - Description: Edits an existing review.
+   - Assertions:
+     - Status code should be 200 (OK).
+     - Response body should have property 'message' equal to 'Review updated successfully'.
+
+9. **Edit review with invalid id**
+   - Description: Attempts to edit a review with an invalid id.
+   - Assertions:
+     - Status code should be 400 (Bad Request).
+     - Response body should have property 'message' equal to 'Invalid review ID'.
+
+10. **Delete review with invalid id**
+    - Description: Attempts to delete a review with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid review ID'.
+
+11. **Delete review**
+    - Description: Deletes an existing review.
+    - Assertions:
+      - Status code should be either 200 (OK) or 404 (Not Found) depending on whether the review is found or not.
+      - If the review is found (200), response body should have property 'message' equal to 'Review deleted successfully'.
+      - If the review is not found (404), response body should have property 'message' equal to 'Review not found'.
+
+12. **Get a deleted review by service ID**
+    - Description: Attempts to retrieve a deleted review by service ID.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Reviews not found'.
+
+13. **Get a deleted review by user ID**
+    - Description: Attempts to retrieve a deleted review by user ID.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Reviewer not found'.
+
+14. **Delete service**
+    - Description: Deletes the created service.
+    - Assertions:
+      - Status code should be 200 (OK).
+      - Response body should have property 'message' equal to 'Service deleted successfully'.
+
+15. **Delete user**
+    - Description: Deletes the created user.
+    - Assertions:
+      - Status code should be either 200 (OK) or 404 (Not Found) depending on whether the user is found or not.
+      - If the user is found (200), response body should have property 'message' equal to 'User deleted successfully'.
+      - If the user is not found (404), it's still a successful deletion.
+
+16. **Get a deleted review by ID**
+    - Description: Attempts to retrieve a deleted review by its ID.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Review not found'.
+
+17. **Edit a deleted review**
+    - Description: Attempts to edit a deleted review.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Review not found'.
+
+18. **Delete a deleted review**
+    - Description: Attempts to delete a deleted review.
+    - Assertions:
+      - Status code should be 404 (Not Found).
+      - Response body should have property 'message' equal to 'Review not found'.
+
+19. **Get a deleted review with invalid id**
+    - Description: Attempts to retrieve a deleted review with an invalid id.
+    - Assertions:
+      - Status code should be 400 (Bad Request).
+      - Response body should have property 'message' equal to 'Invalid review ID'.
+
+20. **Try to create a review after closing the database**
+    - Description: Attempts to create a review after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+21. **Try to get a review after closing the database**
+    - Description: Attempts to retrieve a review after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+22. **Try to edit a review after closing the database**
+    - Description: Attempts to edit a review after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+23. **Try to get reviews by service ID after closing the database**
+    - Description: Attempts to retrieve reviews by service ID after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+24. **Try to delete a review after closing the database**
+    - Description: Attempts to delete a review after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message' equal to 'Internal server error'.
+
+25. **Try to get reviews by user ID after closing the database**
+    - Description: Attempts to retrieve reviews by user ID after closing the database.
+    - Assertions:
+      - Status code should be 500 (Internal Server Error).
+      - Response body should have property 'message
 
 #### Intregration Tests:
-1. **Test Review Creation and Retrieval**:
-    - Create a user, a product or service, and a review for that item.
-    - Send requests to create and retrieve the review.
-    - Verify that the created review is accurately retrieved and associated with the correct user and item.
-2. **Test Review Editing and Retrieval**:
-    - Create a user, a product or service, and a review for that item.
-    - Send requests to edit and retrieve the review.
-    - Verify that the edited review is accurately retrieved and associated with the correct user and item.
-3. **Test Review Deletion and Retrieval**:
-    - Create a user, a product or service, and a review for that item.
-    - Send requests to delete and retrieve the review.
-    - Verify that the deleted review is no longer retrievable and that the system correctly handles review deletion.
-4. **Test Review Validation and Rating Range**:
-    - Attempt to create reviews with invalid ratings (below and above the valid range).
-    - Verify that the system returns appropriate error messages or status codes for rating validation.
-5. **Test Review Title and Text Length Constraints**:
-    - Attempt to create reviews with titles and text exceeding the character limits.
-    - Verify that the system enforces length constraints and returns meaningful error messages.
-6. **Test Review Ownership Verification**:
-    - Create a user, a product or service, and a review for that item.
-    - Send a request to check if the user owns the review.
-    - Verify that the system correctly identifies the owner of the review.
-7. **Test Duplicate Review Prevention**:
-    - Create a user, a product or service, and a review for that item.
-    - Attempt to create a duplicate review for the same item by the same user.
-    - Verify that the system prevents the creation of duplicate reviews.
-8. **Test User Review History Retrieval**:
-    - Create a user and multiple reviews for different products or services.
-    - Send a request to retrieve the user's review history.
-    - Verify that the retrieved list of reviews accurately represents the user's review history.    
 
-#### Acceptance Tests:
+1. **User can create multiple reviews on the same service**
+   - Description: Tests the ability of a user to create multiple reviews on the same service and verifies the correctness of the reviews.
+   - Assertions:
+     - Expects the HTTP response status for creating the first review to be 201 (Created).
+     - Expects the HTTP response status for creating the duplicate review to be 201 (Created).
+     - Retrieves reviews for the service and verifies reviewer, service, rating, and text for each review.
 
-1. **User Reviews Product**:
-    - As a user, navigate to a product or service page.
-    - Create a review with a title, text, and a rating.
-    - Verify that the review is displayed on the product or service page.
-2. **User Edits Review**:
-    - As a user, navigate to a product or service page where you have a review.
-    - Edit the review by changing the title, text, or rating.
-    - Verify that the updated review is correctly displayed on the product or service page.
-3. **User Deletes Review**:
-    - As a user, navigate to a product or service page where you have a review.
-    - Delete the review.
-    - Verify that the review is no longer displayed on the product or service page.
-4. **User Views Review History**:
-    - As a user, navigate to your profile or account settings.
-    - Access the review history section.
-    - Verify that the displayed review history matches the reviews you have created.
-5. **User Tries to Review Own Product**:
-    - As a user, navigate to a product or service page that you own.
-    - Attempt to create a review for your own product or service.
-    - Verify that the system prevents you from reviewing your own item.
+2. **User can create reviews of different services**
+   - Description: Tests the ability of a user to create reviews of different services and ensures that the reviews are associated with the correct services.
+   - Assertions:
+     - Creates a new service.
+     - Creates a review for the first service.
+     - Creates a review for the second service.
+     - Retrieves reviews for both services and confirms the correct associations.
 
-#### Regression tests:
-1. **Review Deletion with Invalid Ownership**:
-    - Attempt to delete a review owned by another user.
-    - Verify that the system returns an appropriate error message or status code.
-2. **Review Retrieval Sorting**:
-    - Create multiple reviews for a product or service with varying ratings and dates.
-    - Retrieve the reviews for the item and verify that they are correctly sorted by date or rating.
-3. **Review Validation with Empty Title or Text**:
-    - Attempt to create a review with an empty title or text.
-    - Verify that the system returns an appropriate error message.
-4. **Review Validation for Non-Existent Item**:
-    - Attempt to create a review for a product or service that does not exist.
-    - Verify that the system returns an appropriate error message or status code.
+3. **User can find all the reviews they have created**
+   - Description: Tests the ability of a user to find all the reviews they have created.
+   - Assertions:
+     - Creates a second user.
+     - Creates reviews for multiple services.
+     - Retrieves reviews for each user and verifies the number of reviews and the correctness of associations (reviewer, service, text, rating).
 
+#### LogIn Acceptance Testing:
 
+1. **Login page should render**
+   - Description: Tests whether the login page renders without errors.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+
+2. **Input fields should exist**
+   - Description: Ensures that the email and password input fields exist on the login page.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+     - Retrieves the email and password input fields by their placeholders.
+     - Asserts that both input fields are in the document.
+
+3. **Input fields should change**
+   - Description: Tests whether the input fields change as expected.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+     - Retrieves the email and password input fields by their placeholders.
+     - Fires change events on the email and password fields with specific values.
+     - Asserts that the input fields have the expected values.
+
+4. **Valid login should return a token**
+   - Description: Tests the login process with valid credentials and expects a token.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+     - Defines a mock response for the login request.
+     - Defines the expected request body with email and password.
+     - Retrieves email, password, and the login button.
+     - Fires change events on the email and password fields.
+     - Fires a click event on the login button.
+     - Expects that `axios.post` was called with the correct URL and body.
+
+5. **Incorrect email should fail**
+   - Description: Tests the login process with incorrect email and expects a failure.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+     - Defines a mock rejection for the login request with an error response.
+     - Retrieves email, password, and the login button.
+     - Fires change events on the email and password fields.
+     - Fires a click event on the login button.
+     - Expects that `axios.post` was called with the correct URL and body.
+     - Waits for the error message 'User not found' to be in the document.
+
+6. **Server error should display**
+   - Description: Tests the login process with a server error and expects an error message.
+   - Assertions:
+     - Renders the `Login` component within a `MemoryRouter`.
+     - Defines a mock rejection for the login request with a server error.
+     - Retrieves email, password, and the login button.
+     - Fires change events on the email and password fields.
+     - Fires a click event on the login button.
+     - Expects that `axios.post` was called with the correct URL and body.
+     - Waits for the error message 'Server error' to be in the document.
+
+#### SignUp Acceptance Testing:
+
+1. **Signup page should render**
+   - Description: Tests whether the signup page renders without errors.
+   - Assertions:
+     - Renders the `Signup` component within a `MemoryRouter`.
+
+2. **Input fields should exist**
+   - Description: Ensures that the first name, last name, email, password, and confirm password input fields exist on the signup page.
+   - Assertions:
+     - Renders the `Signup` component within a `MemoryRouter`.
+     - Retrieves input fields by their placeholders.
+     - Asserts that all input fields are in the document.
+
+3. **Create new account**
+   - Description: Tests the account creation process and expects a resolved promise with user data.
+   - Assertions:
+     - Renders the `Signup` component within a `MemoryRouter`.
+     - Defines a mock response for the signup request.
+     - Defines the expected request body with user details.
+     - Retrieves input fields and the client checkbox.
+     - Fires change events on the input fields with specific values.
+     - Fires a click event on the client checkbox.
+     - Uses `act` to handle the asynchronous `signUp` function.
+     - Expects that `axios.post` was called with the correct URL and body.
+
+#### Review Acceptance Testing:
+
+1. **Renders ReviewPopUp component**
+   - Description: Tests whether the `ReviewPopUp` component renders without errors.
+   - Assertions:
+     - Renders the `ReviewPopUp` component with the specified props within a `MemoryRouter`.
+
+2. **Displays average rating**
+   - Description: Ensures that the average rating is correctly displayed.
+   - Assertions:
+     - Renders the `ReviewPopUp` component with the specified props within a `MemoryRouter`.
+     - Retrieves the average rating element by text content and asserts its presence.
+
+3. **Displays reviews with user names and ratings**
+   - Description: Verifies that reviews are displayed with user names and ratings using star symbols.
+   - Assertions:
+     - Renders the `ReviewPopUp` component with the specified props within a `MemoryRouter`.
+     - Retrieves all elements containing the '★' symbol and asserts their count.
+
+4. **Displays a review form**
+   - Description: Tests whether the review form is correctly displayed.
+   - Assertions:
+     - Renders the `ReviewPopUp` component with the specified props within a `MemoryRouter`.
+     - Retrieves all elements containing the '★' symbol and asserts their count.
+     - Retrieves the submit button by role and asserts its presence.
+
+#### Regression Testing:
+
+All tests will be run on each pull request, if any of the tests outlined fail the pull request will be declined. 
 
 ## 2.2	Test Completeness
 
 Testing will be complete when:  
-- 80% test coverage
 - All automated and manual test cases are executed successfully
 - 100% test coverage for the backend 
-
-
-
 
 # 3	Resource & Environment Needs
 
@@ -708,8 +1112,6 @@ Testing will be complete when:
   
 ### The following software’s are required in addition to client-specific software:
 - Node JS v18.12.1
-- 
-
 
 # 4	Terms/Acronyms 
 

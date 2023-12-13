@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import Chat from './Pages/Chat'
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
@@ -15,8 +14,9 @@ function App() {
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/" element={<Home/>} />
 				<Route path="/content" element={<MyContent/>} />
-				<Route path="/services/:query" element={<Services/>} />
-				<Route path="/chat" element={<Chat/>}/>
+				<Route exact path={"/services"} element={<Services/>} />
+				<Route path={"/services/category/:category"} element={<Services/>} />
+				<Route path={"/services/query/:query"} element={<Services/>} />		
 			</Routes>
 		</>
 	);

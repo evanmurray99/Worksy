@@ -3,9 +3,8 @@ const User = require('../Models/User');
 const Message = require('../Models/Message');
 const mongoose = require("mongoose");
 
-
-
 // Create a new chat 
+// Required body in the request should contain the following fields: seller, buyer, service
 const createChat = async (req, res) => {
     try {
         const {seller, buyer, service} = req.body;
@@ -30,8 +29,8 @@ const createChat = async (req, res) => {
     }
 };
 
-
 // GET /chats by Id
+// Required parameter in the request is the chatId of the chat to be fetched
 const getChat = async (req, res) => {
     try {
         const chatId = req.params.id;
@@ -54,9 +53,29 @@ const getChat = async (req, res) => {
     }
 };
 
+// GET /messages by chat id, returns all messages in a chat
+// Required parameter in the request is the chatId of the chat to be fetched
+const getMessages = async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const chat = await Chat.findById(chatId);
 
-// GET /chats by seller id
-//returns all chats where this user is a seller
+        if (!chat) {
+            return res.status(404).json({ message: 'Chat not found' });
+        }
+
+        const messageIds = chat.messages; // Assuming messages is an array of message IDs
+        const messages = await Message.find({ _id: { $in: messageIds } });
+
+        res.status(200).json({ messages });
+    } catch (err) {
+        console.error('Error fetching chat by ID:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+// GET /chats by seller id, returns all chats where this user is a seller
+// Required parameter in the request is the sellerId of the seller to be fetched
 const getChatsBySeller = async (req, res) => {
     try {
         const sellerId = req.params.id;
@@ -83,7 +102,6 @@ const getChatsBySeller = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
 
 // GET /chats by buyer id
 //returns all chats where this user is a buyer
@@ -215,6 +233,7 @@ const deleteChat = async (req, res ) => {
 const controller = {
     createChat,
     getChat,
+    getMessages,
     getChatsBySeller,
     getChatsByBuyer,
     addMessage,

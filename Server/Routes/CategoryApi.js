@@ -6,6 +6,7 @@ const controller = require('../Controllers/CategoryController');
 
 router.post('/', controller.addCategory);
 router.get('/' ,controller.getCategories)
+router.get('/services', controller.getCategoriesAndServices)
 router.delete('/', controller.deleteCategory);
 router.get('/:name' , controller.getServices)
 router.put('/:name/add-service/:service' , controller.addService)

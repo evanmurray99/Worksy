@@ -14,7 +14,8 @@ const generateToken = (user) => {
   return jwt.sign(payload, secretKey, { expiresIn: '1h' }); 
 };
 
-
+// GET /users/:id
+// Required parameter in the request is the userId of the user to be fetched
 const getUser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -31,13 +32,12 @@ const getUser = async (req, res) => {
   }
 };
 
+// POST /users/:id/services/:service
+// Required parameter in the request is the userId of the user to append the service to
 const addService = async (req, res) => {
   try {
     const userId = req.params.id;
     const serviceId = req.params.service;
-
-    
-
 
     const user = await User.findById(userId);
 
@@ -54,6 +54,8 @@ const addService = async (req, res) => {
   }
 };
 
+// POST /users - create a new user
+// Required parameters in the request are the first name, last name, email, password, and isStudent status of the user to be created
 const createUser = async (req, res) => {
   try {
     const { firstName , lastName, email , password , isStudent } = req.body; 
@@ -94,6 +96,8 @@ const createUser = async (req, res) => {
   }
 };
 
+// PUT /users/:id
+// Required parameter in the request is the userId of the user to be updated
 const editUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -127,7 +131,8 @@ const editUser = async (req, res) => {
   }
 };
 
-
+// DELETE /users/:id
+// Required parameter in the request is the userId of the user to be deleted
 const deleteUserById = async (req, res) => {
   try {
     const userId = req.params.id; 
@@ -152,6 +157,8 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+// PUT /users/:id/bio
+// Required parameter in the request is the userId of the user to be updated
 const updateUserBio = async (req, res) => {
   try {
     const userId = req.params.id; // Get the user ID from the URL parameter
@@ -181,6 +188,8 @@ const updateUserBio = async (req, res) => {
   }
 };
 
+// POST /users/login
+// Required parameters in the request are the email and password of the user to be logged in
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -193,8 +202,7 @@ const login = async (req, res) => {
       
     }
 
-    
-    const passwordMatch = await bcrypt.compare(password, user.hashedpassword);
+    const passwordMatch = await bcrypt.compare(password, user.hashedpassword); // Compare the provided password with the hashed password in the database
 
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid password' });
@@ -210,6 +218,8 @@ const login = async (req, res) => {
   }
 };
 
+// GET /users/token/:token
+// Required parameter in the request is the token of the user to be fetched
 const getUserByToken = async (req, res) => {
   
   const token  = req.params.token;
@@ -239,6 +249,8 @@ const getUserByToken = async (req, res) => {
   }
 };
 
+// GET /users/:id/services
+// Required parameter in the request is the userId of the user to get services for
 const getServices = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -260,8 +272,7 @@ const getServices = async (req, res) => {
   }
 };
 
-
-
+// Error codes and messages for duplicate email
 const errorMap = {
   '11000' : 'User with this email already exists'
 }
