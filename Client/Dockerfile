@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3030
 
 # Run the application
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "dev"]

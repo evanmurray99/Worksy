@@ -3,7 +3,7 @@ version: '3.8'
 services: 
   server:
     container_name: worksy-server
-    image: worksy-server:1.0.0
+    image: worksy-server:lastest
     build: 
       context: ./Server
       dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
       - 3001:3001
   client: 
     container_name: worksy-client
-    image: worksy-client:1.0.0
+    image: worksy-client:lastest
     build:
       context: ./Client
       dockerfile: Dockerfile
