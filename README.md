@@ -24,6 +24,13 @@ A marketplace tailored for students, where they can offer and seek freelance ser
 
 [Class Architecture](./docs/Class-Architecture.jpeg)
 
+### Presentation Slides
+[Project Proposal Presentation](./docs/Project-Proposal-Presentation.pdf)
+
+[Technique Seminar Presentation](./docs/Technique-Seminar.pdf)
+
+[Final Project Presentation](./docs/Final-Project-Presentation.pdf)
+
 ### Vision
 In a world where many students face challenges due to limited experience and professional networks, Worksy emerges as an indispensable solution. Worksy is  committed to bridging the gap between students seeking valuable work opportunities and business owners in need of specialized services.
 
