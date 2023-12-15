@@ -163,10 +163,11 @@ div{
     background-color: lightgrey;
 }
 .pageNavigator {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 90%;
 }
 .navigateButton{
     margin-left: 5px;
