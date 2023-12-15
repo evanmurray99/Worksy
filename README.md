@@ -22,6 +22,8 @@ A marketplace tailored for students, where they can offer and seek freelance ser
 
 [Coding style and Naming Convention](https://google.github.io/styleguide/jsguide.html)
 
+[Class Architecture](./docs/Class-Architecture.jpeg)
+
 ### Vision
 In a world where many students face challenges due to limited experience and professional networks, Worksy emerges as an indispensable solution. Worksy is  committed to bridging the gap between students seeking valuable work opportunities and business owners in need of specialized services.
 
