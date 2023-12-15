@@ -168,7 +168,6 @@ export default function Home() {
   useEffect(() => {
     setFilteredResults([]);
     setMaxPage(0);
-    // setPage(0);
     const byRelevance = (a, b) => b.service.score - a.service.score;
     const byDateOldest = (a, b) =>
       new Date(a.service.created) - new Date(b.service.created);
