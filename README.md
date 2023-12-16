@@ -24,6 +24,8 @@ A marketplace tailored for students, where they can offer and seek freelance ser
 
 [Class Architecture](./docs/Class-Architecture.jpeg)
 
+[Project Release](./docs/Project-Release.docx)
+
 ### Presentation Slides
 [Project Proposal Presentation](./docs/Project-Proposal-Presentation.pdf)
 
